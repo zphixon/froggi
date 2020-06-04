@@ -40,7 +40,9 @@ S-expression-based markup
     * the width of an image after any scaling
   * distribute the maximum of required and available pixels among horizontal items:
     * equally, or percentage-wise.
-3. height calculation
+2. height calculation...
+
+![diagram](https://github.com/zphixon/unnamed_protocol/blob/master/notes/display.svg)
 
 ## other ideas
 
