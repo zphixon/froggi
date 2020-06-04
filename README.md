@@ -18,7 +18,7 @@ by gemini, and conceived due to its unimpressive markup language.
 
 ## markup
 
-S-expression-based markdown:
+S-expression-based markup
 * layout elements include `box`, `hbox`, `page`
 * `lowercase` names are built-in styles. includes `txt`, `h1`, `img`, `link`, `page`, etc
 * `Uppercase` names are user-defined styles
