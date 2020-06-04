@@ -1,0 +1,45 @@
+https://doc.rust-lang.org/stable/std/net/index.html
+https://github.com/sfackler/rust-native-tls
+https://github.com/unicode-rs/unicode-segmentation
+
+https://github.com/servo/unicode-bidi
+https://crates.io/crates/harfbuzz_rs
+or just
+https://github.com/redox-os/rusttype
+
+semantic color schemes for compatibility with system themes?
+* note, warning, quote
+
+text
+* bold, italic, underline, strike
+* serif, sans-serif, monospace
+
+unordered/ordered list
+
+paragraphs, indented or not
+
+"boxed" elements provide nested style choices
+* separate background color
+* line numbers? code highlighting?
+* allow similar center/left/right justification like images
+* scaling parameters?
+
+headers
+
+links
+* same document jumps the view
+* other document opens that document
+* specify exactly where something links to
+
+images
+* left or right justified wrap text
+* center justified does not wrap text
+* scaling parameters?
+
+tables?
+
+input
+* text, file?, button?, radio?, checkbox?, validation?
+
+styling algorithm
+1. width calculation
