@@ -1,2 +1,3 @@
 [workspace]
-members = ["unnamed_protocol_client", "unnamed_protocol_server"]
+#members = ["unnamed_protocol_client", "unnamed_protocol_server"]
+members = ["client", "server"]
