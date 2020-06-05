@@ -1,0 +1,2 @@
+[workspace]
+members = ["unnamed_protocol_client", "unnamed_protocol_server"]
