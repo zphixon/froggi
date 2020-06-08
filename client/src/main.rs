@@ -9,7 +9,7 @@ mod style;
 
 fn main() {
     println!("connecting");
-    let mut stream = TcpStream::connect("127.0.0.1:11121").unwrap();
+    let mut stream = TcpStream::connect(include_str!("../server_address").trim()).unwrap();
     println!("connected");
     stream.write_all(b"hello\n").unwrap();
     //std::thread::sleep(Duration::from_secs(3));
