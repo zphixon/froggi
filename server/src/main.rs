@@ -2,11 +2,11 @@ use std::net::{TcpStream, TcpListener};
 use std::io::{BufRead, Write, BufReader, Read};
 
 fn handle_client(mut stream: TcpStream) {
-    let mut request = [0; 512];
-    match stream.read(&mut request) {
+    let mut request = Vec::new();
+    match stream.read_to_end(&mut request) {
         Ok(size) => {
             println!("received request: {:?}", &request[0..size]);
-            let size2 = stream.read(&mut request).unwrap();
+            let size2 = stream.read_to_end(&mut request).unwrap();
             println!("more data? {:?}", &request[0..size2]);
             //if &request[0..size] == b"hello\n" {
             //    println!("sent response");
