@@ -102,6 +102,7 @@ impl StyleBuilder {
     }
 
     pub fn width(self, width: u8) -> Self {
+        assert!(width <= 100);
         Self {
             width: Some(width),
             ..self
@@ -109,6 +110,7 @@ impl StyleBuilder {
     }
 
     pub fn height(self, height: u8) -> Self {
+        assert!(height <= 100);
         Self {
             height: Some(height),
             ..self

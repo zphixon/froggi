@@ -18,12 +18,6 @@ pub enum Item {
     Image(String),
 }
 
-impl Item {
-    fn merge_styles(&self, _from: &Item) {
-        todo!();
-    }
-}
-
 pub struct Document {
     pub title: String,
     pub base_style: Style,
