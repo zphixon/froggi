@@ -7,13 +7,13 @@
 
 (page
   "Page title"
-  (txt $serif #303030 $indent)
+  (txt $serif #303030)
   (QuoteBox *FFF8DC)
-  (QuoteText $no-indent $sans #606060)
+  (QuoteText $sans #606060)
   (Footnote #757575 $sans $italic))
 
 ; hbox adds elements to it horizontally in the top left of each sub-element
-(hbox (h1 "Lorem ipsum example") (img header.jpg))
+(hbox (h1 "Lorem ipsum example") (img "header.jpg"))
 
 ; txt is simple text, left-justified and beginning-aligned
 (txt "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"

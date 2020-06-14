@@ -1,5 +1,5 @@
+use std::io::{BufRead, BufReader, Cursor, Read, Write};
 use std::net::TcpStream;
-use std::io::{Write, BufRead, BufReader, Read, Cursor};
 use std::time::Duration;
 
 fn main() {

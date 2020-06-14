@@ -1,5 +1,4 @@
-use super::color::*;
-use super::font::*;
+use super::*;
 
 #[derive(Clone, Debug)]
 pub struct Style {

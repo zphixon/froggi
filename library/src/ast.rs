@@ -1,27 +1,35 @@
-use super::color::*;
-use super::font::*;
-use super::style::*;
+use super::*;
 
-pub enum Item {
+pub enum Item<'a> {
     Box {
         style: Option<Style>,
-        children: Vec<Item>,
+        children: Vec<Item<'a>>,
     },
     HBox {
         style: Option<Style>,
-        children: Vec<Item>,
+        children: Vec<Item<'a>>,
     },
     Text {
         style: Option<Style>,
-        text: String,
+        text: &'a str,
     },
-    Image(String),
+    Image(&'a str),
 }
 
-pub struct Document {
-    pub title: String,
+pub struct Document<'a> {
+    pub title: &'a str,
     pub base_style: Style,
-    pub tree: Vec<Item>,
+    pub tree: Vec<Item<'a>>,
+}
+
+impl Document<'_> {
+    pub fn new(data: &str, filename: String) -> Document<'_> {
+        Document {
+            title: data,
+            base_style: Style::default(),
+            tree: parse(data, filename),
+        }
+    }
 }
 
 // #0d162d
@@ -107,8 +115,17 @@ mod test {
             .font_properties(FontBuilder::new().italic().sans().build())
             .build();
 
-        let document = Document {
-            title: String::from("Page title"),
+        let page_title = String::from("Page title");
+        let lorem_ipsum_example = String::from("Lorem ipsum example");
+        let header_jpg = String::from("header.jpg");
+        let lorem_ipsum_dolor = String::from("Lorem ipsum dolor sit amet, consectetur");
+        let contrary_to = String::from("Contrary to popular belief, Lorem Ipsum");
+        let from_45 = String::from("from 45 BC, making it over 2000 years old.");
+        let looked_up = String::from("looked up one of the more obscure Latin");
+        let from_https = String::from("from https://www.lipsum.com/");
+
+        let _document = Document {
+            title: &page_title,
             base_style: base_style.clone(),
             tree: vec![
                 Item::HBox {
@@ -116,38 +133,38 @@ mod test {
                     children: vec![
                         Item::Text {
                             style: Some(Style::header(1)),
-                            text: String::from("Lorem ipsum example"),
+                            text: &lorem_ipsum_example,
                         },
-                        Item::Image(String::from("header.jpg")),
+                        Item::Image(&header_jpg),
                     ],
                 },
                 Item::Text {
                     style: None,
-                    text: String::from("Lorem ipsum dolor sit amet, consectetur"),
+                    text: &lorem_ipsum_dolor,
                 },
                 Item::HBox {
                     style: Some(quote_box.clone()),
                     children: vec![
                         Item::Text {
                             style: Some(quote_text.clone()),
-                            text: String::from("Contrary to popular belief, Lorem Ipsum"),
+                            text: &contrary_to,
                         },
                         Item::Text {
                             style: Some(quote_text.clone()),
-                            text: String::from("from 45 BC, making it over 2000 years old."),
+                            text: &from_45,
                         },
                         Item::Box {
                             style: Some(quote_box.clone()),
                             children: vec![
                                 Item::Text {
                                     style: Some(quote_text.clone()),
-                                    text: String::from("looked up one of the more obscure Latin"),
+                                    text: &looked_up,
                                 },
                                 Item::Text {
                                     style: Some(
                                         StyleBuilder::with(footnote.clone()).height(20).build(),
                                     ),
-                                    text: String::from("from https://www.lipsum.com/"),
+                                    text: &from_https,
                                 },
                             ],
                         },
