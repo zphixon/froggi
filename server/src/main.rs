@@ -120,21 +120,26 @@ impl Response {
 }
 
 fn handle_client(mut stream: TcpStream) {
-    let mut request = Vec::new();
-    match stream.read_to_end(&mut request) {
-        Ok(size) => {
-            println!("received request: {:?}", &request[0..size]);
-            let size2 = stream.read_to_end(&mut request).unwrap();
-            println!("more data? {:?}", &request[0..size2]);
-            //if &request[0..size] == b"hello\n" {
-            //    println!("sent response");
-            //    stream.write_all("nerd\n".as_bytes()).unwrap();
-            //}
-        }
-        Err(e) => {
-            println!("error {}", e);
-        }
+    let mut buffer = Vec::new();
+    while let Ok(size) = stream.read_to_end(&mut buffer) {
+        if size == 0 { break }
     }
+    println!("got {:?}", buffer);
+    //let mut request = Vec::new();
+    //match stream.read_to_end(&mut request) {
+    //    Ok(size) => {
+    //        println!("received request: {:?}", &request[0..size]);
+    //        let size2 = stream.read_to_end(&mut request).unwrap();
+    //        println!("more data? {:?}", &request[0..size2]);
+    //        //if &request[0..size] == b"hello\n" {
+    //        //    println!("sent response");
+    //        //    stream.write_all("nerd\n".as_bytes()).unwrap();
+    //        //}
+    //    }
+    //    Err(e) => {
+    //        println!("error {}", e);
+    //    }
+    //}
     // let mut request = String::new();
     // match BufReader::new(stream.try_clone().unwrap()).read_line(&mut request) {
     //    Ok(_) => {
