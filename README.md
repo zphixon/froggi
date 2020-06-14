@@ -1,4 +1,4 @@
-# new unnamed protocol
+# froggi protocol
 
 this new protocol aims to be somewhere between gopher and http. somewhat inspired
 by gemini, and conceived due to its unimpressive markup language.

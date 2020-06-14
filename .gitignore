@@ -1,3 +1,4 @@
 target/
 .idea/
 client/server_address
+server/*.png
