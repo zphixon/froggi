@@ -68,6 +68,10 @@ impl Into<Vec<u8>> for Response {
         // next bytes: total response length (pre-allocated)
         data.extend_from_slice(&[0, 0, 0, 0u8]);
 
+        // <CR><LF>
+        data.push(b'\r');
+        data.push(b'\n');
+
         // next two bytes: page length
         let (page_len_low, page_len_high) = crate::serialize_to_bytes(self.page.len());
         data.push(page_len_low);
@@ -124,7 +128,8 @@ mod test {
 
         let data_real = vec![
             0x00, // version
-            0x4e, 0x01, 0x00, 0x00, // content len
+            0x50, 0x01, 0x00, 0x00, // content len
+            b'\r', b'\n',
             0x3c, 0x00, // page len
             0x28, 0x69, 0x6d, 0x67, 0x20, 0x22, 0x77, 0x68, 0x69, 0x74, 0x65, 0x2e, 0x70, 0x6e,
             0x67, 0x22, 0x29, 0x0a, 0x28, 0x74, 0x78, 0x74, 0x20, 0x22, 0x66, 0x75, 0x67, 0x68,
