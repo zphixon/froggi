@@ -13,7 +13,7 @@ fn handle_client(mut stream: TcpStream) {
 
     let path = String::from_utf8(path_buf).unwrap();
 
-    println!("request (version {}, length {}): {}", version, path_len, path);
+    println!("request (version {}, length {}): {:?}", version, path_len, path);
 }
 
 fn main() {
