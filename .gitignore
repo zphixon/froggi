@@ -1,4 +1,5 @@
 target/
 .idea/
 client/server_address
+client/server_addresses
 library/*.png
