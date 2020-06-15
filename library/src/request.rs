@@ -30,9 +30,9 @@ impl Request {
         let version = request[0];
         let path_len = crate::deserialize_bytes(request[1], request[2]);
 
-        // Vec::with_capacity doesn't work here - it never actually
+        // Vec::with_capacity doesn't work here for some reason
         let mut path_buf = vec![0; path_len];
-        bytes.read_exact(&mut path_buf);
+        bytes.read_exact(&mut path_buf)?;
 
         let path = String::from_utf8(path_buf)?;
 

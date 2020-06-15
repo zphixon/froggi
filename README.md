@@ -46,6 +46,8 @@ S-expression-based markup
 
 ## other ideas
 
+* add flag byte?
+  * whether or not the client wants images (would be useful for crawlers or search indexing)
 * semantic color schemes for compatibility with system themes?
   * note, warning, quote
 * unordered/ordered list

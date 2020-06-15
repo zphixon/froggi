@@ -1,3 +1,7 @@
+use crate::FroggiError;
+
+use std::io::Write;
+
 pub struct Item {
     name: String,
     data: Vec<u8>,
@@ -48,10 +52,19 @@ pub struct Response {
 impl Response {
     pub fn new(page: String, items: Vec<Item>) -> Self {
         Self {
-            version: 0,
+            version: crate::FROGGI_VERSION,
             page,
             items,
         }
+    }
+
+    pub fn from_bytes(_bytes: &mut impl Write) -> Result<Self, FroggiError> {
+        // TODO
+        Ok(Self {
+            version: crate::FROGGI_VERSION,
+            page: String::from(""),
+            items: vec![],
+        })
     }
 }
 

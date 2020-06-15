@@ -1,10 +1,18 @@
-use std::io;
+use std::io::{self, Write};
+use std::net::{TcpStream, ToSocketAddrs};
 
 pub mod markup;
 pub mod request;
 pub mod response;
 
 pub const FROGGI_VERSION: u8 = 0;
+
+pub fn send_request(to: impl ToSocketAddrs, path: &str) -> Result<response::Response, FroggiError> {
+    let mut stream = TcpStream::connect(to)?;
+    stream.write_all(&request::Request::new(path)?.into_bytes())?;
+
+    Ok(response::Response::from_bytes(&mut stream)?)
+}
 
 pub fn serialize_to_bytes(bytes: usize) -> (u8, u8) {
     assert!(bytes <= 25564);
