@@ -10,5 +10,4 @@ fn main() {
     let data: Vec<u8> = request.into();
     stream.write_all(&data).unwrap();
     println!("sent");
-    std::thread::sleep(Duration::from_secs(3));
 }
