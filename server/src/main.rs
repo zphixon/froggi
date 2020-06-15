@@ -14,13 +14,12 @@ fn handle_client(mut stream: TcpStream) {
     while let Ok(n) = stream.read(&mut buffer) {
         total_read += n;
         path_buf.extend_from_slice(&buffer);
-        if n == 0 { break }
-        println!("read {} bytes", n);
+        if total_read == path_len { break }
     }
 
     let path = String::from_utf8(path_buf).unwrap();
 
-    println!("request (version {}): {}", version, path);
+    println!("request (version {}, length {}): {}", version, path_len, path);
     //let mut request = Vec::new();
     //match stream.read_to_end(&mut request) {
     //    Ok(size) => {
