@@ -11,6 +11,7 @@ pub struct Request {
 
 impl Request {
     pub fn new(path: impl ToString) -> Result<Self, FroggiError> {
+        let path = path.to_string();
         if path.len() > u16::MAX as usize {
             Err(FroggiError::new(ErrorKind::RequestFormatError).msg_str("The path is too large."))
         } else {
