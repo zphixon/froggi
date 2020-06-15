@@ -8,8 +8,13 @@ fn handle_client(mut stream: TcpStream) {
     let version = request[0];
     let path_len = froggi::deserialize_bytes(request[1], request[2]);
 
+    let mut total_read = 0;
     let mut path_buf = Vec::with_capacity(path_len);
-    stream.read_to_end(&mut path_buf);
+    let mut buffer = [0; 64];
+    while let Ok(n) = stream.read(&mut buffer) {
+        total_read += n;
+        path_buf.extend_from_slice(&buffer);
+    }
 
     let path = String::from_utf8(path_buf).unwrap();
 
