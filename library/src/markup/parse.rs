@@ -1,3 +1,4 @@
+use crate::{FroggiError, ScanError, AddMsg};
 use super::*;
 
 pub fn parse(data: &str, filename: String) -> Vec<Item<'_>> {
@@ -240,7 +241,7 @@ mod test {
 
     #[test]
     fn sample() {
-        let sample = include_str!("../../sample_markdown.scm");
+        let sample = include_str!("../../../sample_markdown.scm");
         lex(sample, "../../sample_markdown.scm".into()).unwrap();
     }
 }

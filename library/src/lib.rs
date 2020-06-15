@@ -1,14 +1,27 @@
-pub mod ast;
-pub mod color;
-pub mod font;
-pub mod parse;
-pub mod style;
 
-use ast::*;
-use color::*;
-use font::*;
-use parse::*;
-use style::*;
+pub mod markup;
+pub mod response;
+pub mod request;
+
+pub const FROGGI_VERSION: u8 = 0;
+
+pub fn serialize_to_bytes(bytes: usize) -> (u8, u8) {
+    assert!(bytes <= 25564);
+
+    let high = (bytes >> 8) as u8;
+    let low = (bytes & 0xff) as u8;
+
+    (low, high)
+}
+
+pub fn serialize_to_four_bytes(bytes: usize) -> [u8; 4] {
+    let a: u8 = ((bytes & 0xff_00_00_00) >> 24) as u8;
+    let b: u8 = ((bytes & 0x00_ff_00_00) >> 16) as u8;
+    let c: u8 = ((bytes & 0x00_00_ff_00) >> 8) as u8;
+    let d: u8 = bytes as u8;
+
+    [d, c, b, a]
+}
 
 #[derive(Debug)]
 pub enum ScanError {
@@ -24,6 +37,7 @@ pub enum ScanError {
 #[derive(Debug)]
 pub enum ErrorKind {
     EncodingError,
+    RequestFormatError,
     ScanError {
         error: ScanError,
         line: usize,
@@ -38,6 +52,13 @@ pub struct FroggiError {
 }
 
 impl FroggiError {
+    pub fn new(error: ErrorKind) -> FroggiError {
+        FroggiError {
+            error,
+            msg: None,
+        }
+    }
+
     pub fn scan(error: ScanError, line: usize, file: String) -> FroggiError {
         FroggiError {
             error: ErrorKind::ScanError { error, line, file },
