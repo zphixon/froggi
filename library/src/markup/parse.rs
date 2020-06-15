@@ -1,5 +1,5 @@
-use crate::{FroggiError, ScanError, AddMsg};
 use super::*;
+use crate::{AddMsg, FroggiError, ScanError};
 
 pub fn parse(data: &str, filename: String) -> Vec<Item<'_>> {
     let _tokens = lex(data, filename);

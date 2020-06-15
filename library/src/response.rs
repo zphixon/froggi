@@ -1,4 +1,3 @@
-
 pub struct Item {
     name: String,
     data: Vec<u8>,
@@ -54,7 +53,6 @@ impl Response {
             items,
         }
     }
-
 }
 
 impl Into<Vec<u8>> for Response {
@@ -104,8 +102,14 @@ mod test {
 
     #[test]
     fn test() {
-        let white = Item::new("white.png".into(), include_bytes!("../1px_white.png").to_vec());
-        let magenta = Item::new("magenta.png".into(), include_bytes!("../1px_magenta.png").to_vec());
+        let white = Item::new(
+            "white.png".into(),
+            include_bytes!("../1px_white.png").to_vec(),
+        );
+        let magenta = Item::new(
+            "magenta.png".into(),
+            include_bytes!("../1px_magenta.png").to_vec(),
+        );
 
         let page =
             String::from("(img \"white.png\")\n(txt \"fugheddaboudit\")\n(img \"magenta.png\")");

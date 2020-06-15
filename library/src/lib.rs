@@ -1,7 +1,8 @@
+use std::io;
 
 pub mod markup;
-pub mod response;
 pub mod request;
+pub mod response;
 
 pub const FROGGI_VERSION: u8 = 0;
 
@@ -42,6 +43,9 @@ pub enum ScanError {
 pub enum ErrorKind {
     EncodingError,
     RequestFormatError,
+    IOError {
+        error: io::Error,
+    },
     ScanError {
         error: ScanError,
         line: usize,
@@ -57,15 +61,19 @@ pub struct FroggiError {
 
 impl FroggiError {
     pub fn new(error: ErrorKind) -> FroggiError {
-        FroggiError {
-            error,
-            msg: None,
-        }
+        FroggiError { error, msg: None }
     }
 
     pub fn scan(error: ScanError, line: usize, file: String) -> FroggiError {
         FroggiError {
             error: ErrorKind::ScanError { error, line, file },
+            msg: None,
+        }
+    }
+
+    pub fn io(error: io::Error) -> FroggiError {
+        FroggiError {
+            error: ErrorKind::IOError { error },
             msg: None,
         }
     }
@@ -106,8 +114,23 @@ impl From<std::str::Utf8Error> for FroggiError {
     fn from(_: std::str::Utf8Error) -> FroggiError {
         FroggiError {
             error: ErrorKind::EncodingError,
-            msg: Some(String::from("could not decode text from utf8")),
+            msg: Some(String::from("could not decode text from utf8 to &str")),
         }
+    }
+}
+
+impl From<std::string::FromUtf8Error> for FroggiError {
+    fn from(_: std::string::FromUtf8Error) -> FroggiError {
+        FroggiError {
+            error: ErrorKind::EncodingError,
+            msg: Some(String::from("could not decode text from utf8 to String")),
+        }
+    }
+}
+
+impl From<io::Error> for FroggiError {
+    fn from(error: io::Error) -> FroggiError {
+        FroggiError::io(error)
     }
 }
 
