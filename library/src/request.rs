@@ -3,20 +3,20 @@ use crate::{FroggiError, ErrorKind, AddMsg, serialize_to_bytes};
 /// Represents a froggi request to a server.
 ///
 /// The first byte is the froggi version number, the next two bytes are the request path length,
-/// and the next bytes are the request path, followed by a <CR><LF>.
+/// and the next bytes are the request path.
 pub struct Request {
     version: u8,
     path: String,
 }
 
 impl Request {
-    pub fn new(path: String) -> Result<Self, FroggiError> {
+    pub fn new(path: impl ToString) -> Result<Self, FroggiError> {
         if path.len() > u16::MAX as usize {
             Err(FroggiError::new(ErrorKind::RequestFormatError).msg_str("The path is too large."))
         } else {
             Ok(Request {
                 version: crate::FROGGI_VERSION,
-                path,
+                path: path.to_string(),
             })
         }
     }
@@ -30,8 +30,6 @@ impl Into<Vec<u8>> for Request {
         v.push(low);
         v.push(high);
         v.extend(self.path.bytes());
-        v.push(b'\r');
-        v.push(b'\n');
         v
     }
 }

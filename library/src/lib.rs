@@ -23,6 +23,10 @@ pub fn serialize_to_four_bytes(bytes: usize) -> [u8; 4] {
     [d, c, b, a]
 }
 
+pub fn deserialize_bytes(low: u8, high: u8) -> usize {
+    ((high as usize) << 8) | (low as usize)
+}
+
 #[derive(Debug)]
 pub enum ScanError {
     UnknownStyle,

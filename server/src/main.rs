@@ -2,13 +2,18 @@ use std::io::{BufRead, BufReader, Read, Write};
 use std::net::{TcpListener, TcpStream};
 
 fn handle_client(mut stream: TcpStream) {
-    let mut buffer = Vec::new();
-    while let Ok(size) = stream.read_to_end(&mut buffer) {
-        if size == 0 {
-            break;
-        }
-    }
-    println!("got {:?}", buffer);
+    let mut request = [0u8; 3];
+    stream.read(&mut request).expect("froggi header");
+
+    let version = request[0];
+    let path_len = froggi::deserialize_bytes(request[1], request[2]);
+
+    let mut path_buf = Vec::with_capacity(path_len);
+    stream.read_to_end(&mut path_buf);
+
+    let path = String::from_utf8(path_buf).unwrap();
+
+    println!("request (version {}): {}", version, path);
     //let mut request = Vec::new();
     //match stream.read_to_end(&mut request) {
     //    Ok(size) => {
