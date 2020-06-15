@@ -8,4 +8,3 @@ edition = "2018"
 
 [dependencies]
 float_eq = "0.3.1"
-image = "0.23.4"

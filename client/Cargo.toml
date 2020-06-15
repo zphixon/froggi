@@ -8,3 +8,4 @@ edition = "2018"
 
 [dependencies]
 froggi = { path = "../library" }
+image = "0.23.4"

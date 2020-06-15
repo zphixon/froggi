@@ -111,7 +111,6 @@ name = "froggi"
 version = "0.1.0"
 dependencies = [
  "float_eq 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "image 0.23.5 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -119,6 +118,7 @@ name = "froggi-client"
 version = "0.1.0"
 dependencies = [
  "froggi 0.1.0",
+ "image 0.23.5 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]

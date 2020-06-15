@@ -12,6 +12,14 @@ impl Item {
     pub fn new(name: String, data: Vec<u8>) -> Item {
         Item { name, data }
     }
+
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    pub fn data(&self) -> &[u8] {
+        &self.data
+    }
 }
 
 #[derive(Debug)]
@@ -110,6 +118,18 @@ impl Response {
             page,
             items,
         })
+    }
+
+    pub fn version(&self) -> u8 {
+        self.version
+    }
+
+    pub fn page(&self) -> &str {
+        &self.page
+    }
+
+    pub fn items(&self) -> &[Item] {
+        &self.items
     }
 }
 
