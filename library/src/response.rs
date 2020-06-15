@@ -21,7 +21,6 @@ pub struct Response {
 
 // response bytes
 // version          : 00
-// response length  : __ __ __ __
 // page             : 1e 00
 //                    28 69 6d 67 20 22 6c 6f 6c 2e 70 6e 67 22 29 20
 //                    28 69 6d 67 20 22 78 64 2e 70 6e 67 22 29
@@ -65,13 +64,6 @@ impl Into<Vec<u8>> for Response {
         // first byte: version number
         data.push(self.version);
 
-        // next bytes: total response length (pre-allocated)
-        data.extend_from_slice(&[0, 0, 0, 0u8]);
-
-        // <CR><LF>
-        data.push(b'\r');
-        data.push(b'\n');
-
         // next two bytes: page length
         let (page_len_low, page_len_high) = crate::serialize_to_bytes(self.page.len());
         data.push(page_len_low);
@@ -102,12 +94,6 @@ impl Into<Vec<u8>> for Response {
 
         assert!(data.len() <= u32::MAX as usize);
 
-        let len = crate::serialize_to_four_bytes(data.len());
-        data[1] = len[0];
-        data[2] = len[1];
-        data[3] = len[2];
-        data[4] = len[3];
-
         data
     }
 }
@@ -128,8 +114,6 @@ mod test {
 
         let data_real = vec![
             0x00, // version
-            0x50, 0x01, 0x00, 0x00, // content len
-            b'\r', b'\n',
             0x3c, 0x00, // page len
             0x28, 0x69, 0x6d, 0x67, 0x20, 0x22, 0x77, 0x68, 0x69, 0x74, 0x65, 0x2e, 0x70, 0x6e,
             0x67, 0x22, 0x29, 0x0a, 0x28, 0x74, 0x78, 0x74, 0x20, 0x22, 0x66, 0x75, 0x67, 0x68,

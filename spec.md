@@ -26,31 +26,28 @@ froggi data is always utf8, aside from bonus items which have no specified encod
 
 ## client
 
-request format:
+request format: (offsets and lengths are in bytes)
 
-|offset||
-|-|-|
-|0|froggi version|
-|1-2|request name length|
-|3+|request|
+|offset|length|purpose|
+|-|-|-|
+|0|1|froggi version|
+|1|2|request length|
+|3|R|request|
 
 ## server
 
-response format:
+response format: (offsets and lengths are in bytes)
 
-|offset||
-|-|-|
-|0|froggi version|
-|1-4|total content length|
-|5-6|page length (PL)|
-|7|carriage return|
-|8|newline|
-|9 + PL|page|
-|PL + 0|number of bonus items|
-|PL + 1-2|length of bonus item name|
-|PL + 3 + BIN|bonus item name (BIN)|
-|PL + BIN + 0-1|bonus item length (BIL)|
-|PL + BIN + BIL|bonus item|
+|offset|length|purpose|
+|-|-|-|
+|0|1|froggi version|
+|1|2|page length|
+|3|P|page|
+|3+P|2|number of bonus items|
+|3+P+2|2|length of bonus item name|
+|3+P+2+2|N|bonus item name|
+|3+P+2+2+N|2|bonus item length|
+|3+P+2+2+N+2|B|bonus item|
 
 ## markup
 
