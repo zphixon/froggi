@@ -252,16 +252,6 @@ mod test {
 
         assert_eq!(data_test.len(), DATA_REAL.len());
 
-        let mut had_error = false;
-        for (i, (byte_test, byte_real)) in data_test.iter().zip(DATA_REAL.iter()).enumerate() {
-            if byte_test != byte_real {
-                eprintln!(
-                    "error in byte {}, test {:x} != real {:x}",
-                    i, byte_test, byte_real
-                );
-                had_error = true;
-            }
-        }
-        assert!(!had_error);
+        crate::test::test_bytes(DATA_REAL, &data_test).unwrap();
     }
 }

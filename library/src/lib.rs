@@ -7,6 +7,10 @@ pub mod response;
 
 pub const FROGGI_VERSION: u8 = 0;
 
+pub fn hello() {
+    println!("ribbit!");
+}
+
 pub fn send_request(to: impl ToSocketAddrs, path: &str) -> Result<response::Response, FroggiError> {
     let mut stream = TcpStream::connect(to)?;
     stream.write_all(&request::Request::new(path)?.into_bytes())?;
@@ -154,6 +158,22 @@ impl From<io::Error> for FroggiError {
     }
 }
 
-pub fn hello() {
-    println!("ribbit!");
+#[cfg(test)]
+mod test {
+    #[derive(Debug)]
+    pub struct TestByteError {
+        pub real: u8,
+        pub test: u8,
+        pub i: usize,
+    }
+
+    pub fn test_bytes(real: &[u8], test: &[u8]) -> Result<(), TestByteError> {
+        for (i, (test, real)) in test.iter().cloned().zip(real.iter().cloned()).enumerate() {
+            if test != real {
+                return Err(TestByteError { real, test, i });
+            }
+        }
+
+        Ok(())
+    }
 }

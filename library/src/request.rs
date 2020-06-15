@@ -65,3 +65,33 @@ impl Into<Vec<u8>> for Request {
         data
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[rustfmt::skip]
+    const REQUEST_BYTES: &[u8] = &[
+        0x00,                                                       // version
+        0x09, 0x00,                                                 // path length
+        0x69, 0x6e, 0x64, 0x65, 0x78, 0x2e, 0x66, 0x6d, 0x6c,       // request path
+    ];
+
+    #[test]
+    fn from_bytes() {
+        let mut bytes = REQUEST_BYTES.clone();
+        let request = Request::from_bytes(&mut bytes).unwrap();
+        assert_eq!(request.version, crate::FROGGI_VERSION);
+        assert_eq!(&request.path, "index.fml");
+    }
+
+    #[test]
+    fn to_bytes() {
+        let request = Request::new("index.fml").unwrap();
+        let data_test = request.into_bytes();
+
+        assert_eq!(data_test.len(), REQUEST_BYTES.len());
+
+        crate::test::test_bytes(REQUEST_BYTES, &data_test).unwrap();
+    }
+}

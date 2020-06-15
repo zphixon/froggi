@@ -5,12 +5,15 @@ use std::io::Cursor;
 
 fn main() {
     froggi::hello();
-    println!("connecting");
-    let result = if std::env::args().collect::<String>().contains("-l") {
-        froggi::send_request("127.0.0.1:11121", "index.fml").unwrap()
+
+    let addr = if std::env::args().collect::<String>().contains("-l") {
+        "127.0.0.1:11121"
     } else {
-        froggi::send_request(include_str!("../server_address").trim(), "index.fml").unwrap()
+        include_str!("../server_address").trim()
     };
+
+    println!("connecting to {}", addr);
+    let result = froggi::send_request(addr, "index.fml").unwrap();
     println!("got {:?}", result);
 
     let reader = Reader::new(Cursor::new(result.items()[0].data()))
