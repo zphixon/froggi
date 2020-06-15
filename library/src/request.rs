@@ -24,11 +24,13 @@ impl Request {
     }
 
     pub fn from_bytes(bytes: &mut impl Read) -> Result<Self, FroggiError> {
-        let mut request = [0u8; 3];
-        bytes.read(&mut request)?;
+        // request header
+        let mut header = [0u8; 3];
+        bytes.read_exact(&mut header)?;
 
-        let version = request[0];
-        let path_len = crate::deserialize_bytes(request[1], request[2]);
+        // consists of version and path length
+        let version = header[0];
+        let path_len = crate::deserialize_bytes(&header[1..]);
 
         // Vec::with_capacity doesn't work here for some reason
         let mut path_buf = vec![0; path_len];

@@ -15,7 +15,7 @@ pub fn send_request(to: impl ToSocketAddrs, path: &str) -> Result<response::Resp
 }
 
 pub fn serialize_to_bytes(bytes: usize) -> (u8, u8) {
-    assert!(bytes <= 25564);
+    assert!(bytes <= u16::MAX as usize);
 
     let high = (bytes >> 8) as u8;
     let low = (bytes & 0xff) as u8;
@@ -24,6 +24,7 @@ pub fn serialize_to_bytes(bytes: usize) -> (u8, u8) {
 }
 
 pub fn serialize_to_four_bytes(bytes: usize) -> [u8; 4] {
+    assert!(bytes <= u32::MAX as usize);
     let a: u8 = ((bytes & 0xff_00_00_00) >> 24) as u8;
     let b: u8 = ((bytes & 0x00_ff_00_00) >> 16) as u8;
     let c: u8 = ((bytes & 0x00_00_ff_00) >> 8) as u8;
@@ -32,8 +33,19 @@ pub fn serialize_to_four_bytes(bytes: usize) -> [u8; 4] {
     [d, c, b, a]
 }
 
-pub fn deserialize_bytes(low: u8, high: u8) -> usize {
+pub fn deserialize_bytes(bytes: &[u8]) -> usize {
+    assert_eq!(bytes.len(), 2);
+    let low = bytes[0];
+    let high = bytes[1];
     ((high as usize) << 8) | (low as usize)
+}
+
+pub fn deserialize_four_bytes(bytes: &[u8]) -> usize {
+    assert_eq!(bytes.len(), 4);
+    ((bytes[3] as usize) << 24)
+        | ((bytes[2] as usize) << 16)
+        | ((bytes[1] as usize) << 8)
+        | (bytes[0] as usize)
 }
 
 #[derive(Debug)]

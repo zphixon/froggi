@@ -40,14 +40,14 @@ response format: (offsets and lengths are in bytes)
 
 |offset|length|purpose|
 |-|-|-|
-|0|1|froggi version|
-|1|2|page length|
-|3|P|page|
-|3+P|2|number of bonus items|
-|3+P+2|2|length of bonus item name|
-|3+P+2+2|N|bonus item name|
-|3+P+2+2+N|2|bonus item length|
-|3+P+2+2+N+2|B|bonus item|
+|0          |1|froggi version|
+|1          |4|page length|
+|5          |P|page|
+|5+P        |2|number of items|
+|5+P+2      |2|length of item name|
+|5+P+2+2    |N|item name|
+|5+P+2+2+N  |4|length of item|
+|5+P+2+2+N+4|B|item|
 
 ## markup
 

@@ -1,3 +1,4 @@
+use std::io::Write;
 use std::net::{TcpListener, TcpStream};
 
 fn handle_client(mut stream: TcpStream) {
@@ -9,6 +10,8 @@ fn handle_client(mut stream: TcpStream) {
         request.path().len(),
         request.path()
     );
+
+    stream.write_all(&froggi::response::DATA_REAL).unwrap();
 }
 
 fn main() {
