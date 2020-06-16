@@ -102,22 +102,21 @@ impl<'a> Scanner<'a> {
                     b'%' => self.fill(),
                     b'*' => self.color(),
 
-                    b'@' | b'^' | b'&' => self
-                        .error(ScanError::UnknownStyle {
-                            style: self.peek() as char
-                        }),
+                    b'@' | b'^' | b'&' => self.error(ScanError::UnknownStyle {
+                        style: self.peek() as char,
+                    }),
 
-                        c if c.is_ascii_lowercase() => {
-                            self.name();
-                            Ok(TokenKind::Builtin)
-                        }
+                    c if c.is_ascii_lowercase() => {
+                        self.name();
+                        Ok(TokenKind::Builtin)
+                    }
                     c if c.is_ascii_uppercase() => {
                         self.name();
                         Ok(TokenKind::User)
                     }
 
                     _ => self.error(ScanError::UnknownItem {
-                        item: String::from(self.lexeme()?)
+                        item: String::from(self.lexeme()?),
                     }),
                 }?,
                 self.line,
@@ -156,10 +155,9 @@ impl<'a> Scanner<'a> {
             if b'a' <= c && c <= b'f' || b'A' <= c && c <= b'F' || b'0' <= c && c <= b'9' {
                 continue;
             } else {
-                return self
-                    .error(ScanError::InvalidColor {
-                        color: String::from(self.lexeme()?),
-                    });
+                return self.error(ScanError::InvalidColor {
+                    color: String::from(self.lexeme()?),
+                });
             }
         }
 
@@ -195,9 +193,7 @@ impl<'a> Scanner<'a> {
         }
 
         if self.at_end() {
-            self.error(ScanError::UnterminatedString {
-                start_line,
-            })
+            self.error(ScanError::UnterminatedString { start_line })
         } else {
             self.advance();
             Ok(TokenKind::Text)

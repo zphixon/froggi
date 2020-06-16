@@ -1,14 +1,18 @@
-use crate::{ParseError, FroggiError};
+use crate::{FroggiError, ParseError};
 
-use super::ast::Item;
 use super::scan::{Scanner, Token, TokenKind};
+use super::Ast;
 
-pub fn parse(data: &str) -> Result<Vec<Item<'_>>, Vec<FroggiError>> {
+pub fn parse(data: &str) -> Result<Vec<Ast>, Vec<FroggiError>> {
     let mut errors = Vec::new();
     let mut items = Vec::new();
 
     let mut scanner = Scanner::new(data);
-    while scanner.current_token().map(|token| token.kind() != TokenKind::End).unwrap_or(true) {
+    while scanner
+        .current_token()
+        .map(|token| token.kind() != TokenKind::End)
+        .unwrap_or(true)
+    {
         scanner.next_token()?;
         //match s_expr(&mut scanner) {
         //    Ok(item) => items.push(item),
@@ -57,10 +61,13 @@ fn consume<'a>(scanner: &mut Scanner<'a>, kind: TokenKind) -> Result<Token<'a>, 
     if token.kind() == kind {
         Ok(token)
     } else {
-        Err(FroggiError::parse(ParseError::UnexpectedToken {
-            expected: kind,
-            got: token.kind(),
-        }, token.line()))
+        Err(FroggiError::parse(
+            ParseError::UnexpectedToken {
+                expected: kind,
+                got: token.kind(),
+            },
+            token.line(),
+        ))
     }
 }
 
@@ -72,7 +79,9 @@ fn balance_parens<'a>(scanner: &mut Scanner<'a>) -> Result<(), FroggiError> {
         match token.kind() {
             TokenKind::LeftParen => current_level += 1,
             TokenKind::RightParen => {
-                if current_level == 0 { break }
+                if current_level == 0 {
+                    break;
+                }
                 current_level -= 1;
             }
             _ => {}

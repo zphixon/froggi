@@ -4,6 +4,7 @@ use std::io::{self, Write};
 use std::net::{TcpStream, ToSocketAddrs};
 use std::str;
 
+pub mod layout;
 pub mod markup;
 pub mod request;
 pub mod response;
@@ -63,41 +64,25 @@ pub fn deserialize_four_bytes(bytes: &[u8]) -> usize {
 /// FML document scan error.
 #[derive(Debug)]
 pub enum ScanError {
-    UnknownStyle {
-        style: char,
-    },
-    UnknownItem {
-        item: String,
-    },
-    UnknownFontStyle {
-        style: String,
-    },
-    InvalidColor {
-        color: String,
-    },
-    UnknownEscapeCode {
-        code: char,
-    },
-    UnterminatedString {
-        start_line: usize,
-    },
+    UnknownStyle { style: char },
+    UnknownItem { item: String },
+    UnknownFontStyle { style: String },
+    InvalidColor { color: String },
+    UnknownEscapeCode { code: char },
+    UnterminatedString { start_line: usize },
 }
 
 impl fmt::Display for ScanError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            ScanError::UnknownStyle { style }
-                => write!(f, "unknown style: {}", style),
-            ScanError::UnknownItem { item }
-                => write!(f, "unknown item: {}", item),
-            ScanError::UnknownFontStyle { style }
-                => write!(f, "unknown font style: {}", style),
-            ScanError::InvalidColor { color }
-                => write!(f, "invalid color format: {}", color),
-            ScanError::UnknownEscapeCode { code }
-                => write!(f, "unknown escape code: {}", code),
-            ScanError::UnterminatedString { start_line }
-                => write!(f, "unterminated string starting on line {}", start_line),
+            ScanError::UnknownStyle { style } => write!(f, "unknown style: {}", style),
+            ScanError::UnknownItem { item } => write!(f, "unknown item: {}", item),
+            ScanError::UnknownFontStyle { style } => write!(f, "unknown font style: {}", style),
+            ScanError::InvalidColor { color } => write!(f, "invalid color format: {}", color),
+            ScanError::UnknownEscapeCode { code } => write!(f, "unknown escape code: {}", code),
+            ScanError::UnterminatedString { start_line } => {
+                write!(f, "unterminated string starting on line {}", start_line)
+            }
         }
     }
 }
@@ -111,7 +96,7 @@ pub enum ParseError {
     UnbalancedParentheses,
     UnknownBuiltin {
         builtin: String,
-    }
+    },
 }
 
 #[rustfmt::skip]

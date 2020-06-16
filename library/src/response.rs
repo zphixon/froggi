@@ -1,4 +1,4 @@
-use crate::markup::ast::Document;
+use crate::layout::Document;
 use crate::FroggiError;
 
 use std::io::Read;

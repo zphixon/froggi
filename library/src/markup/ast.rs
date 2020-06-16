@@ -1,52 +1,13 @@
-use crate::FroggiError;
-
-use super::style::Style;
-
-/// AST node. Used by a client to decide the layout of the page.
-pub enum Item<'a> {
-    Box {
-        style: Option<Style>,
-        children: Vec<Item<'a>>,
-    },
-    HBox {
-        style: Option<Style>,
-        children: Vec<Item<'a>>,
-    },
-    Text {
-        style: Option<Style>,
-        text: &'a str,
-    },
-    Image(&'a str),
-    Empty,
-}
-
-/// A FML document.
-pub struct Document<'a> {
-    pub title: &'a str,
-    pub base_style: Style,
-    pub tree: Vec<Item<'a>>,
-}
-
-impl Document<'_> {
-    pub fn new(data: &str) -> Result<Document<'_>, Vec<FroggiError>> {
-        Ok(Document {
-            title: data,
-            base_style: Style::default(),
-            tree: super::parse::parse(data)?,
-        })
-    }
-}
-
 // #0d162d
 // #b2c6ff
 
 #[cfg(test)]
 mod test {
-    use crate::markup::{
-        ast::{Document, Item},
+    use crate::layout::{
         color::Color,
         font::{FontBuilder, FontStyle, FontType},
         style::{Style, StyleBuilder},
+        Document, LayoutItem,
     };
 
     #[test]
@@ -138,39 +99,39 @@ mod test {
             title: &page_title,
             base_style: base_style.clone(),
             tree: vec![
-                Item::HBox {
+                LayoutItem::HBox {
                     style: None,
                     children: vec![
-                        Item::Text {
+                        LayoutItem::Text {
                             style: Some(Style::header(1)),
                             text: &lorem_ipsum_example,
                         },
-                        Item::Image(&header_jpg),
+                        LayoutItem::Image(&header_jpg),
                     ],
                 },
-                Item::Text {
+                LayoutItem::Text {
                     style: None,
                     text: &lorem_ipsum_dolor,
                 },
-                Item::HBox {
+                LayoutItem::HBox {
                     style: Some(quote_box.clone()),
                     children: vec![
-                        Item::Text {
+                        LayoutItem::Text {
                             style: Some(quote_text.clone()),
                             text: &contrary_to,
                         },
-                        Item::Text {
+                        LayoutItem::Text {
                             style: Some(quote_text.clone()),
                             text: &from_45,
                         },
-                        Item::Box {
+                        LayoutItem::Box {
                             style: Some(quote_box.clone()),
                             children: vec![
-                                Item::Text {
+                                LayoutItem::Text {
                                     style: Some(quote_text.clone()),
                                     text: &looked_up,
                                 },
-                                Item::Text {
+                                LayoutItem::Text {
                                     style: Some(
                                         StyleBuilder::with(footnote.clone()).height(20).build(),
                                     ),
