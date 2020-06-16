@@ -29,36 +29,6 @@ pub struct Response {
     items: Vec<Item>,
 }
 
-// page:
-// (img "lol.png") (img "xd.png")
-
-// response bytes
-// version          : 00
-// page             : 1e 00
-//                    28 69 6d 67 20 22 6c 6f 6c 2e 70 6e 67 22 29 20
-//                    28 69 6d 67 20 22 78 64 2e 70 6e 67 22 29
-// items            : 02 00                                               -- number of items
-//                    07 00 6c 6f 6c 2e 70 6e 67                          -- filename len, filename
-//                    77 00                                               -- file data len
-//                    50 89 47 4e 0a 0d 0a 1a 00 00 0d 00 48 49 52 44     -- file data
-//                    00 00 01 00 00 00 01 00 02 08 00 00 90 00 53 77
-//                    00 de 00 00 73 01 47 52 00 42 ce ae e9 1c 00 00
-//                    04 00 41 67 41 4d 00 00 8f b1 fc 0b 05 61 00 00
-//                    09 00 48 70 73 59 00 00 c3 0e 00 00 c3 0e c7 01
-//                    a8 6f 00 64 00 00 49 0c 41 44 18 54 63 57 ff f8
-//                    3f ff 05 00 02 fe a7 fe 81 35 00 84 00 00 49 00
-//                    4e 45 ae 44 60 42 00 82
-//                    06 00 78 64 2e 70 6e 67                             -- second filename len, filename
-//                    77 00                                               -- second file data len
-//                    50 89 47 4e 0a 0d 0a 1a 00 00 0d 00 48 49 52 44     -- second file data
-//                    00 00 01 01 00 00 01 00 02 08 00 00 90 00 53 77
-//                    00 de 00 00 73 01 47 52 00 42 ce ae e9 1c 00 00
-//                    04 00 41 67 41 4d 00 00 8f b1 fc 0b 05 61 00 00
-//                    09 00 48 70 73 59 00 00 c2 0e 00 00 c2 0e 15 01
-//                    4a 28 00 80 00 00 49 0c 41 44 18 54 63 57 6f f8
-//                    0a fe 04 00 02 59 08 21 4b 92 00 1a 00 00 49 00
-//                    4e 45 ae 44 60 42 00 82
-
 impl Response {
     pub fn new(page: String, items: Vec<Item>) -> Self {
         Self {

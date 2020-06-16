@@ -3,3 +3,4 @@ target/
 client/server_address
 client/server_addresses
 library/*.png
+Session.vim

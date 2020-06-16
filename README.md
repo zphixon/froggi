@@ -8,6 +8,8 @@ by gemini, and conceived due to its unimpressive markup language.
 * network
   * https://doc.rust-lang.org/stable/std/net/index.html
   * https://github.com/sfackler/rust-native-tls
+  * https://github.com/ctz/rustls
+  * https://github.com/tantivy-search/tantivy
 * client graphics
   * https://github.com/unicode-rs/unicode-segmentation
   * https://github.com/servo/unicode-bidi
@@ -15,6 +17,7 @@ by gemini, and conceived due to its unimpressive markup language.
   * https://github.com/redox-os/rusttype
   * https://github.com/servo/pathfinder
   * https://github.com/hecrj/iced
+  * https://github.com/xi-editor/druid
 
 ## markup
 

@@ -12,6 +12,7 @@ pub struct Request {
 }
 
 impl Request {
+    /// Create a new request.
     pub fn new(path: impl ToString) -> Result<Self, FroggiError> {
         let path = path.to_string();
         let version = crate::FROGGI_VERSION;
@@ -23,6 +24,7 @@ impl Request {
         }
     }
 
+    /// Read into a request
     pub fn from_bytes(bytes: &mut impl Read) -> Result<Self, FroggiError> {
         // request header
         let mut header = [0u8; 3];
