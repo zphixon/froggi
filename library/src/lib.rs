@@ -69,13 +69,14 @@ pub enum ScanError {
     InvalidColor,
     UnknownEscapeCode,
     UnterminatedString,
-    Utf8Error,
 }
 
 /// Errors that are possible in the froggi protocol.
 #[derive(Debug)]
 pub enum ErrorKind {
-    EncodingError,
+    EncodingError {
+        error: str::Utf8Error,
+    },
     RequestFormatError,
     IOError {
         error: io::Error,
@@ -85,6 +86,22 @@ pub enum ErrorKind {
         line: usize,
         file: String,
     },
+}
+
+#[rustfmt::skip]
+impl fmt::Display for ErrorKind {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            ErrorKind::EncodingError { error }
+                => write!(f, "{}", error),
+            ErrorKind::RequestFormatError
+                => write!(f, "{:?}", self),
+            ErrorKind::IOError { error }
+                => write!(f, "{}", error),
+            ErrorKind::ScanError { error, line, file }
+                => write!(f, "{:?} on line {} in file {}", error, line, file),
+        }
+    }
 }
 
 #[derive(Debug)]
@@ -129,6 +146,23 @@ impl AddMsg for FroggiError {
     }
 }
 
+impl Error for FroggiError {
+    fn source(&self) -> Option<&(dyn Error + 'static)> {
+        match &self.error {
+            ErrorKind::EncodingError { error } => error.source(),
+            ErrorKind::RequestFormatError => None,
+            ErrorKind::IOError { error } => error.source(),
+            ErrorKind::ScanError { .. } => None,
+        }
+    }
+}
+
+impl fmt::Display for FroggiError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        self.error.fmt(f)
+    }
+}
+
 trait AddMsg {
     fn msg(self, msg: String) -> Self;
     fn msg_str(self, msg: &str) -> Self;
@@ -144,19 +178,21 @@ impl<T> AddMsg for Result<T, FroggiError> {
     }
 }
 
-impl From<std::str::Utf8Error> for FroggiError {
-    fn from(_: std::str::Utf8Error) -> FroggiError {
+impl From<str::Utf8Error> for FroggiError {
+    fn from(error: str::Utf8Error) -> FroggiError {
         FroggiError {
-            error: ErrorKind::EncodingError,
+            error: ErrorKind::EncodingError { error },
             msg: Some(String::from("could not decode text from utf8 to &str")),
         }
     }
 }
 
 impl From<std::string::FromUtf8Error> for FroggiError {
-    fn from(_: std::string::FromUtf8Error) -> FroggiError {
+    fn from(error: std::string::FromUtf8Error) -> FroggiError {
         FroggiError {
-            error: ErrorKind::EncodingError,
+            error: ErrorKind::EncodingError {
+                error: error.utf8_error(),
+            },
             msg: Some(String::from("could not decode text from utf8 to String")),
         }
     }
