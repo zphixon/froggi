@@ -1,4 +1,5 @@
-use super::*;
+use super::color::Color;
+use super::font::{FontBuilder, FontProperties};
 
 /// Style on a FML item.
 #[derive(Clone, Debug)]

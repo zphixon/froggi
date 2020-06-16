@@ -1,6 +1,6 @@
+use std::error::Error;
 use std::fmt;
 use std::io::{self, Write};
-use std::error::Error;
 use std::net::{TcpStream, ToSocketAddrs};
 use std::str;
 

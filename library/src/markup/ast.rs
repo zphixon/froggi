@@ -1,4 +1,4 @@
-use super::*;
+use super::style::Style;
 
 /// AST node. Used by a client to decide the layout of the page.
 pub enum Item<'a> {
@@ -29,7 +29,7 @@ impl Document<'_> {
         Document {
             title: data,
             base_style: Style::default(),
-            tree: parse(data, filename),
+            tree: super::parse::parse(data, filename),
         }
     }
 }
@@ -39,7 +39,12 @@ impl Document<'_> {
 
 #[cfg(test)]
 mod test {
-    use super::*;
+    use crate::markup::{
+        ast::{Document, Item},
+        color::Color,
+        font::{FontBuilder, FontStyle, FontType},
+        style::{Style, StyleBuilder},
+    };
 
     #[test]
     fn color() {
