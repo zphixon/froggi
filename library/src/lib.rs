@@ -74,18 +74,10 @@ pub enum ScanError {
 /// Errors that are possible in the froggi protocol.
 #[derive(Debug)]
 pub enum ErrorKind {
-    EncodingError {
-        error: str::Utf8Error,
-    },
+    EncodingError { error: str::Utf8Error },
     RequestFormatError,
-    IOError {
-        error: io::Error,
-    },
-    ScanError {
-        error: ScanError,
-        line: usize,
-        file: String,
-    },
+    IOError { error: io::Error },
+    ScanError { error: ScanError, line: usize },
 }
 
 #[rustfmt::skip]
@@ -98,8 +90,8 @@ impl fmt::Display for ErrorKind {
                 => write!(f, "{:?}", self),
             ErrorKind::IOError { error }
                 => write!(f, "{}", error),
-            ErrorKind::ScanError { error, line, file }
-                => write!(f, "{:?} on line {} in file {}", error, line, file),
+            ErrorKind::ScanError { error, line }
+                => write!(f, "{:?} on line {}", error, line),
         }
     }
 }
@@ -115,9 +107,9 @@ impl FroggiError {
         FroggiError { error, msg: None }
     }
 
-    pub fn scan(error: ScanError, line: usize, file: String) -> FroggiError {
+    pub fn scan(error: ScanError, line: usize) -> FroggiError {
         FroggiError {
-            error: ErrorKind::ScanError { error, line, file },
+            error: ErrorKind::ScanError { error, line },
             msg: None,
         }
     }

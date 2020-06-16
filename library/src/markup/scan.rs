@@ -1,8 +1,8 @@
 use crate::{AddMsg, FroggiError, ScanError};
 
-pub fn lex(data: &str, filename: String) -> Result<Vec<Token<'_>>, FroggiError> {
+pub fn lex(data: &str) -> Result<Vec<Token<'_>>, FroggiError> {
     let mut tokens = Vec::new();
-    let mut scanner = Scanner::new(data, filename);
+    let mut scanner = Scanner::new(data);
 
     #[allow(irrefutable_let_patterns)]
     while let token = scanner.next_token()? {
@@ -17,7 +17,6 @@ pub fn lex(data: &str, filename: String) -> Result<Vec<Token<'_>>, FroggiError> 
 
 #[derive(Debug)]
 pub struct Scanner<'a> {
-    filename: String,
     start: usize,
     current: usize,
     line: usize,
@@ -56,9 +55,8 @@ impl Token<'_> {
 }
 
 impl<'a> Scanner<'a> {
-    fn new(s: &str, filename: String) -> Scanner<'_> {
+    fn new(s: &str) -> Scanner<'_> {
         Scanner {
-            filename,
             start: 0,
             current: 0,
             line: 1,
@@ -225,6 +223,6 @@ impl<'a> Scanner<'a> {
     }
 
     fn error(&self, error: ScanError) -> Result<TokenKind, FroggiError> {
-        Err(FroggiError::scan(error, self.line, self.filename.clone()))
+        Err(FroggiError::scan(error, self.line))
     }
 }

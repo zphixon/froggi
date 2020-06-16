@@ -1,3 +1,5 @@
+use crate::{AddMsg, FroggiError};
+
 use super::style::Style;
 
 /// AST node. Used by a client to decide the layout of the page.
@@ -25,12 +27,12 @@ pub struct Document<'a> {
 }
 
 impl Document<'_> {
-    pub fn new(data: &str, filename: String) -> Document<'_> {
-        Document {
+    pub fn new(data: &str) -> Result<Document<'_>, FroggiError> {
+        Ok(Document {
             title: data,
             base_style: Style::default(),
-            tree: super::parse::parse(data, filename),
-        }
+            tree: super::parse::parse(data)?,
+        })
     }
 }
 
