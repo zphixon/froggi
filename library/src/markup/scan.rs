@@ -1,4 +1,4 @@
-use crate::{AddMsg, FroggiError, ScanError};
+use crate::{FroggiError, ScanError};
 
 pub fn lex(data: &str) -> Result<Vec<Token<'_>>, FroggiError> {
     let mut tokens = Vec::new();
@@ -20,6 +20,7 @@ pub struct Scanner<'a> {
     start: usize,
     current: usize,
     line: usize,
+    current_token: Option<Token<'a>>,
     source: &'a [u8],
 }
 
@@ -52,25 +53,42 @@ impl Token<'_> {
     fn new(kind: TokenKind, line: usize, lexeme: &str) -> Token<'_> {
         Token { kind, line, lexeme }
     }
+
+    pub fn kind(&self) -> TokenKind {
+        self.kind
+    }
+
+    pub fn line(&self) -> usize {
+        self.line
+    }
+
+    pub fn lexeme(&self) -> &str {
+        self.lexeme
+    }
 }
 
 impl<'a> Scanner<'a> {
-    fn new(s: &str) -> Scanner<'_> {
+    pub fn new(s: &str) -> Scanner<'_> {
         Scanner {
             start: 0,
             current: 0,
             line: 1,
+            current_token: None,
             source: s.as_bytes(),
         }
     }
 
-    fn next_token(&mut self) -> Result<Token<'a>, FroggiError> {
-        if self.at_end() {
-            Ok(Token::new(TokenKind::End, self.line, ""))
+    pub fn current_token(&self) -> Option<Token<'a>> {
+        self.current_token
+    }
+
+    pub fn next_token(&mut self) -> Result<Token<'a>, FroggiError> {
+        let token = if self.at_end() {
+            Token::new(TokenKind::End, self.line, "")
         } else {
             self.slurp_whitespace();
             self.start = self.current;
-            Ok(Token::new(
+            Token::new(
                 match self.advance() {
                     b'\0' => return Ok(Token::new(TokenKind::End, self.line, "")),
 
@@ -85,27 +103,30 @@ impl<'a> Scanner<'a> {
                     b'*' => self.color(),
 
                     b'@' | b'^' | b'&' => self
-                        .error(ScanError::UnknownStyle)
-                        .msg(format!("\"{}\"", self.peek() as char)),
+                        .error(ScanError::UnknownStyle {
+                            style: self.peek() as char
+                        }),
 
-                    c if c.is_ascii_lowercase() => {
-                        self.name();
-                        Ok(TokenKind::Builtin)
-                    }
+                        c if c.is_ascii_lowercase() => {
+                            self.name();
+                            Ok(TokenKind::Builtin)
+                        }
                     c if c.is_ascii_uppercase() => {
                         self.name();
                         Ok(TokenKind::User)
                     }
 
-                    _ => self.error(ScanError::UnknownItem).msg(format!("\"{}\"", {
-                        self.name();
-                        self.lexeme()?
-                    })),
+                    _ => self.error(ScanError::UnknownItem {
+                        item: String::from(self.lexeme()?)
+                    }),
                 }?,
                 self.line,
                 self.lexeme()?,
-            ))
-        }
+            )
+        };
+
+        self.current_token = Some(token);
+        Ok(token)
     }
 
     fn fill(&mut self) -> Result<TokenKind, FroggiError> {
@@ -136,8 +157,9 @@ impl<'a> Scanner<'a> {
                 continue;
             } else {
                 return self
-                    .error(ScanError::InvalidColor)
-                    .msg(format!("\"{}\"", self.lexeme()?));
+                    .error(ScanError::InvalidColor {
+                        color: String::from(self.lexeme()?),
+                    });
             }
         }
 
@@ -155,7 +177,7 @@ impl<'a> Scanner<'a> {
     }
 
     fn text(&mut self) -> Result<TokenKind, FroggiError> {
-        let line_start = self.line;
+        let start_line = self.line;
 
         while !self.at_end() && self.peek() != b'"' {
             if self.peek() == b'\n' {
@@ -164,18 +186,18 @@ impl<'a> Scanner<'a> {
             if self.peek() == b'\\' {
                 self.advance();
                 if self.peek() != b'\"' {
-                    return self.error(ScanError::UnknownEscapeCode).msg(format!(
-                        "\\{} is not a valid escape sequence",
-                        self.peek() as char
-                    ));
+                    return self.error(ScanError::UnknownEscapeCode {
+                        code: self.peek() as char,
+                    });
                 }
             }
             self.advance();
         }
 
         if self.at_end() {
-            self.error(ScanError::UnterminatedString)
-                .msg(format!("starting on line {}", line_start))
+            self.error(ScanError::UnterminatedString {
+                start_line,
+            })
         } else {
             self.advance();
             Ok(TokenKind::Text)

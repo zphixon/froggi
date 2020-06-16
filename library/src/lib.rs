@@ -63,12 +63,69 @@ pub fn deserialize_four_bytes(bytes: &[u8]) -> usize {
 /// FML document scan error.
 #[derive(Debug)]
 pub enum ScanError {
-    UnknownStyle,
-    UnknownItem,
-    UnknownFontStyle,
-    InvalidColor,
-    UnknownEscapeCode,
-    UnterminatedString,
+    UnknownStyle {
+        style: char,
+    },
+    UnknownItem {
+        item: String,
+    },
+    UnknownFontStyle {
+        style: String,
+    },
+    InvalidColor {
+        color: String,
+    },
+    UnknownEscapeCode {
+        code: char,
+    },
+    UnterminatedString {
+        start_line: usize,
+    },
+}
+
+impl fmt::Display for ScanError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            ScanError::UnknownStyle { style }
+                => write!(f, "unknown style: {}", style),
+            ScanError::UnknownItem { item }
+                => write!(f, "unknown item: {}", item),
+            ScanError::UnknownFontStyle { style }
+                => write!(f, "unknown font style: {}", style),
+            ScanError::InvalidColor { color }
+                => write!(f, "invalid color format: {}", color),
+            ScanError::UnknownEscapeCode { code }
+                => write!(f, "unknown escape code: {}", code),
+            ScanError::UnterminatedString { start_line }
+                => write!(f, "unterminated string starting on line {}", start_line),
+        }
+    }
+}
+
+#[derive(Debug)]
+pub enum ParseError {
+    UnexpectedToken {
+        expected: markup::scan::TokenKind,
+        got: markup::scan::TokenKind,
+    },
+    UnbalancedParentheses,
+    UnknownBuiltin {
+        builtin: String,
+    }
+}
+
+#[rustfmt::skip]
+impl fmt::Display for ParseError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            ParseError::UnexpectedToken { expected, got }
+                => write!(f, "unexpected token: expected {:?}, got {:?}", expected, got),
+            ParseError::UnbalancedParentheses
+                => write!(f, "unbalanced parentheses"),
+            ParseError::UnknownBuiltin { builtin }
+                => write!(f, "unknown builtin: {}", builtin),
+        }
+    }
 }
 
 /// Errors that are possible in the froggi protocol.
@@ -78,6 +135,7 @@ pub enum ErrorKind {
     RequestFormatError,
     IOError { error: io::Error },
     ScanError { error: ScanError, line: usize },
+    ParseError { error: ParseError, line: usize },
 }
 
 #[rustfmt::skip]
@@ -91,7 +149,9 @@ impl fmt::Display for ErrorKind {
             ErrorKind::IOError { error }
                 => write!(f, "{}", error),
             ErrorKind::ScanError { error, line }
-                => write!(f, "{:?} on line {}", error, line),
+                => write!(f, "{} on line {}", error, line),
+            ErrorKind::ParseError { error, line }
+                => write!(f, "{} on line {}", error, line)
         }
     }
 }
@@ -120,6 +180,13 @@ impl FroggiError {
             msg: None,
         }
     }
+
+    pub fn parse(error: ParseError, line: usize) -> FroggiError {
+        FroggiError {
+            error: ErrorKind::ParseError { error, line },
+            msg: None,
+        }
+    }
 }
 
 impl AddMsg for FroggiError {
@@ -145,6 +212,7 @@ impl Error for FroggiError {
             ErrorKind::RequestFormatError => None,
             ErrorKind::IOError { error } => error.source(),
             ErrorKind::ScanError { .. } => None,
+            ErrorKind::ParseError { .. } => None,
         }
     }
 }
@@ -167,6 +235,12 @@ impl<T> AddMsg for Result<T, FroggiError> {
 
     fn msg_str(self, msg: &str) -> Self {
         self.map_err(|e| e.msg_str(msg))
+    }
+}
+
+impl From<FroggiError> for Vec<FroggiError> {
+    fn from(error: FroggiError) -> Vec<FroggiError> {
+        vec![error]
     }
 }
 

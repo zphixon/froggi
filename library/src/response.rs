@@ -106,7 +106,7 @@ impl Response {
         &self.items
     }
 
-    pub fn parse_page(&self) -> Result<Document, FroggiError> {
+    pub fn parse_page(&self) -> Result<Document, Vec<FroggiError>> {
         Document::new(&self.page)
     }
 

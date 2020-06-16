@@ -1,4 +1,4 @@
-use crate::{AddMsg, FroggiError};
+use crate::FroggiError;
 
 use super::style::Style;
 
@@ -17,6 +17,7 @@ pub enum Item<'a> {
         text: &'a str,
     },
     Image(&'a str),
+    Empty,
 }
 
 /// A FML document.
@@ -27,7 +28,7 @@ pub struct Document<'a> {
 }
 
 impl Document<'_> {
-    pub fn new(data: &str) -> Result<Document<'_>, FroggiError> {
+    pub fn new(data: &str) -> Result<Document<'_>, Vec<FroggiError>> {
         Ok(Document {
             title: data,
             base_style: Style::default(),
