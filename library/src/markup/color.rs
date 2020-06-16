@@ -1,3 +1,4 @@
+/// HSV color.
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub struct Color {
     hue: u16,
@@ -34,6 +35,7 @@ impl Color {
         }
     }
 
+    /// Create a new HSV color from RGB values. This is a lossy conversion.
     pub fn from_rgb(r: u8, g: u8, b: u8) -> Self {
         use float_eq::float_eq;
 
@@ -74,6 +76,7 @@ impl Color {
         }
     }
 
+    /// Convert the HSV color to RGB. This is a lossy conversion.
     pub fn to_rgb(&self) -> (u8, u8, u8) {
         let h = self.hue as f32;
         let s = self.saturation as f32 / 100.0;

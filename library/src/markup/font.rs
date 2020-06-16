@@ -1,3 +1,4 @@
+/// Style of a font.
 #[derive(PartialEq, Copy, Clone, Debug)]
 pub enum FontStyle {
     Strikethrough,
@@ -6,6 +7,7 @@ pub enum FontStyle {
     Underline,
 }
 
+/// Type of font.
 #[derive(PartialEq, Copy, Clone, Debug)]
 pub enum FontType {
     Monospace,
@@ -13,6 +15,7 @@ pub enum FontType {
     Sans,
 }
 
+/// Properties of a font.
 #[derive(Clone, Debug)]
 pub struct FontProperties {
     font_style: Vec<FontStyle>,
@@ -44,6 +47,7 @@ impl FontProperties {
     }
 }
 
+/// Builder for a style.
 pub struct FontBuilder {
     base: Option<FontProperties>,
     font_style: Vec<FontStyle>,
@@ -52,6 +56,7 @@ pub struct FontBuilder {
 }
 
 impl FontBuilder {
+    /// Create a new font builder.
     pub fn new() -> Self {
         Self {
             base: None,
@@ -61,6 +66,7 @@ impl FontBuilder {
         }
     }
 
+    /// Create a new font builder that copies and overrides properties from a base style.
     pub fn with(base: FontProperties) -> Self {
         Self {
             font_style: base.font_style.clone(),
@@ -69,6 +75,7 @@ impl FontBuilder {
         }
     }
 
+    /// Build the font properties.
     pub fn build(self) -> FontProperties {
         let default = self.base.unwrap_or(FontProperties::default());
         FontProperties {

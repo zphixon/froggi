@@ -1,5 +1,6 @@
 use super::*;
 
+/// AST node. Used by a client to decide the layout of the page.
 pub enum Item<'a> {
     Box {
         style: Option<Style>,
@@ -16,6 +17,7 @@ pub enum Item<'a> {
     Image(&'a str),
 }
 
+/// A FML document.
 pub struct Document<'a> {
     pub title: &'a str,
     pub base_style: Style,

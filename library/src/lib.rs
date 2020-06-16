@@ -1,5 +1,8 @@
+use std::fmt;
 use std::io::{self, Write};
+use std::error::Error;
 use std::net::{TcpStream, ToSocketAddrs};
+use std::str;
 
 pub mod markup;
 pub mod request;
@@ -11,6 +14,7 @@ pub fn hello() {
     println!("ribbit!");
 }
 
+/// Send a froggi request to a server and return its response.
 pub fn send_request(to: impl ToSocketAddrs, path: &str) -> Result<response::Response, FroggiError> {
     let mut stream = TcpStream::connect(to)?;
     stream.write_all(&request::Request::new(path)?.into_bytes())?;
@@ -18,6 +22,7 @@ pub fn send_request(to: impl ToSocketAddrs, path: &str) -> Result<response::Resp
     Ok(response::Response::from_bytes(&mut stream)?)
 }
 
+/// Serialize a usize into a little-endian pair of bytes.
 pub fn serialize_to_bytes(bytes: usize) -> (u8, u8) {
     assert!(bytes <= u16::MAX as usize);
 
@@ -27,6 +32,7 @@ pub fn serialize_to_bytes(bytes: usize) -> (u8, u8) {
     (low, high)
 }
 
+/// Serialize a usize into a little-endian quartet of bytes.
 pub fn serialize_to_four_bytes(bytes: usize) -> [u8; 4] {
     assert!(bytes <= u32::MAX as usize);
     let a: u8 = ((bytes & 0xff_00_00_00) >> 24) as u8;
@@ -37,6 +43,7 @@ pub fn serialize_to_four_bytes(bytes: usize) -> [u8; 4] {
     [d, c, b, a]
 }
 
+/// Deserialize a pair of bytes into a usize.
 pub fn deserialize_bytes(bytes: &[u8]) -> usize {
     assert_eq!(bytes.len(), 2);
     let low = bytes[0];
@@ -44,6 +51,7 @@ pub fn deserialize_bytes(bytes: &[u8]) -> usize {
     ((high as usize) << 8) | (low as usize)
 }
 
+/// Deserialize a quartet of bytes into a usize.
 pub fn deserialize_four_bytes(bytes: &[u8]) -> usize {
     assert_eq!(bytes.len(), 4);
     ((bytes[3] as usize) << 24)
@@ -52,6 +60,7 @@ pub fn deserialize_four_bytes(bytes: &[u8]) -> usize {
         | (bytes[0] as usize)
 }
 
+/// FML document scan error.
 #[derive(Debug)]
 pub enum ScanError {
     UnknownStyle,
@@ -63,6 +72,7 @@ pub enum ScanError {
     Utf8Error,
 }
 
+/// Errors that are possible in the froggi protocol.
 #[derive(Debug)]
 pub enum ErrorKind {
     EncodingError,

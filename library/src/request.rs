@@ -3,9 +3,6 @@ use crate::{serialize_to_bytes, AddMsg, ErrorKind, FroggiError};
 use std::io::Read;
 
 /// Represents a froggi request to a server.
-///
-/// The first byte is the froggi version number, the next two bytes are the request path length,
-/// and the next bytes are the request path.
 pub struct Request {
     version: u8,
     path: String,
@@ -24,7 +21,7 @@ impl Request {
         }
     }
 
-    /// Read into a request
+    /// Read a requets from a source of bytes.
     pub fn from_bytes(bytes: &mut impl Read) -> Result<Self, FroggiError> {
         // request header
         let mut header = [0u8; 3];

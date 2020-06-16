@@ -1,5 +1,6 @@
 use super::*;
 
+/// Style on a FML item.
 #[derive(Clone, Debug)]
 pub struct Style {
     width: Option<u8>,
@@ -22,6 +23,7 @@ impl Default for Style {
 }
 
 impl Style {
+    /// Create a header style.
     pub fn header(num: u8) -> Self {
         let size = match num {
             1 => 48,
@@ -61,6 +63,7 @@ impl Style {
     }
 }
 
+/// Builder for a style.
 pub struct StyleBuilder {
     base: Option<Style>,
     width: Option<u8>,
@@ -71,6 +74,7 @@ pub struct StyleBuilder {
 }
 
 impl StyleBuilder {
+    /// Create a new style builder.
     pub fn new() -> Self {
         Self {
             base: None,
@@ -82,6 +86,7 @@ impl StyleBuilder {
         }
     }
 
+    /// Create a new style builder that copies and overrides properties from a base style.
     pub fn with(base: Style) -> Self {
         Self {
             base: Some(base),
@@ -89,6 +94,7 @@ impl StyleBuilder {
         }
     }
 
+    /// Build the style.
     pub fn build(self) -> Style {
         let default = self.base.unwrap_or(Style::default());
         Style {

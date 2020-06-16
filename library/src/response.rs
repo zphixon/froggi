@@ -22,6 +22,7 @@ impl Item {
     }
 }
 
+/// Represents a response from a froggi server.
 #[derive(Debug)]
 pub struct Response {
     version: u8,
@@ -30,6 +31,7 @@ pub struct Response {
 }
 
 impl Response {
+    /// Create a new response.
     pub fn new(page: String, items: Vec<Item>) -> Self {
         Self {
             version: crate::FROGGI_VERSION,
@@ -38,6 +40,7 @@ impl Response {
         }
     }
 
+    /// Read a response from a source of bytes.
     pub fn from_bytes(bytes: &mut impl Read) -> Result<Self, FroggiError> {
         // response header, 5 bytes long
         let mut header = [0u8; 5];
