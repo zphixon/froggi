@@ -116,14 +116,15 @@ impl<'a> Scanner<'a> {
 
     fn font_choice(&mut self) -> Result<TokenKind, FroggiError> {
         self.name();
-        match &self.lexeme()?[1..] {
-            "serif" | "sans" | "mono" | "italic" | "bold" | "strike" | "underline" => {
-                Ok(TokenKind::FontChoice)
-            }
-            _ => self
-                .error(ScanError::UnknownFontStyle)
-                .msg(format!("\"{}\"", self.lexeme()?)),
-        }
+        Ok(TokenKind::FontChoice)
+        //match &self.lexeme()?[1..] {
+        //    "serif" | "sans" | "mono" | "italic" | "bold" | "strike" | "underline" => {
+        //        Ok(TokenKind::FontChoice)
+        //    }
+        //    _ => self
+        //        .error(ScanError::UnknownFontStyle)
+        //        .msg(format!("\"{}\"", self.lexeme()?)),
+        //}
     }
 
     fn color(&mut self) -> Result<TokenKind, FroggiError> {

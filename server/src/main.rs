@@ -1,3 +1,5 @@
+use froggi::response::{Item, Response};
+
 use std::io::Write;
 use std::net::{TcpListener, TcpStream};
 
@@ -11,7 +13,19 @@ fn handle_client(mut stream: TcpStream) {
         request.path()
     );
 
-    stream.write_all(&froggi::response::DATA_REAL).unwrap();
+    // todo: verify markup is correct
+    // todo: some sort of page and page data cache
+    let page = String::from(include_str!("../pages/index.fml"));
+    let header_img_data = include_bytes!("../pages/header.jpg");
+    let mut header_img = Vec::new();
+    header_img.extend_from_slice(header_img_data);
+
+    let response = Response::new(
+        page,
+        vec![Item::new(String::from("header.jpg"), header_img)],
+    );
+
+    stream.write_all(&response.into_bytes()).unwrap();
 }
 
 fn main() {

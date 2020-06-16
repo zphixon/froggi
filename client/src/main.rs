@@ -16,6 +16,8 @@ fn main() {
     let result = froggi::send_request(addr, "index.fml").unwrap();
     println!("got {:?}", result);
 
+    let _ = result.parse_page().unwrap();
+
     let reader = Reader::new(Cursor::new(result.items()[0].data()))
         .with_guessed_format()
         .expect("cursor never fails");

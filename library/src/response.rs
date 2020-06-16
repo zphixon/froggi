@@ -1,3 +1,4 @@
+use crate::markup::ast::Document;
 use crate::FroggiError;
 
 use std::io::Read;
@@ -103,6 +104,14 @@ impl Response {
 
     pub fn items(&self) -> &[Item] {
         &self.items
+    }
+
+    pub fn parse_page(&self) -> Result<Document, FroggiError> {
+        Document::new(&self.page)
+    }
+
+    pub fn into_bytes(self) -> Vec<u8> {
+        self.into()
     }
 }
 
