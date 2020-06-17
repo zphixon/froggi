@@ -97,6 +97,12 @@ pub enum ParseError {
     UnknownBuiltin {
         builtin: String,
     },
+    ExpectedBuiltin {
+        got: markup::scan::TokenKind,
+    },
+    ExpectedStyle {
+        got: markup::scan::TokenKind,
+    },
 }
 
 #[rustfmt::skip]
@@ -109,6 +115,10 @@ impl fmt::Display for ParseError {
                 => write!(f, "unbalanced parentheses"),
             ParseError::UnknownBuiltin { builtin }
                 => write!(f, "unknown builtin: {}", builtin),
+            ParseError::ExpectedBuiltin { got }
+                => write!(f, "expected builtin, got {:?}", got),
+            ParseError::ExpectedStyle { got }
+                => write!(f, "expected style, got {:?}", got),
         }
     }
 }
@@ -128,15 +138,15 @@ impl fmt::Display for ErrorKind {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             ErrorKind::EncodingError { error }
-                => write!(f, "{}", error),
+                => write!(f, "encoding error - {}", error),
             ErrorKind::RequestFormatError
-                => write!(f, "{:?}", self),
+                => write!(f, "request format error - {:?}", self),
             ErrorKind::IOError { error }
-                => write!(f, "{}", error),
+                => write!(f, "io error - {}", error),
             ErrorKind::ScanError { error, line }
-                => write!(f, "{} on line {}", error, line),
+                => write!(f, "scan error - {} on line {}", error, line),
             ErrorKind::ParseError { error, line }
-                => write!(f, "{} on line {}", error, line)
+                => write!(f, "parse error - {} on line {}", error, line)
         }
     }
 }

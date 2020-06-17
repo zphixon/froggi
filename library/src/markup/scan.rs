@@ -1,5 +1,7 @@
 use crate::{FroggiError, ScanError};
 
+use std::collections::VecDeque;
+
 pub fn lex(data: &str) -> Result<Vec<Token<'_>>, FroggiError> {
     let mut tokens = Vec::new();
     let mut scanner = Scanner::new(data);
@@ -20,7 +22,7 @@ pub struct Scanner<'a> {
     start: usize,
     current: usize,
     line: usize,
-    current_token: Option<Token<'a>>,
+    tokens: VecDeque<Token<'a>>,
     source: &'a [u8],
 }
 
@@ -73,16 +75,32 @@ impl<'a> Scanner<'a> {
             start: 0,
             current: 0,
             line: 1,
-            current_token: None,
+            tokens: VecDeque::with_capacity(2),
             source: s.as_bytes(),
         }
     }
 
-    pub fn current_token(&self) -> Option<Token<'a>> {
-        self.current_token
+    pub fn peek_token(&mut self, idx: usize) -> Result<Token<'a>, FroggiError> {
+        if self.tokens.is_empty() {
+            self.next()?;
+        }
+
+        while self.tokens.len() <= idx {
+            self.next()?;
+        }
+
+        Ok(self.tokens[idx])
     }
 
     pub fn next_token(&mut self) -> Result<Token<'a>, FroggiError> {
+        if self.tokens.is_empty() {
+            self.next()?;
+        }
+
+        Ok(self.tokens.pop_front().unwrap())
+    }
+
+    fn next(&mut self) -> Result<Token<'a>, FroggiError> {
         let token = if self.at_end() {
             Token::new(TokenKind::End, self.line, "")
         } else {
@@ -90,7 +108,10 @@ impl<'a> Scanner<'a> {
             self.start = self.current;
             Token::new(
                 match self.advance() {
-                    b'\0' => return Ok(Token::new(TokenKind::End, self.line, "")),
+                    b'\0' => {
+                        self.tokens.push_back(Token::new(TokenKind::End, self.line, ""));
+                        return Ok(Token::new(TokenKind::End, self.line, ""));
+                    }
 
                     b'"' => self.text(),
                     b'(' => Ok(TokenKind::LeftParen),
@@ -124,7 +145,7 @@ impl<'a> Scanner<'a> {
             )
         };
 
-        self.current_token = Some(token);
+        self.tokens.push_back(token);
         Ok(token)
     }
 

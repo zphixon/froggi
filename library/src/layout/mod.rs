@@ -42,6 +42,6 @@ impl Document<'_> {
 }
 
 fn make_layout(data: &str) -> Result<Vec<LayoutItem<'_>>, Vec<FroggiError>> {
-    let _ = crate::markup::parse::parse(data)?;
-    panic!("wow it worked");
+    let r = crate::markup::parse::parse(data)?;
+    panic!("wow it worked {:#?}", r);
 }
