@@ -9,14 +9,11 @@ pub fn parse(data: &str) -> Result<Vec<AstNode<'_>>, Vec<FroggiError>> {
 
     let mut scanner = Scanner::new(data);
     while scanner.peek_token(0)?.kind() != TokenKind::End {
-        print!("parse {:?} - ", scanner.peek_token(0)?);
         match s_expr(&mut scanner) {
             Ok(item) => {
-                println!("{:?}", item);
                 items.push(item);
             }
             Err(error) => {
-                println!("{:?}", error);
                 errors.push(error);
             }
         }
@@ -64,20 +61,23 @@ fn s_expr<'a>(scanner: &mut Scanner<'a>) -> Result<AstNode<'a>, FroggiError> {
 
 fn parse_text_item<'a, F>(scanner: &mut Scanner<'a>, ctor: F) -> Result<AstNode<'a>, FroggiError>
 where
-    F: Fn(Token<'a>, Vec<Token<'a>>) -> AstNode<'a>
+    F: Fn(Token<'a>, Vec<Token<'a>>) -> AstNode<'a>,
 {
     let styles = parse_styles(scanner)?;
     let text = consume(scanner, TokenKind::Text)?;
     Ok(ctor(text, styles))
 }
 
-fn parse_layout_box_item<'a, F>(scanner: &mut Scanner<'a>, ctor: F) -> Result<AstNode<'a>, FroggiError>
+fn parse_layout_box_item<'a, F>(
+    scanner: &mut Scanner<'a>,
+    ctor: F,
+) -> Result<AstNode<'a>, FroggiError>
 where
-    F: Fn(Vec<AstNode<'a>>, Vec<Token<'a>>) -> AstNode<'a>
+    F: Fn(Vec<AstNode<'a>>, Vec<Token<'a>>) -> AstNode<'a>,
 {
     let styles = parse_styles(scanner)?;
     let mut children = vec![s_expr(scanner)?];
-    if scanner.peek_token(0)?.kind() == TokenKind::LeftParen {
+    while scanner.peek_token(0)?.kind() == TokenKind::LeftParen {
         children.push(s_expr(scanner)?);
     }
     Ok(ctor(children, styles))
@@ -94,7 +94,7 @@ fn parse_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<Token<'a>>, FroggiE
             | TokenKind::FontChoice
             | TokenKind::Fill
             | TokenKind::BackgroundColor => styles.push(token),
-            _ => break
+            _ => break,
         }
         scanner.next_token()?;
     }

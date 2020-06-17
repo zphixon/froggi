@@ -109,7 +109,8 @@ impl<'a> Scanner<'a> {
             Token::new(
                 match self.advance() {
                     b'\0' => {
-                        self.tokens.push_back(Token::new(TokenKind::End, self.line, ""));
+                        self.tokens
+                            .push_back(Token::new(TokenKind::End, self.line, ""));
                         return Ok(Token::new(TokenKind::End, self.line, ""));
                     }
 
