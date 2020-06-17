@@ -151,7 +151,9 @@ impl<'a> Scanner<'a> {
     }
 
     fn fill(&mut self) -> Result<TokenKind, FroggiError> {
-        while !self.at_end() && self.advance().is_ascii_digit() {}
+        while !self.at_end() && self.peek().is_ascii_digit() {
+            self.advance();
+        }
 
         Ok(TokenKind::Fill)
     }
