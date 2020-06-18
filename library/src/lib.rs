@@ -214,7 +214,12 @@ impl Error for FroggiError {
 
 impl fmt::Display for FroggiError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        self.error.fmt(f)
+        write!(
+            f,
+            "{}{}",
+            self.error,
+            self.msg.clone().unwrap_or(String::new())
+        )
     }
 }
 

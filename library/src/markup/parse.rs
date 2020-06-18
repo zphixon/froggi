@@ -1,4 +1,4 @@
-use crate::{FroggiError, ParseError};
+use crate::{AddMsg, FroggiError, ParseError};
 
 use super::scan::{Scanner, Token, TokenKind};
 use super::AstNode;
@@ -27,7 +27,7 @@ pub fn parse(data: &str) -> Result<Vec<AstNode<'_>>, Vec<FroggiError>> {
 }
 
 fn s_expr<'a>(scanner: &mut Scanner<'a>) -> Result<AstNode<'a>, FroggiError> {
-    consume(scanner, TokenKind::LeftParen)?;
+    let left_paren = consume(scanner, TokenKind::LeftParen)?;
     let token = scanner.next_token()?;
     let item = match token.kind() {
         TokenKind::Builtin => {
@@ -55,7 +55,8 @@ fn s_expr<'a>(scanner: &mut Scanner<'a>) -> Result<AstNode<'a>, FroggiError> {
             ));
         }
     };
-    consume(scanner, TokenKind::RightParen)?;
+    consume(scanner, TokenKind::RightParen)
+        .msg(format!("starting on line {}", left_paren.line()))?;
     Ok(item)
 }
 
