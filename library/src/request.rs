@@ -55,12 +55,18 @@ impl Request {
 
 impl Into<Vec<u8>> for Request {
     fn into(self) -> Vec<u8> {
+        // first byte is version
         let mut data = Vec::new();
         data.push(self.version);
+
+        // next two bytes are request path length
         let (low, high) = serialize_to_bytes(self.path.len());
         data.push(low);
         data.push(high);
+
+        // remainder of request is the path
         data.extend(self.path.bytes());
+
         data
     }
 }

@@ -28,6 +28,7 @@ pub fn parse(data: &str) -> Result<Vec<AstNode<'_>>, Vec<FroggiError>> {
 
 fn s_expr<'a>(scanner: &mut Scanner<'a>) -> Result<AstNode<'a>, FroggiError> {
     let left_paren = consume(scanner, TokenKind::LeftParen)?;
+
     let token = scanner.next_token()?;
     let item = match token.kind() {
         TokenKind::Builtin => {
@@ -47,6 +48,7 @@ fn s_expr<'a>(scanner: &mut Scanner<'a>) -> Result<AstNode<'a>, FroggiError> {
                 }
             }
         }
+
         _ => {
             //balance_parens(scanner)?;
             return Err(FroggiError::parse(
@@ -55,6 +57,7 @@ fn s_expr<'a>(scanner: &mut Scanner<'a>) -> Result<AstNode<'a>, FroggiError> {
             ));
         }
     };
+
     consume(scanner, TokenKind::RightParen)
         .msg(format!("starting on line {}", left_paren.line()))?;
     Ok(item)
@@ -77,10 +80,12 @@ where
     F: Fn(Vec<AstNode<'a>>, Vec<Token<'a>>) -> AstNode<'a>,
 {
     let styles = parse_styles(scanner)?;
+
     let mut children = vec![s_expr(scanner)?];
     while scanner.peek_token(0)?.kind() == TokenKind::LeftParen {
         children.push(s_expr(scanner)?);
     }
+
     Ok(ctor(children, styles))
 }
 
