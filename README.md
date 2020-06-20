@@ -3,6 +3,9 @@
 this new protocol aims to be somewhere between gopher and http. somewhat inspired
 by gemini, and conceived due to its unimpressive markup language.
 
+be warned, much of the readme below is subject to change and probably goes out of
+date on every commit.
+
 ## libraries
 
 * network
@@ -18,6 +21,19 @@ by gemini, and conceived due to its unimpressive markup language.
   * https://github.com/servo/pathfinder
   * https://github.com/hecrj/iced
   * https://github.com/xi-editor/druid
+
+## todo
+
+* finish the new markup syntax parser
+  * inline style attributes that take arguments e.g. `{(fg 303030)}`
+  * document the new markup syntax
+* write a markup validator
+  * checks your pages for any broken links or object references
+* server app
+  * TLS by default
+* client app
+  * translate markup ast into layout tree
+  * basically everything lol
 
 ## markup
 
