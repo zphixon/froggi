@@ -1,29 +1,118 @@
 use crate::{AddMsg, FroggiError, ParseError};
 
 use super::scan::{Scanner, Token, TokenKind};
-use super::{InlineStyle, ItemPayload, PageItem};
+use super::{InlineStyle, ItemPayload, Page, PageItem, PageStyle, PageStyleSelector};
 
-pub fn parse(data: &str) -> Result<Vec<PageItem<'_>>, Vec<FroggiError>> {
+/// Parse some data into a Page.
+pub fn parse(data: &str) -> Result<Page<'_>, Vec<FroggiError>> {
     let mut errors = Vec::new();
     let mut items = Vec::new();
+    let mut page_styles = Vec::new();
 
     let mut scanner = Scanner::new(data);
     while scanner.peek_token(0)?.kind() != TokenKind::End {
-        match parse_item(&mut scanner) {
-            Ok(item) => {
-                items.push(item);
-            }
-            Err(error) => {
-                errors.push(error);
-            }
+        match scanner.peek_token(0)?.kind() {
+            // there should only be a single page-level style element
+            TokenKind::LeftBrace if page_styles.is_empty() => match parse_page_styles(&mut scanner)
+            {
+                Ok(styles) => page_styles = styles,
+                Err(error) => errors.push(error),
+            },
+
+            TokenKind::LeftParen => match parse_item(&mut scanner) {
+                Ok(item) => {
+                    items.push(item);
+                }
+                Err(error) => {
+                    errors.push(error);
+                }
+            },
+
+            _ => errors.push(FroggiError::parse(
+                ParseError::ExpectedItem {
+                    got: scanner.peek_token(0)?.clone_lexeme(),
+                },
+                scanner.peek_token(0)?.line(),
+            )),
         }
     }
 
     if errors.is_empty() {
-        Ok(items)
+        Ok(Page { page_styles, items })
     } else {
         Err(errors)
     }
+}
+
+// consume top-level page style
+fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<PageStyle<'a>>, FroggiError> {
+    // parse outer list of rules
+    let left_brace = consume(scanner, TokenKind::LeftBrace)?;
+
+    let mut page_styles = Vec::new();
+
+    while scanner.peek_token(0)?.kind() != TokenKind::RightBrace {
+        // parse one single rule
+        consume(scanner, TokenKind::LeftParen)?;
+
+        // name of the rule
+        let token = scanner.next_token()?;
+        let selector = match token.kind() {
+            TokenKind::Colon => PageStyleSelector::Builtin {
+                name: consume(scanner, TokenKind::Identifier)?,
+            },
+
+            TokenKind::Identifier => PageStyleSelector::UserDefined { name: token },
+
+            _ => {
+                return Err(FroggiError::parse(
+                    ParseError::UnexpectedToken {
+                        expected: TokenKind::Identifier,
+                        got: token.clone_lexeme(),
+                    },
+                    token.line(),
+                ))
+            }
+        };
+
+        // styles that belong to the rule
+        let mut styles = Vec::new();
+        while scanner.peek_token(0)?.kind() != TokenKind::RightParen {
+            let token = scanner.next_token()?;
+            match token.kind() {
+                TokenKind::Identifier => {
+                    styles.push(InlineStyle::NoArgs { name: token });
+                }
+
+                TokenKind::LeftParen => {
+                    styles.push(InlineStyle::Arg {
+                        name: consume(scanner, TokenKind::Identifier)?,
+                        arg: consume(scanner, TokenKind::Text)?,
+                    });
+                    consume(scanner, TokenKind::RightParen)?;
+                }
+
+                _ => {
+                    return Err(FroggiError::parse(
+                        ParseError::ExpectedStyle {
+                            got: token.clone_lexeme(),
+                        },
+                        token.line(),
+                    ))
+                }
+            }
+        }
+
+        page_styles.push(PageStyle { selector, styles });
+        consume(scanner, TokenKind::RightParen)?;
+    }
+
+    consume(scanner, TokenKind::RightBrace).msg(format!(
+        "unbalanced braces starting on line {}",
+        left_brace.line()
+    ))?;
+
+    Ok(page_styles)
 }
 
 // parse some normal page item
@@ -87,7 +176,9 @@ fn parse_inline_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<InlineStyle<
 
                 _ => {
                     return Err(FroggiError::parse(
-                        ParseError::ExpectedStyle { got: token.kind() },
+                        ParseError::ExpectedStyle {
+                            got: token.clone_lexeme(),
+                        },
                         token.line(),
                     ))
                 }
@@ -120,7 +211,7 @@ fn parse_payload<'a>(scanner: &mut Scanner<'a>) -> Result<ItemPayload<'a>, Frogg
         Err(FroggiError::parse(
             ParseError::UnexpectedToken {
                 expected: TokenKind::Text,
-                got: scanner.peek_token(0)?.kind(),
+                got: scanner.peek_token(0)?.clone_lexeme(),
             },
             scanner.peek_token(0)?.line(),
         ))
@@ -136,7 +227,7 @@ fn consume<'a>(scanner: &mut Scanner<'a>, kind: TokenKind) -> Result<Token<'a>, 
         Err(FroggiError::parse(
             ParseError::UnexpectedToken {
                 expected: kind,
-                got: token.kind(),
+                got: token.clone_lexeme(),
             },
             token.line(),
         ))

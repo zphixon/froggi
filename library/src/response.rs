@@ -3,10 +3,15 @@ use crate::FroggiError;
 
 use std::io::Read;
 
-#[derive(Debug)]
 pub struct Item {
     name: String,
     data: Vec<u8>,
+}
+
+impl std::fmt::Debug for Item {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "Item {{ name: {}, data: ... }}", self.name)
+    }
 }
 
 impl Item {

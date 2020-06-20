@@ -88,22 +88,16 @@ impl fmt::Display for ScanError {
     }
 }
 
+use markup::scan::TokenKind;
+
 #[derive(Debug)]
 pub enum ParseError {
-    UnexpectedToken {
-        expected: markup::scan::TokenKind,
-        got: markup::scan::TokenKind,
-    },
+    UnexpectedToken { expected: TokenKind, got: String },
     UnbalancedParentheses,
-    UnknownBuiltin {
-        builtin: String,
-    },
-    ExpectedBuiltin {
-        got: markup::scan::TokenKind,
-    },
-    ExpectedStyle {
-        got: markup::scan::TokenKind,
-    },
+    UnknownBuiltin { builtin: String },
+    ExpectedBuiltin { got: String },
+    ExpectedStyle { got: String },
+    ExpectedItem { got: String },
 }
 
 #[rustfmt::skip]
@@ -111,7 +105,7 @@ impl fmt::Display for ParseError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             ParseError::UnexpectedToken { expected, got }
-                => write!(f, "unexpected token: expected {:?}, got {:?}", expected, got),
+                => write!(f, "unexpected token: expected {:?}, got {}", expected, got),
             ParseError::UnbalancedParentheses
                 => write!(f, "unbalanced parentheses"),
             ParseError::UnknownBuiltin { builtin }
@@ -120,6 +114,8 @@ impl fmt::Display for ParseError {
                 => write!(f, "expected builtin, got {:?}", got),
             ParseError::ExpectedStyle { got }
                 => write!(f, "expected style, got {:?}", got),
+            ParseError::ExpectedItem { got }
+                => write!(f, "expected item or page style, got {:?}", got),
         }
     }
 }
@@ -145,9 +141,9 @@ impl fmt::Display for ErrorKind {
             ErrorKind::IOError { error }
                 => write!(f, "io error - {}", error),
             ErrorKind::ScanError { error, line }
-                => write!(f, "scan error - {} on line {}", error, line),
+                => write!(f, "scan error on line {} - {}", line, error),
             ErrorKind::ParseError { error, line }
-                => write!(f, "parse error - {} on line {}", error, line)
+                => write!(f, "parse error on line {} - {}", line, error)
         }
     }
 }
@@ -186,18 +182,19 @@ impl FroggiError {
 }
 
 impl AddMsg for FroggiError {
-    fn msg(self, msg: String) -> FroggiError {
-        FroggiError {
-            msg: Some(msg),
-            ..self
+    fn msg(mut self, msg: String) -> FroggiError {
+        match self.msg {
+            Some(ref mut message) => {
+                message.push_str(&format!(", {}", msg));
+            }
+            None => self.msg = Some(msg),
         }
+
+        FroggiError { ..self }
     }
 
     fn msg_str(self, msg: &str) -> FroggiError {
-        FroggiError {
-            msg: Some(msg.to_owned()),
-            ..self
-        }
+        self.msg(String::from(msg))
     }
 }
 
@@ -217,10 +214,11 @@ impl fmt::Display for FroggiError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
-            "{}{}{}",
+            "{}{}{}{}",
             self.error,
-            if self.msg.is_some() { " " } else { "" },
+            if self.msg.is_some() { " (" } else { "" },
             self.msg.clone().unwrap_or(String::new()),
+            if self.msg.is_some() { ")" } else { "" },
         )
     }
 }
