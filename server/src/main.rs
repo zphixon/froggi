@@ -15,7 +15,7 @@ fn handle_client(mut stream: TcpStream) {
 
     // todo: verify markup is correct
     // todo: some sort of page and page data cache
-    let page = String::from(include_str!("../pages/index.fml"));
+    let page = String::from(include_str!("../pages/test_markup.fml"));
     let header_img_data = include_bytes!("../pages/header.jpg");
     let mut header_img = Vec::new();
     header_img.extend_from_slice(header_img_data);

@@ -17,6 +17,17 @@ pub fn lex(data: &str) -> Result<Vec<Token<'_>>, FroggiError> {
     Ok(tokens)
 }
 
+fn is_control_character(c: u8) -> bool {
+    c == b'{'
+        || c == b'}'
+        || c == b'('
+        || c == b')'
+        || c == b':'
+        || c == b'&'
+        || c.is_ascii_control()
+        || c.is_ascii_whitespace()
+}
+
 #[derive(Debug)]
 pub struct Scanner<'a> {
     start: usize,
@@ -31,16 +42,11 @@ pub enum TokenKind {
     Text,
     LeftParen,
     RightParen,
-    Builtin,         // txt
-    User,            // QuoteBox
-    Not,             // !
-    _At,             // @
-    ForegroundColor, // #
-    FontChoice,      // $
-    Fill,            // %
-    _Caret,          // ^
-    _Ampersand,      // &
-    BackgroundColor, // *
+    LeftBrace,
+    RightBrace,
+    Colon,
+    Ampersand,
+    Identifier,
     End,
 }
 
@@ -117,29 +123,13 @@ impl<'a> Scanner<'a> {
                     b'"' => self.text(),
                     b'(' => Ok(TokenKind::LeftParen),
                     b')' => Ok(TokenKind::RightParen),
+                    b'{' => Ok(TokenKind::LeftBrace),
+                    b'}' => Ok(TokenKind::RightBrace),
 
-                    b'!' => Ok(TokenKind::Not),
-                    b'#' => self.color(),
-                    b'$' => self.font_choice(),
-                    b'%' => self.fill(),
-                    b'*' => self.color(),
+                    b'&' => Ok(TokenKind::Ampersand),
+                    b':' => Ok(TokenKind::Colon),
 
-                    b'@' | b'^' | b'&' => self.error(ScanError::UnknownStyle {
-                        style: self.peek() as char,
-                    }),
-
-                    c if c.is_ascii_lowercase() => {
-                        self.name();
-                        Ok(TokenKind::Builtin)
-                    }
-                    c if c.is_ascii_uppercase() => {
-                        self.name();
-                        Ok(TokenKind::User)
-                    }
-
-                    _ => self.error(ScanError::UnknownItem {
-                        item: String::from(self.lexeme()?),
-                    }),
+                    _ => self.identifier(),
                 }?,
                 self.line,
                 self.lexeme()?,
@@ -150,52 +140,11 @@ impl<'a> Scanner<'a> {
         Ok(token)
     }
 
-    fn fill(&mut self) -> Result<TokenKind, FroggiError> {
-        while !self.at_end() && self.peek().is_ascii_digit() {
+    fn identifier(&mut self) -> Result<TokenKind, FroggiError> {
+        while !is_control_character(self.peek()) {
             self.advance();
         }
-
-        Ok(TokenKind::Fill)
-    }
-
-    fn font_choice(&mut self) -> Result<TokenKind, FroggiError> {
-        self.name();
-        Ok(TokenKind::FontChoice)
-        //match &self.lexeme()?[1..] {
-        //    "serif" | "sans" | "mono" | "italic" | "bold" | "strike" | "underline" => {
-        //        Ok(TokenKind::FontChoice)
-        //    }
-        //    _ => self
-        //        .error(ScanError::UnknownFontStyle)
-        //        .msg(format!("\"{}\"", self.lexeme()?)),
-        //}
-    }
-
-    fn color(&mut self) -> Result<TokenKind, FroggiError> {
-        let color_type = self.peek_back(1);
-        for _ in 1..=6 {
-            let c = self.advance();
-
-            if b'a' <= c && c <= b'f' || b'A' <= c && c <= b'F' || b'0' <= c && c <= b'9' {
-                continue;
-            } else {
-                return self.error(ScanError::InvalidColor {
-                    color: String::from(self.lexeme()?),
-                });
-            }
-        }
-
-        Ok(match color_type {
-            b'#' => TokenKind::ForegroundColor,
-            b'*' => TokenKind::BackgroundColor,
-            _ => unreachable!(),
-        })
-    }
-
-    fn name(&mut self) {
-        while self.peek().is_ascii_alphanumeric() {
-            self.advance();
-        }
+        Ok(TokenKind::Identifier)
     }
 
     fn text(&mut self) -> Result<TokenKind, FroggiError> {
@@ -267,5 +216,19 @@ impl<'a> Scanner<'a> {
 
     fn error(&self, error: ScanError) -> Result<TokenKind, FroggiError> {
         Err(FroggiError::scan(error, self.line))
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn next_then_peek() {
+        let mut s = Scanner::new("({:&name\"text\"})");
+        assert_eq!(s.peek_token(0).unwrap().kind(), TokenKind::LeftParen);
+        assert_eq!(s.next_token().unwrap().kind(), TokenKind::LeftParen);
+        assert_eq!(s.peek_token(0).unwrap().kind(), TokenKind::LeftBrace);
+        assert_eq!(s.next_token().unwrap().kind(), TokenKind::LeftBrace);
     }
 }

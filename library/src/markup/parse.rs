@@ -1,15 +1,15 @@
 use crate::{AddMsg, FroggiError, ParseError};
 
 use super::scan::{Scanner, Token, TokenKind};
-use super::AstNode;
+use super::{InlineStyle, ItemPayload, PageItem};
 
-pub fn parse(data: &str) -> Result<Vec<AstNode<'_>>, Vec<FroggiError>> {
+pub fn parse(data: &str) -> Result<Vec<PageItem<'_>>, Vec<FroggiError>> {
     let mut errors = Vec::new();
     let mut items = Vec::new();
 
     let mut scanner = Scanner::new(data);
     while scanner.peek_token(0)?.kind() != TokenKind::End {
-        match s_expr(&mut scanner) {
+        match parse_item(&mut scanner) {
             Ok(item) => {
                 items.push(item);
             }
@@ -26,86 +26,89 @@ pub fn parse(data: &str) -> Result<Vec<AstNode<'_>>, Vec<FroggiError>> {
     }
 }
 
-fn s_expr<'a>(scanner: &mut Scanner<'a>) -> Result<AstNode<'a>, FroggiError> {
+// parse some normal page item
+fn parse_item<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
     let left_paren = consume(scanner, TokenKind::LeftParen)?;
 
-    let token = scanner.next_token()?;
-    let item = match token.kind() {
-        TokenKind::Builtin => {
-            match token.lexeme() {
-                "txt" => parse_text_item(scanner, AstNode::text)?,
-                "box" => parse_layout_box_item(scanner, AstNode::box_)?,
-                "hbox" => parse_layout_box_item(scanner, AstNode::hbox)?,
-                "img" => parse_text_item(scanner, AstNode::image)?,
-                "page" => AstNode::empty(), // skip for now
+    let mut builtin = None;
+    let mut defined_styles = Vec::new();
+    let mut inline_styles = Vec::new();
+
+    // built-in page items
+    if scanner.peek_token(0)?.kind() == TokenKind::Colon {
+        consume(scanner, TokenKind::Colon)?;
+        builtin = Some(consume(scanner, TokenKind::Identifier)?);
+    }
+
+    // user-defined style items
+    while scanner.peek_token(0)?.kind() == TokenKind::Identifier {
+        defined_styles.push(consume(scanner, TokenKind::Identifier)?);
+    }
+
+    // inline styles
+    if scanner.peek_token(0)?.kind() == TokenKind::LeftBrace {
+        consume(scanner, TokenKind::LeftBrace)?;
+        while scanner.peek_token(0)?.kind() != TokenKind::RightBrace {
+            let token = scanner.next_token()?;
+            match token.kind() {
+                TokenKind::Identifier => {
+                    inline_styles.push(InlineStyle::NoArgs { name: token });
+                }
+
+                TokenKind::LeftParen => {
+                    todo!();
+                }
+
                 _ => {
                     return Err(FroggiError::parse(
-                        ParseError::UnknownBuiltin {
-                            builtin: String::from(token.lexeme()),
-                        },
+                        ParseError::ExpectedStyle { got: token.kind() },
                         token.line(),
                     ))
                 }
             }
         }
+        consume(scanner, TokenKind::RightBrace)?;
+    }
 
-        _ => {
-            //balance_parens(scanner)?;
-            return Err(FroggiError::parse(
-                ParseError::ExpectedBuiltin { got: token.kind() },
-                token.line(),
-            ));
+    // payload
+    let payload = if scanner.peek_token(0)?.kind() == TokenKind::Text {
+        ItemPayload::Text {
+            text: {
+                let mut text = Vec::new();
+                while scanner.peek_token(0)?.kind() != TokenKind::RightParen {
+                    text.push(consume(scanner, TokenKind::Text)?);
+                }
+                text
+            },
         }
+    } else if scanner.peek_token(0)?.kind() == TokenKind::LeftParen {
+        // parse_item takes care of the left and right parens
+        let mut children = Vec::new();
+        while scanner.peek_token(0)?.kind() != TokenKind::RightParen {
+            children.push(parse_item(scanner)?);
+        }
+        ItemPayload::Children { children }
+    } else {
+        return Err(FroggiError::parse(
+            ParseError::UnexpectedToken {
+                expected: TokenKind::Text,
+                got: scanner.peek_token(0)?.kind(),
+            },
+            scanner.peek_token(0)?.line(),
+        ));
     };
 
-    consume(scanner, TokenKind::RightParen)
-        .msg(format!("starting on line {}", left_paren.line()))?;
-    Ok(item)
-}
+    consume(scanner, TokenKind::RightParen).msg(format!(
+        "unbalanced parens starting on line {}",
+        left_paren.line()
+    ))?;
 
-fn parse_text_item<'a, F>(scanner: &mut Scanner<'a>, ctor: F) -> Result<AstNode<'a>, FroggiError>
-where
-    F: Fn(Token<'a>, Vec<Token<'a>>) -> AstNode<'a>,
-{
-    let styles = parse_styles(scanner)?;
-    let text = consume(scanner, TokenKind::Text)?;
-    Ok(ctor(text, styles))
-}
-
-fn parse_layout_box_item<'a, F>(
-    scanner: &mut Scanner<'a>,
-    ctor: F,
-) -> Result<AstNode<'a>, FroggiError>
-where
-    F: Fn(Vec<AstNode<'a>>, Vec<Token<'a>>) -> AstNode<'a>,
-{
-    let styles = parse_styles(scanner)?;
-
-    let mut children = vec![s_expr(scanner)?];
-    while scanner.peek_token(0)?.kind() == TokenKind::LeftParen {
-        children.push(s_expr(scanner)?);
-    }
-
-    Ok(ctor(children, styles))
-}
-
-fn parse_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<Token<'a>>, FroggiError> {
-    let mut styles = vec![];
-    loop {
-        let token = scanner.peek_token(0)?;
-        match token.kind() {
-            // negation?
-            TokenKind::User
-            | TokenKind::ForegroundColor
-            | TokenKind::FontChoice
-            | TokenKind::Fill
-            | TokenKind::BackgroundColor => styles.push(token),
-            _ => break,
-        }
-        scanner.next_token()?;
-    }
-
-    Ok(styles)
+    Ok(PageItem {
+        builtin,
+        defined_styles,
+        inline_styles,
+        payload,
+    })
 }
 
 fn consume<'a>(scanner: &mut Scanner<'a>, kind: TokenKind) -> Result<Token<'a>, FroggiError> {
@@ -130,5 +133,15 @@ mod test {
     fn sample() {
         let sample = include_str!("../../../server/pages/index.fml");
         super::super::scan::lex(sample).unwrap();
+    }
+
+    #[test]
+    fn random_markup() {
+        // currently invalid, but it will parse correctly
+        let markup = r#"(hbox %328 (hbox $serif (hbox (box *ab0cad (hbox (box (hbox
+            (hbox (box (hbox SomeThing (txt "Some text here, dope")))))
+            ))))))"#;
+
+        super::parse(markup).unwrap();
     }
 }

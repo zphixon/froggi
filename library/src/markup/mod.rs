@@ -1,57 +1,25 @@
 pub mod ast;
 pub mod parse;
 pub mod scan;
-
 use scan::Token;
 
 #[derive(Debug)]
-pub struct AstNode<'a> {
-    kind: AstKind<'a>,
-    styles: Vec<Token<'a>>,
-}
-
-impl AstNode<'_> {
-    fn text<'a>(text: Token<'a>, styles: Vec<Token<'a>>) -> AstNode<'a> {
-        AstNode {
-            kind: AstKind::Text { text },
-            styles,
-        }
-    }
-
-    fn box_<'a>(children: Vec<AstNode<'a>>, styles: Vec<Token<'a>>) -> AstNode<'a> {
-        AstNode {
-            kind: AstKind::Box { children },
-            styles,
-        }
-    }
-
-    fn hbox<'a>(children: Vec<AstNode<'a>>, styles: Vec<Token<'a>>) -> AstNode<'a> {
-        AstNode {
-            kind: AstKind::HBox { children },
-            styles,
-        }
-    }
-
-    fn image<'a>(filename: Token<'a>, styles: Vec<Token<'a>>) -> AstNode<'a> {
-        AstNode {
-            kind: AstKind::Image { filename },
-            styles,
-        }
-    }
-
-    fn empty<'a>() -> AstNode<'a> {
-        AstNode {
-            kind: AstKind::Empty,
-            styles: Vec::with_capacity(0),
-        }
-    }
+pub struct PageItem<'a> {
+    // a None value implies a :text item
+    pub builtin: Option<Token<'a>>,
+    pub defined_styles: Vec<Token<'a>>,
+    pub inline_styles: Vec<InlineStyle<'a>>,
+    pub payload: ItemPayload<'a>,
 }
 
 #[derive(Debug)]
-pub enum AstKind<'a> {
-    Text { text: Token<'a> },
-    Box { children: Vec<AstNode<'a>> },
-    HBox { children: Vec<AstNode<'a>> },
-    Image { filename: Token<'a> },
-    Empty,
+pub enum ItemPayload<'a> {
+    Text { text: Vec<Token<'a>> },
+    Children { children: Vec<PageItem<'a>> },
+}
+
+#[derive(Debug)]
+pub enum InlineStyle<'a> {
+    NoArgs { name: Token<'a> },
+    Arg { name: Token<'a>, arg: Token<'a> },
 }
