@@ -206,10 +206,6 @@ impl<'a> Scanner<'a> {
         }
     }
 
-    fn peek_back(&self, offset: usize) -> u8 {
-        self.source[self.current - offset]
-    }
-
     fn lexeme(&self) -> Result<&'a str, FroggiError> {
         Ok(std::str::from_utf8(&self.source[self.start..self.current])?)
     }

@@ -56,7 +56,11 @@ fn parse_item<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
                 }
 
                 TokenKind::LeftParen => {
-                    todo!();
+                    inline_styles.push(InlineStyle::Arg {
+                        name: consume(scanner, TokenKind::Identifier)?,
+                        arg: consume(scanner, TokenKind::Text)?,
+                    });
+                    consume(scanner, TokenKind::RightParen)?;
                 }
 
                 _ => {
@@ -129,10 +133,12 @@ fn consume<'a>(scanner: &mut Scanner<'a>, kind: TokenKind) -> Result<Token<'a>, 
 
 #[cfg(test)]
 mod test {
+    use super::*;
+
     #[test]
     fn sample() {
         let sample = include_str!("../../../server/pages/index.fml");
-        super::super::scan::lex(sample).unwrap();
+        crate::markup::scan::lex(sample).unwrap();
     }
 
     #[test]
@@ -142,6 +148,12 @@ mod test {
             (hbox (box (hbox SomeThing (txt "Some text here, dope")))))
             ))))))"#;
 
-        super::parse(markup).unwrap();
+        parse(markup).unwrap();
+    }
+
+    #[test]
+    fn test_markup() {
+        let sample = include_str!("../../../server/pages/test_markup.fml");
+        parse(sample).unwrap();
     }
 }

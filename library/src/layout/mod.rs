@@ -12,7 +12,7 @@ pub enum LayoutItem<'a> {
         style: Option<Style>,
         children: Vec<LayoutItem<'a>>,
     },
-    HBox {
+    VBox {
         style: Option<Style>,
         children: Vec<LayoutItem<'a>>,
     },

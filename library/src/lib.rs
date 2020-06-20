@@ -36,6 +36,7 @@ pub fn serialize_to_bytes(bytes: usize) -> (u8, u8) {
 /// Serialize a usize into a little-endian quartet of bytes.
 pub fn serialize_to_four_bytes(bytes: usize) -> [u8; 4] {
     assert!(bytes <= u32::MAX as usize);
+
     let a: u8 = ((bytes & 0xff_00_00_00) >> 24) as u8;
     let b: u8 = ((bytes & 0x00_ff_00_00) >> 16) as u8;
     let c: u8 = ((bytes & 0x00_00_ff_00) >> 8) as u8;
