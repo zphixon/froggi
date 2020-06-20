@@ -3,14 +3,14 @@
 ;     (:builtin-item user-item (* builtin-styles) (some) (children))
 ; every page item must have at least one "attribute," but they are all optional.
 
-; special built-in page item is the style item: (* ...)
+; special built-in page item is the style item: {...}
 ; takes a list of (item styles...) to apply to items in the page.
-;{(*page-title "Page title")
-; (:text serif (fg "303030"))
-; (quote-box (bg fff8dc))
-; (quote-text sans (fg "606060"))
-; (footnote (fg "757575") sans italic)}
+{(:text serif (fg "303030"))
+ (quote-box (bg "fff8dc"))
+ (quote-text sans (fg "606060"))
+ (footnote (fg "757575") sans italic)}
 
+; TODO
 ; special built-in page item is the binary reference: (& "name"),
 ; which refers to object "name" at the end of the server's response.
 ;(:box ("Lorem ipsum example") (& "header.jpg"))
@@ -20,25 +20,13 @@
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
 
-(:box
-  ("text")
-  (:text "childrens")
-  (
-   {
-   fucker
-   palace
-   }
-   "required"
-   )
-  )
-
 ; items in a :box will be added to the page horizontally rather than vertically.
-;(:box quote-box
-; (quote-text "Contrary to popular belief, Lorem Ipsum is not simply"
-;  " random text. It has roots in a piece of classical Latin literature")
-; (quote-text "from 45 BC, making it over 2000 years old. Richard"
-;  " McClintock, a Latin professor at Hampden-Sydney College in")
-; ; items in a :vbox will be added to the page vertically.
-; (:vbox
-;  (quote-text "Virginia, looked up one of the more obscure Latin")
-;  (:text footnote {(fill "20")} "from https://www.lipsum.com/")))
+(:box quote-box
+ (quote-text "Contrary to popular belief, Lorem Ipsum is not simply"
+  " random text. It has roots in a piece of classical Latin literature")
+ (quote-text "from 45 BC, making it over 2000 years old. Richard"
+  " McClintock, a Latin professor at Hampden-Sydney College in")
+ ; items in a :vbox will be added to the page vertically.
+ (:vbox
+  (quote-text "Virginia, looked up one of the more obscure Latin")
+  (:text footnote {(fill "20")} "from https://www.lipsum.com/")))

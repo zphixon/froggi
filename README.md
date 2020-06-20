@@ -1,4 +1,4 @@
-# froggi protocol
+# froggi protocol - [spec](https://github.com/zphixon/froggi/blob/master/spec.md)
 
 this new protocol aims to be somewhere between gopher and http. somewhat inspired
 by gemini, and conceived due to its unimpressive markup language.
@@ -24,9 +24,6 @@ date on every commit.
 
 ## todo
 
-* finish the new markup syntax parser
-  * inline style attributes that take arguments e.g. `{(fg 303030)}`
-  * document the new markup syntax
 * write a markup validator
   * checks your pages for any broken links or object references
 * server app
@@ -34,21 +31,6 @@ date on every commit.
 * client app
   * translate markup ast into layout tree
   * basically everything lol
-
-## markup
-
-S-expression-based markup
-* layout elements include `box`, `hbox`, `page`
-* `lowercase` names are built-in styles. includes `txt`, `h1`, `img`, `link`, `page`, etc
-* `Uppercase` names are user-defined styles
-
-## styling
-
-* goes after page title in the page item
-* font styling with `$`: `$serif`, `$sans`, `$indent`, `$italic`, `$bold`, `$underline`
-* `!` to negate styles, eg `!UserStyle`
-* vertical and horizontal fill
-  * `(hbox (item1) (item2 %20)`: item2 will have 20% the width of the surrounding `hbox`
 
 ### styling algorithm
 

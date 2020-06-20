@@ -51,14 +51,62 @@ response format: (offsets and lengths are in bytes)
 
 ## markup
 
-grammar (regex-y definitions):
+### page
+
+a page in froggi markup includes optional page style, and an optional list of
+items. every page is as if it was in an implicit `:vbox` item.
+
+### items
+
+items in a froggi markup page consist of four parts, three of which are
+optional:
+
+* (optional) the builtin name
+* (optional) the user-defined style
+* (optional) inline styles
+* text or children
+
+the syntax of an item looks like:
+
+`(:text user-style {sans (bg "303030")} "Hello world in sans-serif!")`
+
+the item has a built-in name, `:text`, which is implied for all items that do
+not specify one. the item has a user-defined style `user-style`, which is
+specified in the top-level page style item. the item has inline styling
+`{sans (bg "303030")}`, with a style that takes an argument `(bg "303030")`,
+and a style that does not `sans`. the item has text.
+
+### page style
+
+a style item in the page-level style includes a built-in name or a user-defined style
+name, followed by all styles that will be applied to items with that user-defined
+style name or built-in item name.
 
 ```
-page = item*
-item = '(' name (' ' (attribute ' ')* text )? ')'
-text = '"' .* '"'
-name = [a-z][a-zA-Z0-9]+
-attribute = builtin | user
-builtin = [#@$%^&*][a-z0-9]+
-user = [A-Z]+[a-zA-Z0-9]*
+{(:text italic)
+ (user-style (fg "fff8dc"))}
 ```
+
+## built-in item names
+
+* `:text`
+* `:box`
+* `:vbox`
+
+## built-in style names
+
+* font styles with no args:
+  * `serif`
+  * `sans`
+  * `mono`
+  * `italic`
+  * `underline`
+  * `bold`
+  * `strike`
+* font styles with args:
+  * `(fg "color")`
+  * `(size "1em")`
+* other styles with args:
+  * `(bg "color")`
+  * `(fill "percent")`
+
