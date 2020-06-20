@@ -30,24 +30,46 @@ pub fn parse(data: &str) -> Result<Vec<PageItem<'_>>, Vec<FroggiError>> {
 fn parse_item<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
     let left_paren = consume(scanner, TokenKind::LeftParen)?;
 
-    let mut builtin = None;
-    let mut defined_styles = Vec::new();
-    let mut inline_styles = Vec::new();
+    let builtin = parse_builtin(scanner)?;
+    let defined_styles = parse_defined_styles(scanner)?;
+    let inline_styles = parse_inline_styles(scanner)?;
+    let payload = parse_payload(scanner)?;
 
-    // built-in page items
-    if scanner.peek_token(0)?.kind() == TokenKind::Colon {
+    consume(scanner, TokenKind::RightParen).msg(format!(
+        "unbalanced parens starting on line {}",
+        left_paren.line()
+    ))?;
+
+    Ok(PageItem {
+        builtin,
+        defined_styles,
+        inline_styles,
+        payload,
+    })
+}
+
+fn parse_builtin<'a>(scanner: &mut Scanner<'a>) -> Result<Option<Token<'a>>, FroggiError> {
+    Ok(if scanner.peek_token(0)?.kind() == TokenKind::Colon {
         consume(scanner, TokenKind::Colon)?;
-        builtin = Some(consume(scanner, TokenKind::Identifier)?);
-    }
+        Some(consume(scanner, TokenKind::Identifier)?)
+    } else {
+        None
+    })
+}
 
-    // user-defined style items
+fn parse_defined_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<Token<'a>>, FroggiError> {
+    let mut defined_styles = Vec::new();
     while scanner.peek_token(0)?.kind() == TokenKind::Identifier {
         defined_styles.push(consume(scanner, TokenKind::Identifier)?);
     }
+    Ok(defined_styles)
+}
 
-    // inline styles
+fn parse_inline_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<InlineStyle<'a>>, FroggiError> {
+    let mut inline_styles = Vec::new();
     if scanner.peek_token(0)?.kind() == TokenKind::LeftBrace {
         consume(scanner, TokenKind::LeftBrace)?;
+
         while scanner.peek_token(0)?.kind() != TokenKind::RightBrace {
             let token = scanner.next_token()?;
             match token.kind() {
@@ -71,48 +93,38 @@ fn parse_item<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
                 }
             }
         }
+
         consume(scanner, TokenKind::RightBrace)?;
     }
 
-    // payload
-    let payload = if scanner.peek_token(0)?.kind() == TokenKind::Text {
-        ItemPayload::Text {
-            text: {
-                let mut text = Vec::new();
-                while scanner.peek_token(0)?.kind() != TokenKind::RightParen {
-                    text.push(consume(scanner, TokenKind::Text)?);
-                }
-                text
-            },
+    Ok(inline_styles)
+}
+
+fn parse_payload<'a>(scanner: &mut Scanner<'a>) -> Result<ItemPayload<'a>, FroggiError> {
+    if scanner.peek_token(0)?.kind() == TokenKind::Text {
+        let mut text = Vec::new();
+        while scanner.peek_token(0)?.kind() != TokenKind::RightParen {
+            text.push(consume(scanner, TokenKind::Text)?);
         }
+
+        Ok(ItemPayload::Text { text })
     } else if scanner.peek_token(0)?.kind() == TokenKind::LeftParen {
         // parse_item takes care of the left and right parens
         let mut children = Vec::new();
         while scanner.peek_token(0)?.kind() != TokenKind::RightParen {
             children.push(parse_item(scanner)?);
         }
-        ItemPayload::Children { children }
+
+        Ok(ItemPayload::Children { children })
     } else {
-        return Err(FroggiError::parse(
+        Err(FroggiError::parse(
             ParseError::UnexpectedToken {
                 expected: TokenKind::Text,
                 got: scanner.peek_token(0)?.kind(),
             },
             scanner.peek_token(0)?.line(),
-        ));
-    };
-
-    consume(scanner, TokenKind::RightParen).msg(format!(
-        "unbalanced parens starting on line {}",
-        left_paren.line()
-    ))?;
-
-    Ok(PageItem {
-        builtin,
-        defined_styles,
-        inline_styles,
-        payload,
-    })
+        ))
+    }
 }
 
 fn consume<'a>(scanner: &mut Scanner<'a>, kind: TokenKind) -> Result<Token<'a>, FroggiError> {

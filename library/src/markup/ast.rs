@@ -99,7 +99,7 @@ mod test {
             title: &page_title,
             base_style: base_style.clone(),
             tree: vec![
-                LayoutItem::HBox {
+                LayoutItem::Box {
                     style: None,
                     children: vec![
                         LayoutItem::Text {
@@ -113,7 +113,7 @@ mod test {
                     style: None,
                     text: &lorem_ipsum_dolor,
                 },
-                LayoutItem::HBox {
+                LayoutItem::Box {
                     style: Some(quote_box.clone()),
                     children: vec![
                         LayoutItem::Text {
@@ -124,7 +124,7 @@ mod test {
                             style: Some(quote_text.clone()),
                             text: &from_45,
                         },
-                        LayoutItem::Box {
+                        LayoutItem::VBox {
                             style: Some(quote_box.clone()),
                             children: vec![
                                 LayoutItem::Text {
