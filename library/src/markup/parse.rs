@@ -28,12 +28,15 @@ pub fn parse(data: &str) -> Result<Page<'_>, Vec<FroggiError>> {
                 }
             },
 
-            _ => errors.push(FroggiError::parse(
-                ParseError::ExpectedItem {
-                    got: scanner.peek_token(0)?.clone_lexeme(),
-                },
-                scanner.peek_token(0)?.line(),
-            )),
+            _ => {
+                errors.push(FroggiError::parse(
+                    ParseError::ExpectedItem {
+                        got: scanner.peek_token(0)?.clone_lexeme(),
+                    },
+                    scanner.peek_token(0)?.line(),
+                ));
+                scanner.next_token()?;
+            }
         }
     }
 
