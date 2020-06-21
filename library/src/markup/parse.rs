@@ -56,13 +56,15 @@ fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<PageStyle<'a>>
 
     while scanner.peek_token(0)?.kind() != TokenKind::RightBrace {
         // parse one single rule
-        consume(scanner, TokenKind::LeftParen)?;
+        consume(scanner, TokenKind::LeftParen)
+            .msg_str("expected style rules inside page style item")?;
 
         // name of the rule
         let token = scanner.next_token()?;
         let selector = match token.kind() {
             TokenKind::Colon => PageStyleSelector::Builtin {
-                name: consume(scanner, TokenKind::Identifier)?,
+                name: consume(scanner, TokenKind::Identifier)
+                    .msg_str("expected name after colon")?,
             },
 
             TokenKind::Identifier => PageStyleSelector::UserDefined { name: token },
@@ -75,6 +77,7 @@ fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<PageStyle<'a>>
                     },
                     token.line(),
                 ))
+                .msg_str("expected the name of a style rule, e.g. :text or user-style")
             }
         };
 
@@ -89,10 +92,13 @@ fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<PageStyle<'a>>
 
                 TokenKind::LeftParen => {
                     styles.push(InlineStyle::Arg {
-                        name: consume(scanner, TokenKind::Identifier)?,
-                        arg: consume(scanner, TokenKind::Text)?,
+                        name: consume(scanner, TokenKind::Identifier)
+                            .msg_str("expected a built-in style rule")?,
+                        arg: consume(scanner, TokenKind::Text)
+                            .msg_str("expected an argument to the built-in style rule")?,
                     });
-                    consume(scanner, TokenKind::RightParen)?;
+                    consume(scanner, TokenKind::RightParen)
+                        .msg_str("style rules only take one argument")?;
                 }
 
                 _ => {
@@ -102,12 +108,13 @@ fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<PageStyle<'a>>
                         },
                         token.line(),
                     ))
+                    .msg_str("expected a style rule")
                 }
             }
         }
 
         page_styles.push(PageStyle { selector, styles });
-        consume(scanner, TokenKind::RightParen)?;
+        consume(scanner, TokenKind::RightParen).msg_str("end of the style rule")?;
     }
 
     consume(scanner, TokenKind::RightBrace).msg(format!(
@@ -171,10 +178,13 @@ fn parse_inline_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<InlineStyle<
 
                 TokenKind::LeftParen => {
                     inline_styles.push(InlineStyle::Arg {
-                        name: consume(scanner, TokenKind::Identifier)?,
-                        arg: consume(scanner, TokenKind::Text)?,
+                        name: consume(scanner, TokenKind::Identifier)
+                            .msg_str("expected some built-in style name")?,
+                        arg: consume(scanner, TokenKind::Text)
+                            .msg_str("expected an argument to the built-in style")?,
                     });
-                    consume(scanner, TokenKind::RightParen)?;
+                    consume(scanner, TokenKind::RightParen)
+                        .msg_str("styles only take one argument")?;
                 }
 
                 _ => {
@@ -184,11 +194,12 @@ fn parse_inline_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<InlineStyle<
                         },
                         token.line(),
                     ))
+                    .msg_str("expected a style rule in the list of inline style rules")
                 }
             }
         }
 
-        consume(scanner, TokenKind::RightBrace)?;
+        consume(scanner, TokenKind::RightBrace).msg_str("expected the end of the inline style")?;
     }
 
     Ok(inline_styles)
@@ -218,6 +229,7 @@ fn parse_payload<'a>(scanner: &mut Scanner<'a>) -> Result<ItemPayload<'a>, Frogg
             },
             scanner.peek_token(0)?.line(),
         ))
+        .msg_str("expected a page item")
     }
 }
 
