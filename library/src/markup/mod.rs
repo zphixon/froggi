@@ -5,25 +5,25 @@ pub mod scan;
 use crate::{FroggiError, ScanError};
 use scan::Token;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Page<'a> {
     pub page_styles: Vec<PageStyle<'a>>,
     pub items: Vec<PageItem<'a>>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum PageStyleSelector<'a> {
     UserDefined { name: Token<'a> },
     Builtin { name: Token<'a> },
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct PageStyle<'a> {
     selector: PageStyleSelector<'a>,
     styles: Vec<InlineStyle<'a>>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct PageItem<'a> {
     // a None value implies a :text item
     pub builtin: Option<Token<'a>>,
@@ -32,13 +32,13 @@ pub struct PageItem<'a> {
     pub payload: ItemPayload<'a>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum ItemPayload<'a> {
     Text { text: Vec<Token<'a>> },
     Children { children: Vec<PageItem<'a>> },
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum InlineStyle<'a> {
     NoArgs { name: Token<'a> },
     Arg { name: Token<'a>, arg: Token<'a> },

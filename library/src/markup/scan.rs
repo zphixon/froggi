@@ -58,7 +58,7 @@ pub struct Token<'a> {
 }
 
 impl Token<'_> {
-    fn new(kind: TokenKind, line: usize, lexeme: &str) -> Token<'_> {
+    pub(crate) fn new(kind: TokenKind, line: usize, lexeme: &str) -> Token<'_> {
         Token { kind, line, lexeme }
     }
 

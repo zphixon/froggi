@@ -248,13 +248,109 @@ mod test {
     }
 
     #[test]
-    fn random_markup() {
-        // currently invalid, but it will parse correctly
-        let markup = r#"(hbox %328 (hbox $serif (hbox (box *ab0cad (hbox (box (hbox
-            (hbox (box (hbox SomeThing (txt "Some text here, dope")))))
-            ))))))"#;
+    fn parent_style_missing_arg() {
+        let item = "(:this {style (missing)} (\"multiple children?\") (doesnt-work \"why\"))";
+        assert!(parse(item).is_err());
+    }
 
-        parse(markup).unwrap();
+    #[test]
+    fn child_style_missing_arg() {
+        let item = "(:this (doesnt-work {style (missing)} \"why\"))";
+        assert!(parse(item).is_err());
+    }
+
+    #[test]
+    fn page_style_missing_arg() {
+        let style = "{(:item style (missing))}";
+        assert!(parse(style).is_err());
+    }
+
+    #[test]
+    fn item_inline_style_missing_arg() {
+        let item = "(:item {style (missing)} \"arg\")";
+        let mut scanner = Scanner::new(item);
+        assert!(parse_item(&mut scanner).is_err());
+    }
+
+    #[test]
+    fn inline_style_missing_arg() {
+        let style = "{inline-style (something)}";
+        let mut scanner = Scanner::new(style);
+        assert!(parse_inline_styles(&mut scanner).is_err());
+    }
+
+    #[test]
+    fn well_formed_page_item() {
+        let item =
+            "(:box user-style {inline-style (with \"args\")} (\"children\") (with \"style\"))";
+        parse(item).unwrap();
+    }
+
+    #[test]
+    fn ill_formed_page_styles() {
+        use crate::markup::scan::Scanner;
+
+        let mut style = "{";
+        let mut scanner = Scanner::new(style);
+        assert!(parse_page_styles(&mut scanner).is_err());
+
+        style = "{(: text) serif}";
+        scanner = Scanner::new(style);
+        assert!(parse_page_styles(&mut scanner).is_err());
+
+        style = "{(:text) serif}";
+        scanner = Scanner::new(style);
+        assert!(parse_page_styles(&mut scanner).is_err());
+
+        style = "{() (style)}";
+        scanner = Scanner::new(style);
+        assert!(parse_page_styles(&mut scanner).is_err());
+
+        style = "{( (style)}";
+        scanner = Scanner::new(style);
+        assert!(parse_page_styles(&mut scanner).is_err());
+
+        style = "{ (style))}";
+        scanner = Scanner::new(style);
+        assert!(parse_page_styles(&mut scanner).is_err());
+
+        style = "";
+        scanner = Scanner::new(style);
+        assert!(parse_page_styles(&mut scanner).is_err());
+    }
+
+    #[test]
+    fn well_formed_page_style() {
+        let style = "{(:text serif)(footnote underline (zip \"90210\"))}";
+        let mut scanner = crate::markup::scan::Scanner::new(style);
+        let style = parse_page_styles(&mut scanner).unwrap();
+        assert_eq!(
+            style,
+            vec![
+                PageStyle {
+                    selector: PageStyleSelector::Builtin {
+                        name: Token::new(TokenKind::Identifier, 1, "text"),
+                    },
+                    styles: vec![InlineStyle::NoArgs {
+                        name: Token::new(TokenKind::Identifier, 1, "serif",),
+                    },]
+                },
+                PageStyle {
+                    selector: PageStyleSelector::UserDefined {
+                        name: Token::new(TokenKind::Identifier, 1, "footnote"),
+                    },
+                    styles: vec![
+                        InlineStyle::NoArgs {
+                            name: Token::new(TokenKind::Identifier, 1, "underline")
+                        },
+                        InlineStyle::Arg {
+                            name: Token::new(TokenKind::Identifier, 1, "zip"),
+                            arg: Token::new(TokenKind::Text, 1, "\"90210\"")
+                        }
+                    ]
+                }
+            ]
+        );
     }
 
     #[test]
