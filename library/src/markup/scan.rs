@@ -46,6 +46,7 @@ pub enum TokenKind {
     RightBrace,
     Colon,
     Ampersand,
+    Caret,
     Identifier,
     End,
 }
@@ -131,6 +132,7 @@ impl<'a> Scanner<'a> {
                     b'}' => Ok(TokenKind::RightBrace),
 
                     b'&' => Ok(TokenKind::Ampersand),
+                    b'^' => Ok(TokenKind::Caret),
                     b':' => Ok(TokenKind::Colon),
 
                     _ => self.identifier(),

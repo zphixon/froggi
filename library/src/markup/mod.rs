@@ -36,6 +36,19 @@ pub struct PageItem<'a> {
 pub enum ItemPayload<'a> {
     Text { text: Vec<Token<'a>> },
     Children { children: Vec<PageItem<'a>> },
+    Reference { reference: ReferenceKind<'a> },
+}
+
+#[derive(Debug, PartialEq)]
+pub enum ReferenceKind<'a> {
+    Link {
+        link: Token<'a>,
+        text: Vec<Token<'a>>,
+    },
+    Blob {
+        name: Token<'a>,
+        alt: Vec<Token<'a>>,
+    },
 }
 
 #[derive(Debug, PartialEq)]

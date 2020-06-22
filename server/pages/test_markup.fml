@@ -10,10 +10,9 @@
  (quote-text sans (fg "606060"))
  (footnote (fg "757575") sans italic)}
 
-; TODO
 ; special built-in page item is the binary reference: (& "name"),
 ; which refers to object "name" at the end of the server's response.
-;(:box ("Lorem ipsum example") (& "header.jpg"))
+(:box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
 
 ; strings are automatically concatenated. without a :builtin-item, the page
 ; item is assumed to be :text.
@@ -29,4 +28,8 @@
  ; items in a :vbox will be added to the page vertically.
  (:vbox
   (quote-text "Virginia, looked up one of the more obscure Latin")
-  (:text footnote {(fill "20")} "from https://www.lipsum.com/")))
+  (^ "frgi://www.lipsum.com/" footnote {(fill "20")} "from frgi://www.lipsum.com/")))
+
+; link text is optional
+(^ "https://github.com/zphixon/froggi" "github repository")
+(^ "https://zphixon.com/lemon")

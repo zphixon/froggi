@@ -1,7 +1,9 @@
 use crate::{AddMsg, FroggiError, ParseError};
 
 use super::scan::{Scanner, Token, TokenKind};
-use super::{InlineStyle, ItemPayload, Page, PageItem, PageStyle, PageStyleSelector};
+use super::{
+    InlineStyle, ItemPayload, Page, PageItem, PageStyle, PageStyleSelector, ReferenceKind,
+};
 
 /// Parse some data into a Page.
 pub fn parse(data: &str) -> Result<Page<'_>, Vec<FroggiError>> {
@@ -129,18 +131,67 @@ fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<PageStyle<'a>>
 fn parse_item<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
     let left_paren = consume(scanner, TokenKind::LeftParen)?;
 
-    let builtin = parse_builtin(scanner)?;
-    let defined_styles = parse_defined_styles(scanner)?;
-    let inline_styles = parse_inline_styles(scanner)?;
-    let payload = parse_payload(scanner)?;
+    let result = if scanner.peek_token(0)?.kind() == TokenKind::Ampersand {
+        parse_blob(scanner)
+    } else if scanner.peek_token(0)?.kind() == TokenKind::Caret {
+        parse_link(scanner)
+    } else {
+        let builtin = parse_builtin(scanner)?;
+        let defined_styles = parse_defined_styles(scanner)?;
+        let inline_styles = parse_inline_styles(scanner)?;
+        let payload = parse_payload(scanner)?;
+        Ok(PageItem {
+            builtin,
+            defined_styles,
+            inline_styles,
+            payload,
+        })
+    };
 
     consume(scanner, TokenKind::RightParen).msg(format!(
         "unbalanced parens starting on line {}",
         left_paren.line()
     ))?;
 
+    result
+}
+
+fn parse_blob<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
+    consume(scanner, TokenKind::Ampersand)?;
+    let name = consume(scanner, TokenKind::Text)?;
+
+    let defined_styles = parse_defined_styles(scanner)?;
+    let inline_styles = parse_inline_styles(scanner)?;
+    let payload = ItemPayload::Reference {
+        reference: ReferenceKind::Blob {
+            name,
+            alt: collect_text(scanner)?,
+        },
+    };
+
     Ok(PageItem {
-        builtin,
+        builtin: None,
+        defined_styles,
+        inline_styles,
+        payload,
+    })
+}
+
+fn parse_link<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
+    consume(scanner, TokenKind::Caret)?;
+    let link = consume(scanner, TokenKind::Text)?;
+
+    let defined_styles = parse_defined_styles(scanner)?;
+    let inline_styles = parse_inline_styles(scanner)?;
+    let payload = ItemPayload::Reference {
+        reference: ReferenceKind::Link {
+            link,
+            text: collect_text(scanner)?,
+        },
+    };
+
+    Ok(PageItem {
+        builtin: None,
         defined_styles,
         inline_styles,
         payload,
@@ -207,12 +258,9 @@ fn parse_inline_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<InlineStyle<
 
 fn parse_payload<'a>(scanner: &mut Scanner<'a>) -> Result<ItemPayload<'a>, FroggiError> {
     if scanner.peek_token(0)?.kind() == TokenKind::Text {
-        let mut text = Vec::new();
-        while scanner.peek_token(0)?.kind() != TokenKind::RightParen {
-            text.push(consume(scanner, TokenKind::Text)?);
-        }
-
-        Ok(ItemPayload::Text { text })
+        Ok(ItemPayload::Text {
+            text: collect_text(scanner)?,
+        })
     } else if scanner.peek_token(0)?.kind() == TokenKind::LeftParen {
         // parse_item takes care of the left and right parens
         let mut children = Vec::new();
@@ -231,6 +279,15 @@ fn parse_payload<'a>(scanner: &mut Scanner<'a>) -> Result<ItemPayload<'a>, Frogg
         ))
         .msg_str("expected a page item")
     }
+}
+
+fn collect_text<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<Token<'a>>, FroggiError> {
+    let mut text = Vec::new();
+    while scanner.peek_token(0)?.kind() != TokenKind::RightParen {
+        text.push(consume(scanner, TokenKind::Text)?);
+    }
+
+    Ok(text)
 }
 
 fn consume<'a>(scanner: &mut Scanner<'a>, kind: TokenKind) -> Result<Token<'a>, FroggiError> {
@@ -257,6 +314,28 @@ mod test {
     fn sample() {
         let sample = include_str!("../../../server/pages/index.fml");
         crate::markup::scan::lex(sample).unwrap();
+    }
+
+    #[test]
+    fn references() {
+        let sample = r#"(& "image.jpg" user-style {(fg "30300") serif} "with alt" " text")"#;
+        parse(sample).unwrap();
+
+        let sample = r#"(& "somewhere")"#;
+        parse(sample).unwrap();
+    }
+
+    #[test]
+    fn links() {
+        let sample =
+            r#"(^ "frgi://www.lipsum.com/" footnote {(fill "20")} "from frgi://www.lipsum.com/")"#;
+        parse(sample).unwrap();
+
+        let sample = r#"(^ "frgi://www.lipsum.com/" {serif })"#;
+        parse(sample).unwrap();
+
+        let sample = r#"(^ "frgi://www.lipsum.com/")"#;
+        parse(sample).unwrap();
     }
 
     #[test]
@@ -302,32 +381,32 @@ mod test {
     fn ill_formed_page_styles() {
         use crate::markup::scan::Scanner;
 
-        let mut style = "{";
+        let style = "{";
         let mut scanner = Scanner::new(style);
         assert!(parse_page_styles(&mut scanner).is_err());
 
-        style = "{(: text) serif}";
-        scanner = Scanner::new(style);
+        let style = "{(: text) serif}";
+        let mut scanner = Scanner::new(style);
         assert!(parse_page_styles(&mut scanner).is_err());
 
-        style = "{(:text) serif}";
-        scanner = Scanner::new(style);
+        let style = "{(:text) serif}";
+        let mut scanner = Scanner::new(style);
         assert!(parse_page_styles(&mut scanner).is_err());
 
-        style = "{() (style)}";
-        scanner = Scanner::new(style);
+        let style = "{() (style)}";
+        let mut scanner = Scanner::new(style);
         assert!(parse_page_styles(&mut scanner).is_err());
 
-        style = "{( (style)}";
-        scanner = Scanner::new(style);
+        let style = "{( (style)}";
+        let mut scanner = Scanner::new(style);
         assert!(parse_page_styles(&mut scanner).is_err());
 
-        style = "{ (style))}";
-        scanner = Scanner::new(style);
+        let style = "{ (style))}";
+        let mut scanner = Scanner::new(style);
         assert!(parse_page_styles(&mut scanner).is_err());
 
-        style = "";
-        scanner = Scanner::new(style);
+        let style = "";
+        let mut scanner = Scanner::new(style);
         assert!(parse_page_styles(&mut scanner).is_err());
     }
 
