@@ -1,3 +1,5 @@
+use crate::{FroggiError, MarkupError};
+
 /// HSV color.
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub struct Color {
@@ -25,6 +27,29 @@ impl Color {
             g: 0x00,
             b: 0x00,
         }
+    }
+
+    pub fn from_token(fg: &crate::markup::scan::Token) -> Result<Self, FroggiError> {
+        let hex = fg.trimmed_lexeme();
+
+        let rgb = match hex::decode(&hex) {
+            Ok(data) => data,
+            Err(err) => {
+                return Err(FroggiError::markup(
+                    MarkupError::IncorrectHexadecimal { hex, err },
+                    fg.line(),
+                ))
+            }
+        };
+
+        if rgb.len() != 3 {
+            return Err(FroggiError::markup(
+                MarkupError::IncorrectColor { color: hex },
+                fg.line(),
+            ));
+        }
+
+        Ok(Color::new(rgb[0], rgb[1], rgb[2]))
     }
 
     pub fn from_hsv(&self, hue: u16, saturation: u8, value: u8) -> Self {

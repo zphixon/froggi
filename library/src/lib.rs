@@ -120,6 +120,33 @@ impl fmt::Display for ParseError {
     }
 }
 
+#[derive(Debug)]
+pub enum MarkupError {
+    RequiresArgument { style: String },
+    NoArgumentAllowed { style: String },
+    IncorrectPercent { percent: String },
+    IncorrectHexadecimal { hex: String, err: hex::FromHexError },
+    IncorrectColor { color: String },
+}
+
+#[rustfmt::skip]
+impl fmt::Display for MarkupError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            MarkupError::RequiresArgument { style }
+                => write!(f, "{} requires an argument", style),
+            MarkupError::NoArgumentAllowed { style }
+                => write!(f, "{} does not allow an argument", style),
+            MarkupError::IncorrectPercent { percent }
+                => write!(f, "invalid percent: {}", percent),
+            MarkupError::IncorrectHexadecimal { hex, err }
+                => write!(f, "invalid hexadecimal: {} ({})", hex, err),
+            MarkupError::IncorrectColor { color }
+                => write!(f, "invalid color: {}", color),
+        }
+    }
+}
+
 /// Errors that are possible in the froggi protocol.
 #[derive(Debug)]
 pub enum ErrorKind {
@@ -128,6 +155,7 @@ pub enum ErrorKind {
     IOError { error: io::Error },
     ScanError { error: ScanError, line: usize },
     ParseError { error: ParseError, line: usize },
+    MarkupError { error: MarkupError, line: usize },
 }
 
 #[rustfmt::skip]
@@ -143,7 +171,9 @@ impl fmt::Display for ErrorKind {
             ErrorKind::ScanError { error, line }
                 => write!(f, "scan error on line {} - {}", line, error),
             ErrorKind::ParseError { error, line }
-                => write!(f, "parse error on line {} - {}", line, error)
+                => write!(f, "parse error on line {} - {}", line, error),
+            ErrorKind::MarkupError { error, line }
+                => write!(f, "markup error on line {} - {}", line, error),
         }
     }
 }
@@ -179,6 +209,13 @@ impl FroggiError {
             msg: None,
         }
     }
+
+    pub fn markup(error: MarkupError, line: usize) -> FroggiError {
+        FroggiError {
+            error: ErrorKind::MarkupError { error, line },
+            msg: None,
+        }
+    }
 }
 
 impl AddMsg for FroggiError {
@@ -206,6 +243,10 @@ impl Error for FroggiError {
             ErrorKind::IOError { error } => error.source(),
             ErrorKind::ScanError { .. } => None,
             ErrorKind::ParseError { .. } => None,
+            ErrorKind::MarkupError { error, .. } => match error {
+                MarkupError::IncorrectHexadecimal { err, .. } => err.source(),
+                _ => None,
+            },
         }
     }
 }
