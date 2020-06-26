@@ -44,7 +44,7 @@ impl Style {
             let has_arg = inline_style.has_arg();
             let takes_arg = builtin_style.takes_arg();
 
-            match builtin_style.arg_kind {
+            match builtin_style.arg {
                 ArgKind::Color(handler)
                 | ArgKind::Percent(handler)
                 | ArgKind::FontSize(handler)
@@ -132,6 +132,7 @@ impl Style {
 type WithArgAdder = fn(&mut Style, &WithArg) -> Result<(), FroggiError>;
 type WithoutArgAdder = fn(&mut Style, &WithoutArg) -> Result<(), FroggiError>;
 
+#[derive(Copy, Clone)]
 pub enum ArgKind {
     Color(WithArgAdder),
     Percent(WithArgAdder),
@@ -150,16 +151,15 @@ impl std::fmt::Debug for ArgKind {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub struct BuiltinStyle {
-    name: &'static str,
-    is_font_property: bool,
-    arg_kind: ArgKind,
+    font: bool,
+    arg: ArgKind,
 }
 
 impl BuiltinStyle {
     fn takes_arg(&self) -> bool {
-        match self.arg_kind {
+        match self.arg {
             ArgKind::None(_) => false,
             _ => true,
         }
@@ -167,26 +167,29 @@ impl BuiltinStyle {
 }
 
 // TODO: something like this https://gist.github.com/zphixon/386b86d3ca472e9c8a6cf556c0efadc9
-// TODO: probably make this a lazy static hashmap instead
-#[rustfmt::skip]
-pub const BUILTIN_STYLES: &[BuiltinStyle] = &[
-    BuiltinStyle { name: "fg",            is_font_property: false,      arg_kind: ArgKind::Color(Style::set_foreground_color),        },
-    BuiltinStyle { name: "bg",            is_font_property: false,      arg_kind: ArgKind::Color(Style::set_background_color),        },
-    BuiltinStyle { name: "fill",          is_font_property: false,      arg_kind: ArgKind::Percent(Style::set_fill),      },
-    BuiltinStyle { name: "size",          is_font_property: true,       arg_kind: ArgKind::FontSize(Style::ignore_with),     },
-    BuiltinStyle { name: "monospace",     is_font_property: true,       arg_kind: ArgKind::None(Style::ignore_without),      },
-    BuiltinStyle { name: "serif",         is_font_property: true,       arg_kind: ArgKind::None(Style::ignore_without),      },
-    BuiltinStyle { name: "sans",          is_font_property: true,       arg_kind: ArgKind::None(Style::ignore_without),      },
-    BuiltinStyle { name: "strike",        is_font_property: true,       arg_kind: ArgKind::None(Style::ignore_without),      },
-    BuiltinStyle { name: "bold",          is_font_property: true,       arg_kind: ArgKind::None(Style::ignore_without),      },
-    BuiltinStyle { name: "italic",        is_font_property: true,       arg_kind: ArgKind::None(Style::ignore_without),      },
-    BuiltinStyle { name: "underline",     is_font_property: true,       arg_kind: ArgKind::None(Style::ignore_without),      },
-];
+use std::collections::HashMap;
+lazy_static::lazy_static! {
+    static ref BUILTIN_STYLES: HashMap<&'static str, BuiltinStyle> = {
+        let mut builtin_styles = HashMap::new();
+        builtin_styles.insert("fg",            BuiltinStyle { font: false, arg: ArgKind::Color(Style::set_foreground_color), });
+        builtin_styles.insert("bg",            BuiltinStyle { font: false, arg: ArgKind::Color(Style::set_background_color), });
+        builtin_styles.insert("fill",          BuiltinStyle { font: false, arg: ArgKind::Percent(Style::set_fill),           });
+        builtin_styles.insert("size",          BuiltinStyle { font: true,  arg: ArgKind::FontSize(Style::ignore_with),       });
+        builtin_styles.insert("monospace",     BuiltinStyle { font: true,  arg: ArgKind::None(Style::ignore_without),        });
+        builtin_styles.insert("serif",         BuiltinStyle { font: true,  arg: ArgKind::None(Style::ignore_without),        });
+        builtin_styles.insert("sans",          BuiltinStyle { font: true,  arg: ArgKind::None(Style::ignore_without),        });
+        builtin_styles.insert("strike",        BuiltinStyle { font: true,  arg: ArgKind::None(Style::ignore_without),        });
+        builtin_styles.insert("bold",          BuiltinStyle { font: true,  arg: ArgKind::None(Style::ignore_without),        });
+        builtin_styles.insert("italic",        BuiltinStyle { font: true,  arg: ArgKind::None(Style::ignore_without),        });
+        builtin_styles.insert("underline",     BuiltinStyle { font: true,  arg: ArgKind::None(Style::ignore_without),        });
+        builtin_styles
+    };
+}
 
-fn get_by_name(inline_style: &InlineStyle) -> Option<&'static BuiltinStyle> {
+fn get_by_name(style: &InlineStyle) -> Option<BuiltinStyle> {
     BUILTIN_STYLES
-        .iter()
-        .find(|style| style.name == inline_style.name())
+        .get(style.name())
+        .map(|builtin_style| *builtin_style)
 }
 
 #[cfg(test)]
@@ -203,7 +206,7 @@ mod test {
                 arg: Token::new(TokenKind::Text, 1, "\"32\"")
             }))
             .unwrap()
-            .is_font_property
+            .font
         );
     }
 
@@ -213,7 +216,7 @@ mod test {
         let page = crate::markup::parse::parse(inline_style).unwrap();
         let inline_style = &page.items[0].inline_styles[0];
         let mut style = Style::default();
-        if let ArgKind::Color(handler) = get_by_name(inline_style).unwrap().arg_kind {
+        if let ArgKind::Color(handler) = get_by_name(inline_style).unwrap().arg {
             handler(&mut style, inline_style.as_with_arg()).unwrap();
             assert_eq!(style.foreground, Color::new(0xfe, 0xed, 0x10));
         } else {
