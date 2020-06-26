@@ -34,6 +34,13 @@ impl Default for FontProperties {
 }
 
 impl FontProperties {
+    pub fn sans() -> Self {
+        FontProperties {
+            font_type: FontType::Sans,
+            ..Default::default()
+        }
+    }
+
     pub fn font_style(&self) -> &Vec<FontStyle> {
         &self.font_style
     }
@@ -44,5 +51,17 @@ impl FontProperties {
 
     pub fn size(&self) -> &u8 {
         &self.size
+    }
+
+    pub fn set_type(&mut self, font_type: FontType) {
+        self.font_type = font_type;
+    }
+
+    pub fn add_style(&mut self, font_style: FontStyle) {
+        self.font_style.push(font_style);
+    }
+
+    pub fn set_size(&mut self, size: u8) {
+        self.size = size;
     }
 }

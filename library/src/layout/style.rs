@@ -1,8 +1,8 @@
 use super::color::Color;
-use super::font::FontProperties;
+use super::font::{FontProperties, FontStyle, FontType};
 
 use crate::markup::{InlineStyle, PageStyle, WithArg, WithoutArg};
-use crate::{FroggiError, MarkupError};
+use crate::{AddMsg, FroggiError, MarkupError};
 
 /// Style on a FML item.
 #[derive(Clone, Debug, PartialEq)]
@@ -31,15 +31,16 @@ impl Style {
         let mut style = Style::default();
 
         for inline_style in page_style.styles {
-            // page styles are always builtin
-            let builtin_style = get_by_name(&inline_style).ok_or_else(|| {
-                FroggiError::markup(
-                    MarkupError::UnknownStyle {
-                        style: inline_style.token().clone_lexeme(),
-                    },
-                    inline_style.token().line(),
-                )
-            })?;
+            let builtin_style = get_by_name(&inline_style)
+                .ok_or_else(|| {
+                    FroggiError::markup(
+                        MarkupError::UnknownStyle {
+                            style: inline_style.token().clone_lexeme(),
+                        },
+                        inline_style.token().line(),
+                    )
+                })
+                .msg_str("page styles must only use built-in styles")?;
 
             let has_arg = inline_style.has_arg();
             let takes_arg = builtin_style.takes_arg();
@@ -82,14 +83,6 @@ impl Style {
         Ok(style)
     }
 
-    fn ignore_with(&mut self, _with_arg: &WithArg) -> Result<(), FroggiError> {
-        Ok(())
-    }
-
-    fn ignore_without(&mut self, _without_arg: &WithoutArg) -> Result<(), FroggiError> {
-        Ok(())
-    }
-
     fn set_selector(&mut self, selector: String) {
         self.selector = Some(selector);
     }
@@ -125,6 +118,50 @@ impl Style {
 
         self.fill = Some(percentage);
 
+        Ok(())
+    }
+
+    fn set_font_size(&mut self, size: &WithArg) -> Result<(), FroggiError> {
+        let num = size.arg.trimmed_lexeme();
+        let size = num.parse::<u8>().map_err(|_| {
+            FroggiError::markup(MarkupError::IncorrectNumber { num }, size.arg.line())
+        })?;
+        self.font_properties.set_size(size);
+        Ok(())
+    }
+
+    fn set_font_monospace(&mut self, _: &WithoutArg) -> Result<(), FroggiError> {
+        self.font_properties.set_type(FontType::Monospace);
+        Ok(())
+    }
+
+    fn set_font_serif(&mut self, _: &WithoutArg) -> Result<(), FroggiError> {
+        self.font_properties.set_type(FontType::Serif);
+        Ok(())
+    }
+
+    fn set_font_sans(&mut self, _: &WithoutArg) -> Result<(), FroggiError> {
+        self.font_properties.set_type(FontType::Sans);
+        Ok(())
+    }
+
+    fn set_font_strike(&mut self, _: &WithoutArg) -> Result<(), FroggiError> {
+        self.font_properties.add_style(FontStyle::Strike);
+        Ok(())
+    }
+
+    fn set_font_bold(&mut self, _: &WithoutArg) -> Result<(), FroggiError> {
+        self.font_properties.add_style(FontStyle::Bold);
+        Ok(())
+    }
+
+    fn set_font_italic(&mut self, _: &WithoutArg) -> Result<(), FroggiError> {
+        self.font_properties.add_style(FontStyle::Italic);
+        Ok(())
+    }
+
+    fn set_font_underline(&mut self, _: &WithoutArg) -> Result<(), FroggiError> {
+        self.font_properties.add_style(FontStyle::Underline);
         Ok(())
     }
 }
@@ -174,14 +211,14 @@ lazy_static::lazy_static! {
         builtin_styles.insert("fg",            BuiltinStyle { font: false, arg: ArgKind::Color(Style::set_foreground_color), });
         builtin_styles.insert("bg",            BuiltinStyle { font: false, arg: ArgKind::Color(Style::set_background_color), });
         builtin_styles.insert("fill",          BuiltinStyle { font: false, arg: ArgKind::Percent(Style::set_fill),           });
-        builtin_styles.insert("size",          BuiltinStyle { font: true,  arg: ArgKind::FontSize(Style::ignore_with),       });
-        builtin_styles.insert("monospace",     BuiltinStyle { font: true,  arg: ArgKind::None(Style::ignore_without),        });
-        builtin_styles.insert("serif",         BuiltinStyle { font: true,  arg: ArgKind::None(Style::ignore_without),        });
-        builtin_styles.insert("sans",          BuiltinStyle { font: true,  arg: ArgKind::None(Style::ignore_without),        });
-        builtin_styles.insert("strike",        BuiltinStyle { font: true,  arg: ArgKind::None(Style::ignore_without),        });
-        builtin_styles.insert("bold",          BuiltinStyle { font: true,  arg: ArgKind::None(Style::ignore_without),        });
-        builtin_styles.insert("italic",        BuiltinStyle { font: true,  arg: ArgKind::None(Style::ignore_without),        });
-        builtin_styles.insert("underline",     BuiltinStyle { font: true,  arg: ArgKind::None(Style::ignore_without),        });
+        builtin_styles.insert("size",          BuiltinStyle { font: true,  arg: ArgKind::FontSize(Style::set_font_size),     });
+        builtin_styles.insert("monospace",     BuiltinStyle { font: true,  arg: ArgKind::None(Style::set_font_monospace),    });
+        builtin_styles.insert("serif",         BuiltinStyle { font: true,  arg: ArgKind::None(Style::set_font_serif),        });
+        builtin_styles.insert("sans",          BuiltinStyle { font: true,  arg: ArgKind::None(Style::set_font_sans),         });
+        builtin_styles.insert("strike",        BuiltinStyle { font: true,  arg: ArgKind::None(Style::set_font_strike),       });
+        builtin_styles.insert("bold",          BuiltinStyle { font: true,  arg: ArgKind::None(Style::set_font_bold),         });
+        builtin_styles.insert("italic",        BuiltinStyle { font: true,  arg: ArgKind::None(Style::set_font_italic),       });
+        builtin_styles.insert("underline",     BuiltinStyle { font: true,  arg: ArgKind::None(Style::set_font_underline),    });
         builtin_styles
     };
 }
@@ -197,6 +234,17 @@ mod test {
     use super::*;
     use crate::markup::scan::{Token, TokenKind};
     use crate::markup::WithArg;
+
+    #[test]
+    fn non_builtin_page_style() {
+        assert!(Style::from_page_style(PageStyle {
+            selector: Token::new(TokenKind::Identifier, 1, "test"),
+            styles: vec![InlineStyle::WithoutArg(WithoutArg {
+                name: Token::new(TokenKind::Identifier, 1, "not-built-in"),
+            })],
+        })
+        .is_err());
+    }
 
     #[test]
     fn check_if_size_is_font_property() {
@@ -222,6 +270,7 @@ mod test {
         } else {
             panic!();
         }
+        assert!(get_by_name(&page.items[0].inline_styles[1]).is_none());
     }
 
     #[test]
@@ -247,7 +296,7 @@ mod test {
                 fill: None,
                 foreground: Color::new(0xde, 0xdb, 0x1f),
                 background: Color::white(),
-                font_properties: FontProperties::default(),
+                font_properties: FontProperties::sans(),
             }
         );
     }

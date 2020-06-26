@@ -128,6 +128,7 @@ pub enum MarkupError {
     IncorrectHexadecimal { hex: String, err: hex::FromHexError },
     IncorrectColor { color: String },
     UnknownStyle { style: String },
+    IncorrectNumber { num: String },
 }
 
 #[rustfmt::skip]
@@ -146,6 +147,8 @@ impl fmt::Display for MarkupError {
                 => write!(f, "invalid color: {}", color),
             MarkupError::UnknownStyle { style }
                 => write!(f, "unknown inline style: {}", style),
+            MarkupError::IncorrectNumber { num }
+                => write!(f, "number is invalid: {}", num),
         }
     }
 }
