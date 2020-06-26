@@ -11,14 +11,8 @@ pub struct Page<'a> {
 }
 
 #[derive(Debug, PartialEq)]
-pub enum PageStyleSelector<'a> {
-    UserDefined { name: Token<'a> },
-    Builtin { name: Token<'a> },
-}
-
-#[derive(Debug, PartialEq)]
 pub struct PageStyle<'a> {
-    pub selector: PageStyleSelector<'a>,
+    pub selector: Token<'a>,
     pub styles: Vec<InlineStyle<'a>>,
 }
 
@@ -26,7 +20,6 @@ pub struct PageStyle<'a> {
 pub struct PageItem<'a> {
     // a None value implies a :text item
     pub builtin: Option<Token<'a>>,
-    pub defined_styles: Vec<Token<'a>>,
     pub inline_styles: Vec<InlineStyle<'a>>,
     pub payload: ItemPayload<'a>,
 }

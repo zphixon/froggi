@@ -68,9 +68,9 @@ optional:
 
 the syntax of an item looks like:
 
-`(:text user-style {sans (bg "303030")} "Hello world in sans-serif!")`
+`(text {user-style sans (bg "303030")} "Hello world in sans-serif!")`
 
-the item has a built-in name, `:text`, which is implied for all items that do
+the item has a built-in name, `text`, which is implied for all items that do
 not specify one. the item has a user-defined style `user-style`, which is
 specified in the top-level page style item. the item has inline styling
 `{sans (bg "303030")}`, with a style that takes an argument `(bg "303030")`,
@@ -83,15 +83,15 @@ name, followed by all styles that will be applied to items with that user-define
 style name or built-in item name.
 
 ```
-{(:text italic)
+{(text italic)
  (user-style (fg "fff8dc"))}
 ```
 
 ## built-in item names
 
-* `:text`
-* `:box`
-* `:vbox`
+* `text`
+* `box`
+* `vbox`
 
 ## built-in style names
 

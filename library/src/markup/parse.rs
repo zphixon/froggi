@@ -2,8 +2,7 @@ use crate::{AddMsg, FroggiError, ParseError};
 
 use super::scan::{Scanner, Token, TokenKind};
 use super::{
-    InlineStyle, ItemPayload, Page, PageItem, PageStyle, PageStyleSelector, ReferenceKind, WithArg,
-    WithoutArg,
+    InlineStyle, ItemPayload, Page, PageItem, PageStyle, ReferenceKind, WithArg, WithoutArg,
 };
 
 /// Parse some data into a Page.
@@ -63,26 +62,8 @@ fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<PageStyle<'a>>
             .msg_str("expected style rules inside page style item")?;
 
         // name of the rule
-        let token = scanner.next_token()?;
-        let selector = match token.kind() {
-            TokenKind::Colon => PageStyleSelector::Builtin {
-                name: consume(scanner, TokenKind::Identifier)
-                    .msg_str("expected name after colon")?,
-            },
-
-            TokenKind::Identifier => PageStyleSelector::UserDefined { name: token },
-
-            _ => {
-                return Err(FroggiError::parse(
-                    ParseError::UnexpectedToken {
-                        expected: TokenKind::Identifier,
-                        got: token.clone_lexeme(),
-                    },
-                    token.line(),
-                ))
-                .msg_str("expected the name of a style rule, e.g. :text or user-style")
-            }
-        };
+        let selector =
+            consume(scanner, TokenKind::Identifier).msg_str("expected the name of a style rule")?;
 
         // styles that belong to the rule
         let mut styles = Vec::new();
@@ -138,12 +119,10 @@ fn parse_item<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
         parse_link(scanner)
     } else {
         let builtin = parse_builtin(scanner)?;
-        let defined_styles = parse_defined_styles(scanner)?;
         let inline_styles = parse_inline_styles(scanner)?;
         let payload = parse_payload(scanner)?;
         Ok(PageItem {
             builtin,
-            defined_styles,
             inline_styles,
             payload,
         })
@@ -161,7 +140,6 @@ fn parse_blob<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
     consume(scanner, TokenKind::Ampersand)?;
     let name = consume(scanner, TokenKind::Text)?;
 
-    let defined_styles = parse_defined_styles(scanner)?;
     let inline_styles = parse_inline_styles(scanner)?;
     let payload = ItemPayload::Reference {
         reference: ReferenceKind::Blob {
@@ -172,7 +150,6 @@ fn parse_blob<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
 
     Ok(PageItem {
         builtin: None,
-        defined_styles,
         inline_styles,
         payload,
     })
@@ -182,7 +159,6 @@ fn parse_link<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
     consume(scanner, TokenKind::Caret)?;
     let link = consume(scanner, TokenKind::Text)?;
 
-    let defined_styles = parse_defined_styles(scanner)?;
     let inline_styles = parse_inline_styles(scanner)?;
     let payload = ItemPayload::Reference {
         reference: ReferenceKind::Link {
@@ -193,27 +169,17 @@ fn parse_link<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
 
     Ok(PageItem {
         builtin: None,
-        defined_styles,
         inline_styles,
         payload,
     })
 }
 
 fn parse_builtin<'a>(scanner: &mut Scanner<'a>) -> Result<Option<Token<'a>>, FroggiError> {
-    Ok(if scanner.peek_token(0)?.kind() == TokenKind::Colon {
-        consume(scanner, TokenKind::Colon)?;
+    Ok(if scanner.peek_token(0)?.kind() == TokenKind::Identifier {
         Some(consume(scanner, TokenKind::Identifier)?)
     } else {
         None
     })
-}
-
-fn parse_defined_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<Token<'a>>, FroggiError> {
-    let mut defined_styles = Vec::new();
-    while scanner.peek_token(0)?.kind() == TokenKind::Identifier {
-        defined_styles.push(consume(scanner, TokenKind::Identifier)?);
-    }
-    Ok(defined_styles)
 }
 
 fn parse_inline_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<InlineStyle<'a>>, FroggiError> {
@@ -319,7 +285,7 @@ mod test {
 
     #[test]
     fn references() {
-        let sample = r#"(& "image.jpg" user-style {(fg "30300") serif} "with alt" " text")"#;
+        let sample = r#"(& "image.jpg" {user-style (fg "30300") serif} "with alt" " text")"#;
         parse(sample).unwrap();
 
         let sample = r#"(& "somewhere")"#;
@@ -329,7 +295,7 @@ mod test {
     #[test]
     fn links() {
         let sample =
-            r#"(^ "frgi://www.lipsum.com/" footnote {(fill "20")} "from frgi://www.lipsum.com/")"#;
+            r#"(^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")"#;
         parse(sample).unwrap();
 
         let sample = r#"(^ "frgi://www.lipsum.com/" {serif })"#;
@@ -341,25 +307,25 @@ mod test {
 
     #[test]
     fn parent_style_missing_arg() {
-        let item = "(:this {style (missing)} (\"multiple children?\") (doesnt-work \"why\"))";
+        let item = "(this {style (missing)} (\"multiple children?\") (doesnt-work \"why\"))";
         assert!(parse(item).is_err());
     }
 
     #[test]
     fn child_style_missing_arg() {
-        let item = "(:this (doesnt-work {style (missing)} \"why\"))";
+        let item = "(this (doesnt-work {style (missing)} \"why\"))";
         assert!(parse(item).is_err());
     }
 
     #[test]
     fn page_style_missing_arg() {
-        let style = "{(:item style (missing))}";
+        let style = "{(item style (missing))}";
         assert!(parse(style).is_err());
     }
 
     #[test]
     fn item_inline_style_missing_arg() {
-        let item = "(:item {style (missing)} \"arg\")";
+        let item = "(item {style (missing)} \"arg\")";
         let mut scanner = Scanner::new(item);
         assert!(parse_item(&mut scanner).is_err());
     }
@@ -374,7 +340,7 @@ mod test {
     #[test]
     fn well_formed_page_item() {
         let item =
-            "(:box user-style {inline-style (with \"args\")} (\"children\") (with \"style\"))";
+            "(box {user-style inline-style (with \"args\")} (\"children\") ({with} \"style\"))";
         parse(item).unwrap();
     }
 
@@ -386,11 +352,11 @@ mod test {
         let mut scanner = Scanner::new(style);
         assert!(parse_page_styles(&mut scanner).is_err());
 
-        let style = "{(: text) serif}";
+        let style = "{text) serif}";
         let mut scanner = Scanner::new(style);
         assert!(parse_page_styles(&mut scanner).is_err());
 
-        let style = "{(:text) serif}";
+        let style = "{(text) serif}";
         let mut scanner = Scanner::new(style);
         assert!(parse_page_styles(&mut scanner).is_err());
 
@@ -413,24 +379,20 @@ mod test {
 
     #[test]
     fn well_formed_page_style() {
-        let style = "{(:text serif)(footnote underline (zip \"90210\"))}";
+        let style = "{(text serif)(footnote underline (zip \"90210\"))}";
         let mut scanner = crate::markup::scan::Scanner::new(style);
         let style = parse_page_styles(&mut scanner).unwrap();
         assert_eq!(
             style,
             vec![
                 PageStyle {
-                    selector: PageStyleSelector::Builtin {
-                        name: Token::new(TokenKind::Identifier, 1, "text"),
-                    },
+                    selector: Token::new(TokenKind::Identifier, 1, "text"),
                     styles: vec![InlineStyle::WithoutArg(WithoutArg {
                         name: Token::new(TokenKind::Identifier, 1, "serif",),
                     }),]
                 },
                 PageStyle {
-                    selector: PageStyleSelector::UserDefined {
-                        name: Token::new(TokenKind::Identifier, 1, "footnote"),
-                    },
+                    selector: Token::new(TokenKind::Identifier, 1, "footnote"),
                     styles: vec![
                         InlineStyle::WithoutArg(WithoutArg {
                             name: Token::new(TokenKind::Identifier, 1, "underline")

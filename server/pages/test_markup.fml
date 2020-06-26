@@ -1,18 +1,18 @@
 ; full specification of most page items is as follows:
-;     (:text user-item (* builtin-styles) "some text")
-;     (:builtin-item user-item (* builtin-styles) (some) (children))
+;     (text user-item (* builtin-styles) "some text")
+;     (builtin-item user-item (* builtin-styles) (some) (children))
 ; every page item must have at least one "attribute," but they are all optional.
 
 ; special built-in page item is the style item: {...}
 ; takes a list of (item styles...) to apply to items in the page.
-{(:text serif (fg "303030"))
+{(text serif (fg "303030"))
  (quote-box (bg "fff8dc"))
  (quote-text sans (fg "606060"))
  (footnote (fg "757575") sans italic)}
 
 ; special built-in page item is the binary reference: (& "name"),
 ; which refers to object "name" at the end of the server's response.
-(:box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
 
 ; strings are automatically concatenated. without a :builtin-item, the page
 ; item is assumed to be :text.
@@ -20,15 +20,15 @@
  " tempor incididunt ut labore et dolore magna aliqua.")
 
 ; items in a :box will be added to the page horizontally rather than vertically.
-(:box quote-box
- (quote-text "Contrary to popular belief, Lorem Ipsum is not simply"
+(box {quote-box}
+ ({quote-text} "Contrary to popular belief, Lorem Ipsum is not simply"
   " random text. It has roots in a piece of classical Latin literature")
- (quote-text "from 45 BC, making it over 2000 years old. Richard"
+ ({quote-text} "from 45 BC, making it over 2000 years old. Richard"
   " McClintock, a Latin professor at Hampden-Sydney College in")
  ; items in a :vbox will be added to the page vertically.
- (:vbox
-  (quote-text "Virginia, looked up one of the more obscure Latin")
-  (^ "frgi://www.lipsum.com/" footnote {(fill "20")} "from frgi://www.lipsum.com/")))
+ (vbox
+  ({quote-text} "Virginia, looked up one of the more obscure Latin")
+  (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 
 ; link text is optional
 (^ "https://github.com/zphixon/froggi" "github repository")
