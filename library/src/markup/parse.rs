@@ -278,12 +278,6 @@ mod test {
     use super::*;
 
     #[test]
-    fn sample() {
-        let sample = include_str!("../../../server/pages/index.fml");
-        crate::markup::scan::lex(sample).unwrap();
-    }
-
-    #[test]
     fn references() {
         let sample = r#"(& "image.jpg" {user-style (fg "30300") serif} "with alt" " text")"#;
         parse(sample).unwrap();

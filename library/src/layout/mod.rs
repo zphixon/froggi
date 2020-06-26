@@ -4,11 +4,13 @@ pub mod style;
 
 use crate::FroggiError;
 
+#[derive(Debug)]
 pub struct LayoutItem {
     kind: LayoutItemKind,
     style: style::Style,
 }
 
+#[derive(Debug)]
 pub enum LayoutItemKind {
     Box { children: Vec<LayoutItem> },
     VBox { children: Vec<LayoutItem> },
@@ -18,12 +20,12 @@ pub enum LayoutItemKind {
     Empty,
 }
 
+#[derive(Debug)]
 pub struct Document(Vec<LayoutItem>);
 
 impl Document {
     pub fn new(data: &str) -> Result<Document, Vec<FroggiError>> {
         let page = crate::markup::parse::parse(data)?;
-        //panic!("{:#?}", page);
 
         let mut styles = Vec::new();
         for page_style in page.page_styles {
@@ -31,6 +33,7 @@ impl Document {
         }
 
         panic!("{:#?}", styles);
+        // TODO: apply styles to page items
 
         Ok(Document(Vec::new()))
     }

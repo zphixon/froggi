@@ -13,10 +13,20 @@ fn main() {
     };
 
     println!("connecting to {}", addr);
-    let result = froggi::send_request(addr, "index.fml").unwrap();
-    println!("got {:?}", result);
+    let result = froggi::send_request(addr, "test_markup.fml").unwrap();
 
-    let _ = result.parse_page().unwrap();
+    println!("got {:#?}", result);
+    match result.parse_page() {
+        Ok(doc) => {
+            println!("page ok: {:#?}", doc);
+        }
+
+        Err(errors) => {
+            for error in errors {
+                println!("{}", error);
+            }
+        }
+    }
 
     let reader = Reader::new(Cursor::new(result.items()[0].data()))
         .with_guessed_format()
