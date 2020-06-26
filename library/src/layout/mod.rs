@@ -4,44 +4,34 @@ pub mod style;
 
 use crate::FroggiError;
 
-use style::Style;
+pub struct LayoutItem {
+    kind: LayoutItemKind,
+    style: style::Style,
+}
 
-/// AST node. Used by a client to decide the layout of the page.
-pub enum LayoutItem<'a> {
-    Box {
-        style: Option<Style>,
-        children: Vec<LayoutItem<'a>>,
-    },
-    VBox {
-        style: Option<Style>,
-        children: Vec<LayoutItem<'a>>,
-    },
-    Text {
-        style: Option<Style>,
-        text: &'a str,
-    },
-    Image(&'a str),
+pub enum LayoutItemKind {
+    Box { children: Vec<LayoutItem> },
+    VBox { children: Vec<LayoutItem> },
+    Text { text: String },
+    Image { name: String },
+    Link { text: String, location: String },
     Empty,
 }
 
-/// A FML document.
-pub struct Document<'a> {
-    pub title: &'a str,
-    pub base_style: Style,
-    pub tree: Vec<LayoutItem<'a>>,
-}
+pub struct Document(Vec<LayoutItem>);
 
-impl Document<'_> {
-    pub fn new(data: &str) -> Result<Document<'_>, Vec<FroggiError>> {
-        Ok(Document {
-            title: data,
-            base_style: Style::default(),
-            tree: make_layout(data)?,
-        })
+impl Document {
+    pub fn new(data: &str) -> Result<Document, Vec<FroggiError>> {
+        let page = crate::markup::parse::parse(data)?;
+        //panic!("{:#?}", page);
+
+        let mut styles = Vec::new();
+        for page_style in page.page_styles {
+            styles.push(style::Style::from_page_style(page_style)?);
+        }
+
+        panic!("{:#?}", styles);
+
+        Ok(Document(Vec::new()))
     }
-}
-
-fn make_layout(data: &str) -> Result<Vec<LayoutItem<'_>>, Vec<FroggiError>> {
-    let r = crate::markup::parse::parse(data)?;
-    panic!("wow it worked {:#?}", r);
 }
