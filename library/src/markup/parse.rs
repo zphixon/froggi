@@ -2,7 +2,8 @@ use crate::{AddMsg, FroggiError, ParseError};
 
 use super::scan::{Scanner, Token, TokenKind};
 use super::{
-    InlineStyle, ItemPayload, Page, PageItem, PageStyle, PageStyleSelector, ReferenceKind,
+    InlineStyle, ItemPayload, Page, PageItem, PageStyle, PageStyleSelector, ReferenceKind, WithArg,
+    WithoutArg,
 };
 
 /// Parse some data into a Page.
@@ -89,16 +90,16 @@ fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<PageStyle<'a>>
             let token = scanner.next_token()?;
             match token.kind() {
                 TokenKind::Identifier => {
-                    styles.push(InlineStyle::NoArgs { name: token });
+                    styles.push(InlineStyle::WithoutArg(WithoutArg { name: token }));
                 }
 
                 TokenKind::LeftParen => {
-                    styles.push(InlineStyle::Arg {
+                    styles.push(InlineStyle::WithArg(WithArg {
                         name: consume(scanner, TokenKind::Identifier)
                             .msg_str("expected a built-in style rule")?,
                         arg: consume(scanner, TokenKind::Text)
                             .msg_str("expected an argument to the built-in style rule")?,
-                    });
+                    }));
                     consume(scanner, TokenKind::RightParen)
                         .msg_str("style rules only take one argument")?;
                 }
@@ -224,16 +225,16 @@ fn parse_inline_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<InlineStyle<
             let token = scanner.next_token()?;
             match token.kind() {
                 TokenKind::Identifier => {
-                    inline_styles.push(InlineStyle::NoArgs { name: token });
+                    inline_styles.push(InlineStyle::WithoutArg(WithoutArg { name: token }));
                 }
 
                 TokenKind::LeftParen => {
-                    inline_styles.push(InlineStyle::Arg {
+                    inline_styles.push(InlineStyle::WithArg(WithArg {
                         name: consume(scanner, TokenKind::Identifier)
                             .msg_str("expected some built-in style name")?,
                         arg: consume(scanner, TokenKind::Text)
                             .msg_str("expected an argument to the built-in style")?,
-                    });
+                    }));
                     consume(scanner, TokenKind::RightParen)
                         .msg_str("styles only take one argument")?;
                 }
@@ -422,22 +423,22 @@ mod test {
                     selector: PageStyleSelector::Builtin {
                         name: Token::new(TokenKind::Identifier, 1, "text"),
                     },
-                    styles: vec![InlineStyle::NoArgs {
+                    styles: vec![InlineStyle::WithoutArg(WithoutArg {
                         name: Token::new(TokenKind::Identifier, 1, "serif",),
-                    },]
+                    }),]
                 },
                 PageStyle {
                     selector: PageStyleSelector::UserDefined {
                         name: Token::new(TokenKind::Identifier, 1, "footnote"),
                     },
                     styles: vec![
-                        InlineStyle::NoArgs {
+                        InlineStyle::WithoutArg(WithoutArg {
                             name: Token::new(TokenKind::Identifier, 1, "underline")
-                        },
-                        InlineStyle::Arg {
+                        }),
+                        InlineStyle::WithArg(WithArg {
                             name: Token::new(TokenKind::Identifier, 1, "zip"),
                             arg: Token::new(TokenKind::Text, 1, "\"90210\"")
-                        }
+                        })
                     ]
                 }
             ]

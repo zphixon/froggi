@@ -2,7 +2,6 @@ pub mod ast;
 pub mod parse;
 pub mod scan;
 
-use crate::{FroggiError, ScanError};
 use scan::Token;
 
 #[derive(Debug, PartialEq)]
@@ -19,8 +18,8 @@ pub enum PageStyleSelector<'a> {
 
 #[derive(Debug, PartialEq)]
 pub struct PageStyle<'a> {
-    selector: PageStyleSelector<'a>,
-    styles: Vec<InlineStyle<'a>>,
+    pub selector: PageStyleSelector<'a>,
+    pub styles: Vec<InlineStyle<'a>>,
 }
 
 #[derive(Debug, PartialEq)]
@@ -52,71 +51,55 @@ pub enum ReferenceKind<'a> {
 }
 
 #[derive(Debug, PartialEq)]
-pub enum InlineStyle<'a> {
-    NoArgs { name: Token<'a> },
-    Arg { name: Token<'a>, arg: Token<'a> },
+pub struct WithArg<'a> {
+    pub name: Token<'a>,
+    pub arg: Token<'a>,
 }
 
-pub fn escape_string(t: &Token) -> Result<String, FroggiError> {
-    match t.kind() {
-        scan::TokenKind::Text => {
-            let s = t.lexeme();
-            let mut value = Vec::new();
-            let line_start = t.line();
-            let mut line = line_start;
+#[derive(Debug, PartialEq)]
+pub struct WithoutArg<'a> {
+    pub name: Token<'a>,
+}
 
-            let mut i = 1;
-            while i < s.as_bytes().len() - 1 {
-                let byte = s.as_bytes()[i];
-                if byte == b'\n' {
-                    line += 1;
-                }
+#[derive(Debug, PartialEq)]
+pub enum InlineStyle<'a> {
+    WithoutArg(WithoutArg<'a>),
+    WithArg(WithArg<'a>),
+}
 
-                if byte == b'\\' {
-                    i += 1;
-                    let byte = s.as_bytes()[i];
-                    match byte {
-                        b'n' => {
-                            value.push(b'\n');
-                        }
-                        b'r' => {
-                            value.push(b'\r');
-                        }
-                        b'\\' => {
-                            value.push(b'\\');
-                        }
-                        b'"' => {
-                            value.push(b'"');
-                        }
-                        b't' => {
-                            value.push(b'\t');
-                        }
-                        b'\n' => {
-                            while i < s.as_bytes().len() - 1
-                                && s.as_bytes()[i].is_ascii_whitespace()
-                            {
-                                i += 1;
-                            }
-                            i -= 1;
-                        }
-                        c => {
-                            return Err(FroggiError::scan(
-                                ScanError::UnknownEscapeCode { code: c as char },
-                                line,
-                            ));
-                        }
-                    }
-                } else {
-                    value.push(byte);
-                }
-
-                i += 1;
-            }
-
-            Ok(String::from_utf8(value)?)
+impl InlineStyle<'_> {
+    pub fn name(&self) -> &str {
+        match self {
+            InlineStyle::WithoutArg(without) => without.name.lexeme(),
+            InlineStyle::WithArg(with) => with.name.lexeme(),
         }
-        _ => {
-            panic!("Cannot escape string from token {:?}", t);
+    }
+
+    pub fn has_arg(&self) -> bool {
+        match self {
+            InlineStyle::WithoutArg(_) => false,
+            InlineStyle::WithArg(_) => true,
+        }
+    }
+
+    pub fn token(&self) -> &Token<'_> {
+        match self {
+            InlineStyle::WithoutArg(without) => &without.name,
+            InlineStyle::WithArg(with) => &with.name,
+        }
+    }
+
+    pub fn as_with_arg(&self) -> &WithArg {
+        match self {
+            InlineStyle::WithArg(with) => &with,
+            _ => panic!("as_with_arg on InlineStyle::WithoutArg"),
+        }
+    }
+
+    pub fn as_without_arg(&self) -> &WithoutArg {
+        match self {
+            InlineStyle::WithoutArg(without) => &without,
+            _ => panic!("as_without_arg on InlineStyle::WithArg"),
         }
     }
 }
