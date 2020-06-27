@@ -47,6 +47,7 @@ pub enum TokenKind {
     Ampersand,
     Caret,
     Identifier,
+    Pound,
     End,
 }
 
@@ -136,6 +137,7 @@ impl<'a> Scanner<'a> {
 
                     b'&' => Ok(TokenKind::Ampersand),
                     b'^' => Ok(TokenKind::Caret),
+                    b'#' => Ok(TokenKind::Pound),
 
                     _ => self.identifier(),
                 }?,

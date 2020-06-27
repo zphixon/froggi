@@ -117,6 +117,8 @@ fn parse_item<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
         parse_blob(scanner)
     } else if scanner.peek_token(0)?.kind() == TokenKind::Caret {
         parse_link(scanner)
+    } else if scanner.peek_token(0)?.kind() == TokenKind::Pound {
+        parse_anchor(scanner)
     } else {
         let builtin = parse_builtin(scanner)?;
         let inline_styles = parse_inline_styles(scanner)?;
@@ -170,6 +172,17 @@ fn parse_link<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
     Ok(PageItem {
         builtin: None,
         inline_styles,
+        payload,
+    })
+}
+
+fn parse_anchor<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
+    consume(scanner, TokenKind::Pound)?;
+    let anchor = consume(scanner, TokenKind::Text)?;
+    let payload = ItemPayload::Anchor { anchor };
+    Ok(PageItem {
+        builtin: None,
+        inline_styles: Vec::new(),
         payload,
     })
 }
@@ -276,6 +289,16 @@ fn consume<'a>(scanner: &mut Scanner<'a>, kind: TokenKind) -> Result<Token<'a>, 
 #[cfg(test)]
 mod test {
     use super::*;
+
+    #[test]
+    fn anchor() {
+        let sample = r#"(# "something")"#;
+        let page = parse(sample).unwrap();
+        match page.items[0].payload {
+            ItemPayload::Anchor { anchor } => assert_eq!(anchor.lexeme(), "\"something\""),
+            _ => panic!(),
+        }
+    }
 
     #[test]
     fn references() {

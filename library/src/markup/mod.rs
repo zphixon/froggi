@@ -29,6 +29,7 @@ pub enum ItemPayload<'a> {
     Text { text: Vec<Token<'a>> },
     Children { children: Vec<PageItem<'a>> },
     Reference { reference: ReferenceKind<'a> },
+    Anchor { anchor: Token<'a> },
 }
 
 #[derive(Debug, PartialEq)]

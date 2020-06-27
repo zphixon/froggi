@@ -14,6 +14,10 @@
 ; which refers to object "name" at the end of the server's response.
 (box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
 
+; this is an anchor, you can link to it with frgi://example.com/test_markup.fml#anchor
+; the client should automatically scroll the page to this point
+(# "anchor")
+
 ; strings are automatically concatenated. without a :builtin-item, the page
 ; item is assumed to be :text.
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
