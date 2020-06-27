@@ -27,10 +27,10 @@ impl Default for Style {
 }
 
 impl Style {
-    pub fn from_page_style(page_style: PageStyle) -> Result<Self, FroggiError> {
+    pub fn from_page_style(page_style: &PageStyle) -> Result<Self, FroggiError> {
         let mut style = Style::default();
 
-        for inline_style in page_style.styles {
+        for inline_style in &page_style.styles {
             let builtin_style = get_by_name(&inline_style)
                 .ok_or_else(|| {
                     FroggiError::markup(
@@ -237,7 +237,7 @@ mod test {
 
     #[test]
     fn non_builtin_page_style() {
-        assert!(Style::from_page_style(PageStyle {
+        assert!(Style::from_page_style(&PageStyle {
             selector: Token::new(TokenKind::Identifier, 1, "test"),
             styles: vec![InlineStyle::WithoutArg(WithoutArg {
                 name: Token::new(TokenKind::Identifier, 1, "not-built-in"),
@@ -288,7 +288,7 @@ mod test {
             ],
         };
 
-        let style = Style::from_page_style(page_style).unwrap();
+        let style = Style::from_page_style(&page_style).unwrap();
         assert_eq!(
             style,
             Style {

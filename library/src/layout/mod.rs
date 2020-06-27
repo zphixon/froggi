@@ -28,10 +28,11 @@ impl Document {
         let page = crate::markup::parse::parse(data)?;
 
         let mut styles = Vec::new();
-        for page_style in page.page_styles {
+        for page_style in &page.page_styles {
             styles.push(style::Style::from_page_style(page_style)?);
         }
 
+        println!("{:#?}", page);
         panic!("{:#?}", styles);
         // TODO: apply styles to page items
 
