@@ -18,7 +18,6 @@ pub struct PageStyle<'a> {
 
 #[derive(Debug, PartialEq)]
 pub struct PageItem<'a> {
-    // a None value implies a :text item
     pub builtin: Option<Token<'a>>,
     pub inline_styles: Vec<InlineStyle<'a>>,
     pub payload: ItemPayload<'a>,

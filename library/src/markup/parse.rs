@@ -120,6 +120,7 @@ fn parse_item<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
     } else if scanner.peek_token(0)?.kind() == TokenKind::Pound {
         parse_anchor(scanner)
     } else {
+        // this will be None, implying a text item, or some other kind of item
         let builtin = parse_builtin(scanner)?;
         let inline_styles = parse_inline_styles(scanner)?;
         let payload = parse_payload(scanner)?;
