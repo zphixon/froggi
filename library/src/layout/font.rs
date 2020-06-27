@@ -18,9 +18,9 @@ pub enum FontType {
 /// Properties of a font.
 #[derive(Clone, Debug, PartialEq)]
 pub struct FontProperties {
-    font_style: Vec<FontStyle>,
-    font_type: FontType,
-    size: u8,
+    pub font_style: Vec<FontStyle>,
+    pub font_type: FontType,
+    pub size: u8,
 }
 
 impl Default for FontProperties {
@@ -34,13 +34,6 @@ impl Default for FontProperties {
 }
 
 impl FontProperties {
-    pub fn sans() -> Self {
-        FontProperties {
-            font_type: FontType::Sans,
-            ..Default::default()
-        }
-    }
-
     pub fn font_style(&self) -> &Vec<FontStyle> {
         &self.font_style
     }

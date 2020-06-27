@@ -305,8 +305,66 @@ mod test {
                 fill: None,
                 foreground: Color::new(0xde, 0xdb, 0x1f),
                 background: Color::white(),
-                font_properties: FontProperties::sans(),
+                font_properties: FontProperties {
+                    font_type: FontType::Sans,
+                    ..FontProperties::default()
+                }
             }
+        );
+    }
+
+    #[test]
+    fn parse_from_page_style() {
+        let page = r#"{(text serif (fg "303030"))
+                       (quote-box (bg "fff8dc"))
+                       (quote-text sans (fg "606060"))
+                       (footnote (fg "757575") sans italic)}"#;
+        let page = crate::markup::parse::parse(page).unwrap();
+        let styles: Vec<Style> = page
+            .page_styles
+            .iter()
+            .map(|page_style| Style::from_page_style(page_style).unwrap())
+            .collect();
+
+        assert_eq!(
+            styles,
+            vec![
+                Style {
+                    selector: Some(String::from("text")),
+                    fill: None,
+                    foreground: Color::new(0x30, 0x30, 0x30),
+                    background: Color::white(),
+                    font_properties: FontProperties::default(),
+                },
+                Style {
+                    selector: Some(String::from("quote-box")),
+                    fill: None,
+                    foreground: Color::black(),
+                    background: Color::new(0xff, 0xf8, 0xdc),
+                    font_properties: FontProperties::default(),
+                },
+                Style {
+                    selector: Some(String::from("quote-text")),
+                    fill: None,
+                    foreground: Color::new(0x60, 0x60, 0x60),
+                    background: Color::white(),
+                    font_properties: FontProperties {
+                        font_type: FontType::Sans,
+                        ..FontProperties::default()
+                    },
+                },
+                Style {
+                    selector: Some(String::from("footnote")),
+                    fill: None,
+                    foreground: Color::new(0x75, 0x75, 0x75),
+                    background: Color::white(),
+                    font_properties: FontProperties {
+                        font_style: vec![FontStyle::Italic],
+                        font_type: FontType::Sans,
+                        ..FontProperties::default()
+                    },
+                },
+            ]
         );
     }
 }
