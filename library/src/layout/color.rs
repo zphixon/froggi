@@ -30,7 +30,7 @@ impl Color {
     }
 
     pub fn from_token(fg: &crate::markup::scan::Token) -> Result<Self, FroggiError> {
-        let hex = fg.trimmed_lexeme();
+        let hex = fg.lexeme().to_owned();
 
         let rgb = match hex::decode(&hex) {
             Ok(data) => data,

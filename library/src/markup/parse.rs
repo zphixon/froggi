@@ -296,7 +296,7 @@ mod test {
         let sample = r#"(# "something")"#;
         let page = parse(sample).unwrap();
         match page.items[0].payload {
-            ItemPayload::Anchor { anchor } => assert_eq!(anchor.lexeme(), "\"something\""),
+            ItemPayload::Anchor { anchor } => assert_eq!(anchor.lexeme(), "something"),
             _ => panic!(),
         }
     }

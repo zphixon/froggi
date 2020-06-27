@@ -76,11 +76,10 @@ impl Token<'_> {
     }
 
     pub fn lexeme(&self) -> &str {
-        self.lexeme
-    }
-
-    pub fn trimmed_lexeme(&self) -> String {
-        String::from(&self.lexeme[1..self.lexeme.len() - 1])
+        match self.kind {
+            TokenKind::Text => &self.lexeme[1..self.lexeme.len() - 1],
+            _ => self.lexeme,
+        }
     }
 }
 

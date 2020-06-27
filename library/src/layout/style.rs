@@ -98,12 +98,14 @@ impl Style {
     }
 
     fn set_fill(&mut self, fill: &WithArg) -> Result<(), FroggiError> {
-        let percent = fill.arg.trimmed_lexeme();
+        let percent = fill.arg.lexeme();
         let percentage = match percent.parse::<u8>() {
             Ok(percent) => percent,
             Err(_) => {
                 return Err(FroggiError::markup(
-                    MarkupError::IncorrectPercent { percent },
+                    MarkupError::IncorrectPercent {
+                        percent: percent.to_owned(),
+                    },
                     fill.arg.line(),
                 ))
             }
@@ -111,7 +113,9 @@ impl Style {
 
         if percentage > 100 {
             return Err(FroggiError::markup(
-                MarkupError::IncorrectPercent { percent },
+                MarkupError::IncorrectPercent {
+                    percent: percent.to_owned(),
+                },
                 fill.arg.line(),
             ));
         }
@@ -122,9 +126,14 @@ impl Style {
     }
 
     fn set_font_size(&mut self, size: &WithArg) -> Result<(), FroggiError> {
-        let num = size.arg.trimmed_lexeme();
+        let num = size.arg.lexeme();
         let size = num.parse::<u8>().map_err(|_| {
-            FroggiError::markup(MarkupError::IncorrectNumber { num }, size.arg.line())
+            FroggiError::markup(
+                MarkupError::IncorrectNumber {
+                    num: num.to_owned(),
+                },
+                size.arg.line(),
+            )
         })?;
         self.font_properties.set_size(size);
         Ok(())
