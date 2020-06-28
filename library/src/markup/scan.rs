@@ -22,8 +22,10 @@ fn is_control_character(c: u8) -> bool {
         || c == b'}'
         || c == b'('
         || c == b')'
-        || c == b':'
+        || c == b'^'
+        || c == b'#'
         || c == b'&'
+        || c == b'"'
         || c.is_ascii_control()
         || c.is_ascii_whitespace()
 }
@@ -235,5 +237,39 @@ mod test {
         assert_eq!(s.next_token().unwrap().kind(), TokenKind::LeftParen);
         assert_eq!(s.peek_token(0).unwrap().kind(), TokenKind::LeftBrace);
         assert_eq!(s.next_token().unwrap().kind(), TokenKind::LeftBrace);
+    }
+
+    #[test]
+    fn smooshed_tokens() {
+        let mut s = Scanner::new(r#"a(&&#&text"hello"^h^h^"text"something{"#);
+        let mut tokens = Vec::new();
+        while let Ok(token) = s.next_token() {
+            if token.kind() == TokenKind::End {
+                break;
+            }
+            tokens.push(token);
+        }
+        dbg!(&tokens);
+        assert_eq!(
+            tokens,
+            vec![
+                Token::new(TokenKind::Identifier, 1, "a"),
+                Token::new(TokenKind::LeftParen, 1, "("),
+                Token::new(TokenKind::Ampersand, 1, "&"),
+                Token::new(TokenKind::Ampersand, 1, "&"),
+                Token::new(TokenKind::Pound, 1, "#"),
+                Token::new(TokenKind::Ampersand, 1, "&"),
+                Token::new(TokenKind::Identifier, 1, "text"),
+                Token::new(TokenKind::Text, 1, "\"hello\""),
+                Token::new(TokenKind::Caret, 1, "^"),
+                Token::new(TokenKind::Identifier, 1, "h"),
+                Token::new(TokenKind::Caret, 1, "^"),
+                Token::new(TokenKind::Identifier, 1, "h"),
+                Token::new(TokenKind::Caret, 1, "^"),
+                Token::new(TokenKind::Text, 1, "\"text\""),
+                Token::new(TokenKind::Identifier, 1, "something"),
+                Token::new(TokenKind::LeftBrace, 1, "{"),
+            ]
+        );
     }
 }
