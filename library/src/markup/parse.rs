@@ -140,7 +140,7 @@ fn parse_item<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
 }
 
 fn parse_blob<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
-    consume(scanner, TokenKind::Ampersand)?;
+    let amp = consume(scanner, TokenKind::Ampersand)?;
     let name = consume(scanner, TokenKind::Text)?;
 
     let inline_styles = parse_inline_styles(scanner)?;
@@ -152,14 +152,14 @@ fn parse_blob<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
     };
 
     Ok(PageItem {
-        builtin: None,
+        builtin: Some(amp),
         inline_styles,
         payload,
     })
 }
 
 fn parse_link<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
-    consume(scanner, TokenKind::Caret)?;
+    let caret = consume(scanner, TokenKind::Caret)?;
     let link = consume(scanner, TokenKind::Text)?;
 
     let inline_styles = parse_inline_styles(scanner)?;
@@ -171,18 +171,18 @@ fn parse_link<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
     };
 
     Ok(PageItem {
-        builtin: None,
+        builtin: Some(caret),
         inline_styles,
         payload,
     })
 }
 
 fn parse_anchor<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
-    consume(scanner, TokenKind::Pound)?;
+    let pound = consume(scanner, TokenKind::Pound)?;
     let anchor = consume(scanner, TokenKind::Text)?;
     let payload = ItemPayload::Anchor { anchor };
     Ok(PageItem {
-        builtin: None,
+        builtin: Some(pound),
         inline_styles: Vec::new(),
         payload,
     })
