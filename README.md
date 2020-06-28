@@ -24,6 +24,9 @@ date on every commit.
 
 ## todo
 
+* possibly unify Page and Document types
+  * parse would directly produce a Document rather than having to go through
+    the intermediate Page syntax tree
 * write a markup validator
   * checks your pages for any broken links or object references
 * server app
