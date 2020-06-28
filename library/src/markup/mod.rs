@@ -33,14 +33,20 @@ pub enum ItemPayload<'a> {
 
 #[derive(Debug, PartialEq)]
 pub enum ReferenceKind<'a> {
-    Link {
-        link: Token<'a>,
-        text: Vec<Token<'a>>,
-    },
-    Blob {
-        name: Token<'a>,
-        alt: Vec<Token<'a>>,
-    },
+    Link(Link<'a>),
+    Blob(Blob<'a>),
+}
+
+#[derive(Debug, PartialEq)]
+pub struct Link<'a> {
+    pub link: Token<'a>,
+    pub text: Vec<Token<'a>>,
+}
+
+#[derive(Debug, PartialEq)]
+pub struct Blob<'a> {
+    pub name: Token<'a>,
+    pub alt: Vec<Token<'a>>,
 }
 
 #[derive(Debug, PartialEq)]

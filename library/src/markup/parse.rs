@@ -2,7 +2,8 @@ use crate::{AddMsg, FroggiError, ParseError};
 
 use super::scan::{Scanner, Token, TokenKind};
 use super::{
-    InlineStyle, ItemPayload, Page, PageItem, PageStyle, ReferenceKind, WithArg, WithoutArg,
+    Blob, InlineStyle, ItemPayload, Link, Page, PageItem, PageStyle, ReferenceKind, WithArg,
+    WithoutArg,
 };
 
 /// Parse some data into a Page.
@@ -145,10 +146,10 @@ fn parse_blob<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
 
     let inline_styles = parse_inline_styles(scanner)?;
     let payload = ItemPayload::Reference {
-        reference: ReferenceKind::Blob {
+        reference: ReferenceKind::Blob(Blob {
             name,
             alt: collect_text(scanner)?,
-        },
+        }),
     };
 
     Ok(PageItem {
@@ -164,10 +165,10 @@ fn parse_link<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
 
     let inline_styles = parse_inline_styles(scanner)?;
     let payload = ItemPayload::Reference {
-        reference: ReferenceKind::Link {
+        reference: ReferenceKind::Link(Link {
             link,
             text: collect_text(scanner)?,
-        },
+        }),
     };
 
     Ok(PageItem {
