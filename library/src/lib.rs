@@ -94,7 +94,6 @@ use markup::scan::TokenKind;
 pub enum ParseError {
     UnexpectedToken { expected: TokenKind, got: String },
     UnbalancedParentheses,
-    UnknownBuiltin { builtin: String },
     ExpectedBuiltin { got: String },
     ExpectedStyle { got: String },
     ExpectedItem { got: String },
@@ -108,8 +107,6 @@ impl fmt::Display for ParseError {
                 => write!(f, "unexpected token: expected {:?}, got {}", expected, got),
             ParseError::UnbalancedParentheses
                 => write!(f, "unbalanced parentheses"),
-            ParseError::UnknownBuiltin { builtin }
-                => write!(f, "unknown builtin: {}", builtin),
             ParseError::ExpectedBuiltin { got }
                 => write!(f, "expected builtin, got {:?}", got),
             ParseError::ExpectedStyle { got }
@@ -129,6 +126,9 @@ pub enum MarkupError {
     IncorrectColor { color: String },
     UnknownStyle { style: String },
     IncorrectNumber { num: String },
+    UnknownBuiltin { builtin: String },
+    ExpectedChildren { item: String },
+    ExpectedText { item: String },
 }
 
 #[rustfmt::skip]
@@ -149,6 +149,12 @@ impl fmt::Display for MarkupError {
                 => write!(f, "unknown inline style: {}", style),
             MarkupError::IncorrectNumber { num }
                 => write!(f, "number is invalid: {}", num),
+            MarkupError::UnknownBuiltin { builtin }
+                => write!(f, "unknown builtin: {}", builtin),
+            MarkupError::ExpectedChildren { item }
+                => write!(f, "expected children for item {}", item),
+            MarkupError::ExpectedText { item }
+                => write!(f, "expected text for item {}", item),
         }
     }
 }
