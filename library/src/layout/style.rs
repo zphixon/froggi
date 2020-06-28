@@ -221,7 +221,7 @@ lazy_static::lazy_static! {
         builtin_styles.insert("bg",            BuiltinStyle { font: false, arg: ArgKind::Color(Style::set_background_color), });
         builtin_styles.insert("fill",          BuiltinStyle { font: false, arg: ArgKind::Percent(Style::set_fill),           });
         builtin_styles.insert("size",          BuiltinStyle { font: true,  arg: ArgKind::FontSize(Style::set_font_size),     });
-        builtin_styles.insert("monospace",     BuiltinStyle { font: true,  arg: ArgKind::None(Style::set_font_monospace),    });
+        builtin_styles.insert("mono",          BuiltinStyle { font: true,  arg: ArgKind::None(Style::set_font_monospace),    });
         builtin_styles.insert("serif",         BuiltinStyle { font: true,  arg: ArgKind::None(Style::set_font_serif),        });
         builtin_styles.insert("sans",          BuiltinStyle { font: true,  arg: ArgKind::None(Style::set_font_sans),         });
         builtin_styles.insert("strike",        BuiltinStyle { font: true,  arg: ArgKind::None(Style::set_font_strike),       });
