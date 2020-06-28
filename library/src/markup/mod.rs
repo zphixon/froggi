@@ -30,6 +30,7 @@ pub enum ItemPayload<'a> {
     },
     Children {
         children: Vec<PageItem<'a>>,
+        line: usize,
     },
     Link {
         link: Token<'a>,

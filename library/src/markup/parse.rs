@@ -237,13 +237,14 @@ fn parse_payload<'a>(scanner: &mut Scanner<'a>) -> Result<ItemPayload<'a>, Frogg
             text: collect_text(scanner)?,
         })
     } else if scanner.peek_token(0)?.kind() == TokenKind::LeftParen {
+        let line = scanner.peek_token(0)?.line();
         // parse_item takes care of the left and right parens
         let mut children = Vec::new();
         while scanner.peek_token(0)?.kind() != TokenKind::RightParen {
             children.push(parse_item(scanner)?);
         }
 
-        Ok(ItemPayload::Children { children })
+        Ok(ItemPayload::Children { children, line })
     } else {
         Err(FroggiError::parse(
             ParseError::UnexpectedToken {
