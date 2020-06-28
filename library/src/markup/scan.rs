@@ -72,7 +72,7 @@ impl Token<'_> {
     }
 
     pub fn clone_lexeme(&self) -> String {
-        self.lexeme.into()
+        self.lexeme().into()
     }
 
     pub fn lexeme(&self) -> &str {
