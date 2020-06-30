@@ -139,7 +139,7 @@ impl LayoutItemKind {
                 },
 
                 _ => Err(FroggiError::markup(
-                    MarkupError::UnknownBuiltin {
+                    MarkupError::UnknownBuiltinStyle {
                         builtin: builtin.clone_lexeme(),
                     },
                     builtin.line(),

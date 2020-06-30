@@ -183,7 +183,18 @@ fn parse_anchor<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiErr
 
 fn parse_builtin<'a>(scanner: &mut Scanner<'a>) -> Result<Option<Token<'a>>, FroggiError> {
     Ok(if scanner.peek_token(0)?.kind() == TokenKind::Identifier {
-        Some(consume(scanner, TokenKind::Identifier)?)
+        let token = consume(scanner, TokenKind::Identifier)?;
+        match token.lexeme() {
+            "box" | "vbox" | "text" => Some(token),
+            _ => {
+                return Err(FroggiError::parse(
+                    ParseError::UnknownBuiltinItem {
+                        item: token.clone_lexeme(),
+                    },
+                    token.line(),
+                ))
+            }
+        }
     } else {
         None
     })
