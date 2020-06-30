@@ -239,4 +239,10 @@ mod test {
         let page = r#"(& ("children") ("bad"))"#;
         assert!(Document::new(page).is_err());
     }
+
+    #[test]
+    fn some_styles() {
+        let page = r#"{(something (fg "23320a")) (^ (bg "2aaaaa"))}"#;
+        Document::new(page).unwrap();
+    }
 }

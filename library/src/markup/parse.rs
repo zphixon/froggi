@@ -60,8 +60,7 @@ fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<PageStyle<'a>>
             .msg_str("expected style rules inside page style item")?;
 
         // name of the rule
-        let selector =
-            consume(scanner, TokenKind::Identifier).msg_str("expected the name of a style rule")?;
+        let selector = consume_selector(scanner)?;
 
         // styles that belong to the rule
         let mut styles = Vec::new();
@@ -264,6 +263,21 @@ fn collect_text<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<Token<'a>>, FroggiE
     }
 
     Ok(text)
+}
+
+fn consume_selector<'a>(scanner: &mut Scanner<'a>) -> Result<Token<'a>, FroggiError> {
+    let token = scanner.next_token()?;
+    match token.kind() {
+        TokenKind::Identifier | TokenKind::Caret => Ok(token),
+        _ => Err(FroggiError::parse(
+            ParseError::UnexpectedToken {
+                expected: TokenKind::Identifier,
+                got: token.clone_lexeme(),
+            },
+            token.line(),
+        ))
+        .msg_str("selectors must be either built-in items or links, or user-defined selectors"),
+    }
 }
 
 fn consume<'a>(scanner: &mut Scanner<'a>, kind: TokenKind) -> Result<Token<'a>, FroggiError> {
