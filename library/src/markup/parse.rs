@@ -110,11 +110,11 @@ fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<PageStyle<'a>>
 fn parse_item<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
     let left_paren = consume(scanner, TokenKind::LeftParen)?;
 
-    let result = if scanner.peek_token(0)?.kind() == TokenKind::Ampersand {
+    let result = if scanner.peek_token(0)?.kind() == TokenKind::Blob {
         parse_blob(scanner)
-    } else if scanner.peek_token(0)?.kind() == TokenKind::Caret {
+    } else if scanner.peek_token(0)?.kind() == TokenKind::Link {
         parse_link(scanner)
-    } else if scanner.peek_token(0)?.kind() == TokenKind::Pound {
+    } else if scanner.peek_token(0)?.kind() == TokenKind::Anchor {
         parse_anchor(scanner)
     } else {
         // this will be None, implying a text item, or some other kind of item
@@ -137,7 +137,7 @@ fn parse_item<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
 }
 
 fn parse_blob<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
-    let amp = consume(scanner, TokenKind::Ampersand)?;
+    let amp = consume(scanner, TokenKind::Blob)?;
     let name = consume(scanner, TokenKind::Text)?;
 
     let inline_styles = parse_inline_styles(scanner)?;
@@ -154,7 +154,7 @@ fn parse_blob<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
 }
 
 fn parse_link<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
-    let caret = consume(scanner, TokenKind::Caret)?;
+    let caret = consume(scanner, TokenKind::Link)?;
     let link = consume(scanner, TokenKind::Text)?;
 
     let inline_styles = parse_inline_styles(scanner)?;
@@ -171,7 +171,7 @@ fn parse_link<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
 }
 
 fn parse_anchor<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
-    let pound = consume(scanner, TokenKind::Pound)?;
+    let pound = consume(scanner, TokenKind::Anchor)?;
     let anchor = consume(scanner, TokenKind::Text)?;
     let payload = ItemPayload::Anchor { anchor };
     Ok(PageItem {
@@ -183,7 +183,18 @@ fn parse_anchor<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiErr
 
 fn parse_builtin<'a>(scanner: &mut Scanner<'a>) -> Result<Option<Token<'a>>, FroggiError> {
     Ok(if scanner.peek_token(0)?.kind() == TokenKind::Identifier {
-        Some(consume(scanner, TokenKind::Identifier)?)
+        let token = consume(scanner, TokenKind::Identifier)?;
+        match token.lexeme() {
+            "box" | "vbox" | "text" => Some(token),
+            _ => {
+                return Err(FroggiError::parse(
+                    ParseError::UnknownBuiltinItem {
+                        item: token.clone_lexeme(),
+                    },
+                    token.line(),
+                ))
+            }
+        }
     } else {
         None
     })
@@ -268,7 +279,7 @@ fn collect_text<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<Token<'a>>, FroggiE
 fn consume_selector<'a>(scanner: &mut Scanner<'a>) -> Result<Token<'a>, FroggiError> {
     let token = scanner.next_token()?;
     match token.kind() {
-        TokenKind::Identifier | TokenKind::Caret => Ok(token),
+        TokenKind::Identifier | TokenKind::Link => Ok(token),
         _ => Err(FroggiError::parse(
             ParseError::UnexpectedToken {
                 expected: TokenKind::Identifier,

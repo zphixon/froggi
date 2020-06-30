@@ -97,6 +97,7 @@ pub enum ParseError {
     ExpectedBuiltin { got: String },
     ExpectedStyle { got: String },
     ExpectedItem { got: String },
+    UnknownBuiltinItem { item: String },
 }
 
 #[rustfmt::skip]
@@ -113,6 +114,8 @@ impl fmt::Display for ParseError {
                 => write!(f, "expected style, got {:?}", got),
             ParseError::ExpectedItem { got }
                 => write!(f, "expected item or page style, got {:?}", got),
+            ParseError::UnknownBuiltinItem { item }
+                => write!(f, "unknown builtin item {:?}", item),
         }
     }
 }
@@ -126,7 +129,7 @@ pub enum MarkupError {
     IncorrectColor { color: String },
     UnknownStyle { style: String },
     IncorrectNumber { num: String },
-    UnknownBuiltin { builtin: String },
+    UnknownBuiltinStyle { builtin: String },
     ExpectedChildren { item: String },
     ExpectedText { item: String },
 }
@@ -149,7 +152,7 @@ impl fmt::Display for MarkupError {
                 => write!(f, "unknown inline style: {}", style),
             MarkupError::IncorrectNumber { num }
                 => write!(f, "number is invalid: {}", num),
-            MarkupError::UnknownBuiltin { builtin }
+            MarkupError::UnknownBuiltinStyle { builtin }
                 => write!(f, "unknown builtin: {}", builtin),
             MarkupError::ExpectedChildren { item }
                 => write!(f, "expected children for item {}", item),
