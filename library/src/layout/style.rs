@@ -293,7 +293,7 @@ mod test {
             styles: vec![
                 InlineStyle::WithArg(WithArg {
                     name: Token::new(TokenKind::Identifier, 1, "fg"),
-                    arg: Token::new(TokenKind::Text, 1, "\"dedb1f\""),
+                    arg: Token::new(TokenKind::String, 1, "\"dedb1f\""),
                 }),
                 InlineStyle::WithoutArg(WithoutArg {
                     name: Token::new(TokenKind::Identifier, 1, "sans"),

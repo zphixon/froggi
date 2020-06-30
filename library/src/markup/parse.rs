@@ -75,7 +75,7 @@ fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<PageStyle<'a>>
                     styles.push(InlineStyle::WithArg(WithArg {
                         name: consume(scanner, TokenKind::Identifier)
                             .msg_str("expected a built-in style rule")?,
-                        arg: consume(scanner, TokenKind::Text)
+                        arg: consume(scanner, TokenKind::String)
                             .msg_str("expected an argument to the built-in style rule")?,
                     }));
                     consume(scanner, TokenKind::RightParen)
@@ -110,22 +110,14 @@ fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<PageStyle<'a>>
 fn parse_item<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
     let left_paren = consume(scanner, TokenKind::LeftParen)?;
 
-    let result = if scanner.peek_token(0)?.kind() == TokenKind::Blob {
-        parse_blob(scanner)
-    } else if scanner.peek_token(0)?.kind() == TokenKind::Link {
-        parse_link(scanner)
-    } else if scanner.peek_token(0)?.kind() == TokenKind::Anchor {
-        parse_anchor(scanner)
-    } else {
-        // this will be None, implying a text item, or some other kind of item
-        let builtin = parse_builtin(scanner)?;
-        let inline_styles = parse_inline_styles(scanner)?;
-        let payload = parse_payload(scanner)?;
-        Ok(PageItem {
-            builtin,
-            inline_styles,
-            payload,
-        })
+    let result = match scanner.peek_token(0)?.kind() {
+        TokenKind::Blob => parse_blob(scanner)?,
+        TokenKind::Link => parse_link(scanner)?,
+        TokenKind::Anchor => parse_anchor(scanner)?,
+        TokenKind::Text => parse_text(scanner)?,
+        TokenKind::VBox => parse_vbox(scanner)?,
+        TokenKind::Box => parse_box(scanner)?,
+        _ => parse_implicit_text(scanner)?,
     };
 
     consume(scanner, TokenKind::RightParen).msg(format!(
@@ -133,12 +125,12 @@ fn parse_item<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
         left_paren.line()
     ))?;
 
-    result
+    Ok(result)
 }
 
 fn parse_blob<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
-    let amp = consume(scanner, TokenKind::Blob)?;
-    let name = consume(scanner, TokenKind::Text)?;
+    let builtin = consume(scanner, TokenKind::Blob)?;
+    let name = consume(scanner, TokenKind::String)?;
 
     let inline_styles = parse_inline_styles(scanner)?;
     let payload = ItemPayload::Blob {
@@ -147,15 +139,15 @@ fn parse_blob<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
     };
 
     Ok(PageItem {
-        builtin: Some(amp),
+        builtin,
         inline_styles,
         payload,
     })
 }
 
 fn parse_link<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
-    let caret = consume(scanner, TokenKind::Link)?;
-    let link = consume(scanner, TokenKind::Text)?;
+    let builtin = consume(scanner, TokenKind::Link)?;
+    let link = consume(scanner, TokenKind::String)?;
 
     let inline_styles = parse_inline_styles(scanner)?;
     let payload = ItemPayload::Link {
@@ -164,39 +156,82 @@ fn parse_link<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
     };
 
     Ok(PageItem {
-        builtin: Some(caret),
+        builtin,
         inline_styles,
         payload,
     })
 }
 
 fn parse_anchor<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
-    let pound = consume(scanner, TokenKind::Anchor)?;
-    let anchor = consume(scanner, TokenKind::Text)?;
+    let builtin = consume(scanner, TokenKind::Anchor)?;
+    let anchor = consume(scanner, TokenKind::String)?;
     let payload = ItemPayload::Anchor { anchor };
     Ok(PageItem {
-        builtin: Some(pound),
+        builtin,
         inline_styles: Vec::new(),
         payload,
     })
 }
 
-fn parse_builtin<'a>(scanner: &mut Scanner<'a>) -> Result<Option<Token<'a>>, FroggiError> {
-    Ok(if scanner.peek_token(0)?.kind() == TokenKind::Identifier {
-        let token = consume(scanner, TokenKind::Identifier)?;
-        match token.lexeme() {
-            "box" | "vbox" | "text" => Some(token),
-            _ => {
-                return Err(FroggiError::parse(
-                    ParseError::UnknownBuiltinItem {
-                        item: token.clone_lexeme(),
-                    },
-                    token.line(),
-                ))
-            }
-        }
-    } else {
-        None
+fn parse_text<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
+    let builtin = consume(scanner, TokenKind::Text)?;
+    let inline_styles = parse_inline_styles(scanner)?;
+    let text = collect_text(scanner)?;
+
+    Ok(PageItem {
+        builtin,
+        inline_styles,
+        payload: ItemPayload::Text { text },
+    })
+}
+
+fn parse_vbox<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
+    let builtin = consume(scanner, TokenKind::VBox)?;
+    let inline_styles = parse_inline_styles(scanner)?;
+    let mut children = Vec::new();
+
+    while scanner.peek_token(0)?.kind() != TokenKind::RightParen {
+        children.push(parse_item(scanner)?);
+    }
+
+    Ok(PageItem {
+        builtin,
+        inline_styles,
+        payload: ItemPayload::Children {
+            children,
+            line: builtin.line(),
+        },
+    })
+}
+
+fn parse_box<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
+    let builtin = consume(scanner, TokenKind::Box)?;
+    let inline_styles = parse_inline_styles(scanner)?;
+    let mut children = Vec::new();
+
+    while scanner.peek_token(0)?.kind() != TokenKind::RightParen {
+        children.push(parse_item(scanner)?);
+    }
+
+    Ok(PageItem {
+        builtin,
+        inline_styles,
+        payload: ItemPayload::Children {
+            children,
+            line: builtin.line(),
+        },
+    })
+}
+
+fn parse_implicit_text<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
+    let implicit = Token::new(TokenKind::ImplicitText, scanner.peek_token(0)?.line(), "");
+    let inline_styles = parse_inline_styles(scanner)?;
+    let text = collect_text(scanner)?;
+
+    Ok(PageItem {
+        builtin: implicit,
+        inline_styles,
+        payload: ItemPayload::Text { text },
     })
 }
 
@@ -216,7 +251,7 @@ fn parse_inline_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<InlineStyle<
                     inline_styles.push(InlineStyle::WithArg(WithArg {
                         name: consume(scanner, TokenKind::Identifier)
                             .msg_str("expected some built-in style name")?,
-                        arg: consume(scanner, TokenKind::Text)
+                        arg: consume(scanner, TokenKind::String)
                             .msg_str("expected an argument to the built-in style")?,
                     }));
                     consume(scanner, TokenKind::RightParen)
@@ -241,36 +276,11 @@ fn parse_inline_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<InlineStyle<
     Ok(inline_styles)
 }
 
-fn parse_payload<'a>(scanner: &mut Scanner<'a>) -> Result<ItemPayload<'a>, FroggiError> {
-    if scanner.peek_token(0)?.kind() == TokenKind::Text {
-        Ok(ItemPayload::Text {
-            text: collect_text(scanner)?,
-        })
-    } else if scanner.peek_token(0)?.kind() == TokenKind::LeftParen {
-        let line = scanner.peek_token(0)?.line();
-        // parse_item takes care of the left and right parens
-        let mut children = Vec::new();
-        while scanner.peek_token(0)?.kind() != TokenKind::RightParen {
-            children.push(parse_item(scanner)?);
-        }
-
-        Ok(ItemPayload::Children { children, line })
-    } else {
-        Err(FroggiError::parse(
-            ParseError::UnexpectedToken {
-                expected: TokenKind::Text,
-                got: scanner.peek_token(0)?.clone_lexeme(),
-            },
-            scanner.peek_token(0)?.line(),
-        ))
-        .msg_str("expected a page item")
-    }
-}
-
 fn collect_text<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<Token<'a>>, FroggiError> {
     let mut text = Vec::new();
+
     while scanner.peek_token(0)?.kind() != TokenKind::RightParen {
-        text.push(consume(scanner, TokenKind::Text)?);
+        text.push(consume(scanner, TokenKind::String)?);
     }
 
     Ok(text)
@@ -279,7 +289,11 @@ fn collect_text<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<Token<'a>>, FroggiE
 fn consume_selector<'a>(scanner: &mut Scanner<'a>) -> Result<Token<'a>, FroggiError> {
     let token = scanner.next_token()?;
     match token.kind() {
-        TokenKind::Identifier | TokenKind::Link => Ok(token),
+        TokenKind::Identifier
+        | TokenKind::Link
+        | TokenKind::Box
+        | TokenKind::VBox
+        | TokenKind::Text => Ok(token),
         _ => Err(FroggiError::parse(
             ParseError::UnexpectedToken {
                 expected: TokenKind::Identifier,
@@ -424,7 +438,7 @@ mod test {
             style,
             vec![
                 PageStyle {
-                    selector: Token::new(TokenKind::Identifier, 1, "text"),
+                    selector: Token::new(TokenKind::Text, 1, "text"),
                     styles: vec![InlineStyle::WithoutArg(WithoutArg {
                         name: Token::new(TokenKind::Identifier, 1, "serif",),
                     }),]
@@ -437,7 +451,7 @@ mod test {
                         }),
                         InlineStyle::WithArg(WithArg {
                             name: Token::new(TokenKind::Identifier, 1, "zip"),
-                            arg: Token::new(TokenKind::Text, 1, "\"90210\"")
+                            arg: Token::new(TokenKind::String, 1, "\"90210\"")
                         })
                     ]
                 }

@@ -41,7 +41,7 @@ pub struct Scanner<'a> {
 
 #[derive(Copy, Clone, PartialEq, Debug)]
 pub enum TokenKind {
-    Text,
+    String,
     LeftParen,
     RightParen,
     LeftBrace,
@@ -49,6 +49,10 @@ pub enum TokenKind {
     Blob,
     Link,
     Anchor,
+    Box,
+    VBox,
+    Text,
+    ImplicitText,
     Identifier,
     End,
 }
@@ -79,7 +83,7 @@ impl Token<'_> {
 
     pub fn lexeme(&self) -> &str {
         match self.kind {
-            TokenKind::Text => &self.lexeme[1..self.lexeme.len() - 1],
+            TokenKind::String => &self.lexeme[1..self.lexeme.len() - 1],
             _ => self.lexeme,
         }
     }
@@ -155,7 +159,13 @@ impl<'a> Scanner<'a> {
         while !is_control_character(self.peek()) {
             self.advance();
         }
-        Ok(TokenKind::Identifier)
+
+        match self.lexeme()? {
+            "box" => Ok(TokenKind::Box),
+            "vbox" => Ok(TokenKind::VBox),
+            "text" => Ok(TokenKind::Text),
+            _ => Ok(TokenKind::Identifier),
+        }
     }
 
     fn text(&mut self) -> Result<TokenKind, FroggiError> {
@@ -180,7 +190,7 @@ impl<'a> Scanner<'a> {
             self.error(ScanError::UnterminatedString { start_line })
         } else {
             self.advance();
-            Ok(TokenKind::Text)
+            Ok(TokenKind::String)
         }
     }
 
@@ -259,14 +269,14 @@ mod test {
                 Token::new(TokenKind::Blob, 1, "&"),
                 Token::new(TokenKind::Anchor, 1, "#"),
                 Token::new(TokenKind::Blob, 1, "&"),
-                Token::new(TokenKind::Identifier, 1, "text"),
-                Token::new(TokenKind::Text, 1, "\"hello\""),
+                Token::new(TokenKind::Text, 1, "text"),
+                Token::new(TokenKind::String, 1, "\"hello\""),
                 Token::new(TokenKind::Link, 1, "^"),
                 Token::new(TokenKind::Identifier, 1, "h"),
                 Token::new(TokenKind::Link, 1, "^"),
                 Token::new(TokenKind::Identifier, 1, "h"),
                 Token::new(TokenKind::Link, 1, "^"),
-                Token::new(TokenKind::Text, 1, "\"text\""),
+                Token::new(TokenKind::String, 1, "\"text\""),
                 Token::new(TokenKind::Identifier, 1, "something"),
                 Token::new(TokenKind::LeftBrace, 1, "{"),
             ]

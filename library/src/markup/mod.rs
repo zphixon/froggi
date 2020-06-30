@@ -18,7 +18,7 @@ pub struct PageStyle<'a> {
 
 #[derive(Debug, PartialEq)]
 pub struct PageItem<'a> {
-    pub builtin: Option<Token<'a>>,
+    pub builtin: Token<'a>,
     pub inline_styles: Vec<InlineStyle<'a>>,
     pub payload: ItemPayload<'a>,
 }
