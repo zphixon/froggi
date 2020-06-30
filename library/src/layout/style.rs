@@ -27,10 +27,9 @@ impl Default for Style {
 }
 
 impl Style {
-    pub fn from_page_style(page_style: &PageStyle) -> Result<Self, FroggiError> {
+    pub fn from_inline_styles(inline_styles: &[InlineStyle]) -> Result<Self, FroggiError> {
         let mut style = Style::default();
-
-        for inline_style in &page_style.styles {
+        for inline_style in inline_styles {
             let builtin_style = get_by_name(&inline_style)
                 .ok_or_else(|| {
                     FroggiError::markup(
@@ -78,6 +77,11 @@ impl Style {
             }
         }
 
+        Ok(style)
+    }
+
+    pub fn from_page_style(page_style: &PageStyle) -> Result<Self, FroggiError> {
+        let mut style = Style::from_inline_styles(&page_style.styles)?;
         style.set_selector(page_style.selector.clone_lexeme());
 
         Ok(style)
