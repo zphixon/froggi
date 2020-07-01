@@ -7,7 +7,6 @@ use crate::{AddMsg, FroggiError, MarkupError};
 /// Style on a FML item.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Style {
-    selector: Option<String>,
     fill: Option<u8>,
     foreground: Color,
     background: Color,
@@ -17,7 +16,6 @@ pub struct Style {
 impl Default for Style {
     fn default() -> Self {
         Self {
-            selector: None,
             fill: None,
             foreground: Color::black(),
             background: Color::white(),
@@ -82,13 +80,7 @@ impl Style {
 
     pub fn from_page_style(page_style: &PageStyle) -> Result<Self, FroggiError> {
         let mut style = Style::from_inline_styles(&page_style.styles)?;
-        style.set_selector(page_style.selector.clone_lexeme());
-
         Ok(style)
-    }
-
-    fn set_selector(&mut self, selector: String) {
-        self.selector = Some(selector);
     }
 
     fn set_foreground_color(&mut self, fg: &WithArg) -> Result<(), FroggiError> {
@@ -305,7 +297,6 @@ mod test {
         assert_eq!(
             style,
             Style {
-                selector: Some("name".into()),
                 fill: None,
                 foreground: Color::new(0xde, 0xdb, 0x1f),
                 background: Color::white(),
@@ -334,21 +325,18 @@ mod test {
             styles,
             vec![
                 Style {
-                    selector: Some(String::from("text")),
                     fill: None,
                     foreground: Color::new(0x30, 0x30, 0x30),
                     background: Color::white(),
                     font_properties: FontProperties::default(),
                 },
                 Style {
-                    selector: Some(String::from("quote-box")),
                     fill: None,
                     foreground: Color::black(),
                     background: Color::new(0xff, 0xf8, 0xdc),
                     font_properties: FontProperties::default(),
                 },
                 Style {
-                    selector: Some(String::from("quote-text")),
                     fill: None,
                     foreground: Color::new(0x60, 0x60, 0x60),
                     background: Color::white(),
@@ -358,7 +346,6 @@ mod test {
                     },
                 },
                 Style {
-                    selector: Some(String::from("footnote")),
                     fill: None,
                     foreground: Color::new(0x75, 0x75, 0x75),
                     background: Color::white(),
