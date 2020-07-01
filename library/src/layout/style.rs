@@ -321,6 +321,8 @@ mod test {
             .map(|page_style| Style::from_page_style(page_style).unwrap())
             .collect();
 
+        let mut hm = std::collections::HashSet::new();
+        hm.insert(FontStyle::Italic);
         assert_eq!(
             styles,
             vec![
@@ -350,7 +352,7 @@ mod test {
                     foreground: Color::new(0x75, 0x75, 0x75),
                     background: Color::white(),
                     font_properties: FontProperties {
-                        font_style: vec![FontStyle::Italic],
+                        font_style: hm,
                         font_type: FontType::Sans,
                         ..FontProperties::default()
                     },

@@ -1,5 +1,7 @@
+use std::collections::HashSet;
+
 /// Style of a font.
-#[derive(PartialEq, Copy, Clone, Debug)]
+#[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum FontStyle {
     Strike,
     Bold,
@@ -16,9 +18,9 @@ pub enum FontType {
 }
 
 /// Properties of a font.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(PartialEq, Clone, Debug)]
 pub struct FontProperties {
-    pub font_style: Vec<FontStyle>,
+    pub font_style: HashSet<FontStyle>,
     pub font_type: FontType,
     pub size: u8,
 }
@@ -26,7 +28,7 @@ pub struct FontProperties {
 impl Default for FontProperties {
     fn default() -> Self {
         Self {
-            font_style: vec![],
+            font_style: HashSet::new(),
             font_type: FontType::Serif,
             size: 12,
         }
@@ -34,7 +36,7 @@ impl Default for FontProperties {
 }
 
 impl FontProperties {
-    pub fn font_style(&self) -> &Vec<FontStyle> {
+    pub fn font_style(&self) -> &HashSet<FontStyle> {
         &self.font_style
     }
 
@@ -51,7 +53,7 @@ impl FontProperties {
     }
 
     pub fn add_style(&mut self, font_style: FontStyle) {
-        self.font_style.push(font_style);
+        self.font_style.insert(font_style);
     }
 
     pub fn set_size(&mut self, size: u8) {
