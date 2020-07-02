@@ -256,7 +256,7 @@ mod test {
         assert!(
             get_by_name(&InlineStyle::WithArg(WithArg {
                 name: Token::new(TokenKind::Identifier, 1, "size"),
-                arg: Token::new(TokenKind::Text, 1, "\"32\"")
+                arg: Token::new(TokenKind::Text, 1, r#""32""#)
             }))
             .unwrap()
             .font
@@ -285,7 +285,7 @@ mod test {
             styles: vec![
                 InlineStyle::WithArg(WithArg {
                     name: Token::new(TokenKind::Identifier, 1, "fg"),
-                    arg: Token::new(TokenKind::String, 1, "\"dedb1f\""),
+                    arg: Token::new(TokenKind::String, 1, r#""dedb1f""#),
                 }),
                 InlineStyle::WithoutArg(WithoutArg {
                     name: Token::new(TokenKind::Identifier, 1, "sans"),

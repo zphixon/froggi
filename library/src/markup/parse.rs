@@ -359,13 +359,13 @@ mod test {
 
     #[test]
     fn parent_style_missing_arg() {
-        let item = "(this {style (missing)} (\"multiple children?\") (doesnt-work \"why\"))";
+        let item = r#"(this {style (missing)} ("multiple children?") (doesnt-work "why"))"#;
         assert!(parse(item).is_err());
     }
 
     #[test]
     fn child_style_missing_arg() {
-        let item = "(this (doesnt-work {style (missing)} \"why\"))";
+        let item = r#"(this (doesnt-work {style (missing)} "why"))"#;
         assert!(parse(item).is_err());
     }
 
@@ -377,7 +377,7 @@ mod test {
 
     #[test]
     fn item_inline_style_missing_arg() {
-        let item = "(item {style (missing)} \"arg\")";
+        let item = r#"(item {style (missing)} "arg")"#;
         let mut scanner = Scanner::new(item);
         assert!(parse_item(&mut scanner).is_err());
     }
@@ -391,8 +391,7 @@ mod test {
 
     #[test]
     fn well_formed_page_item() {
-        let item =
-            "(box {user-style inline-style (with \"args\")} (\"children\") ({with} \"style\"))";
+        let item = r#"(box {user-style inline-style (with "args")} ("children") ({with} "style"))"#;
         parse(item).unwrap();
     }
 
@@ -431,7 +430,7 @@ mod test {
 
     #[test]
     fn well_formed_page_style() {
-        let style = "{(text serif)(footnote underline (zip \"90210\"))}";
+        let style = r#"{(text serif)(footnote underline (zip "90210"))}"#;
         let mut scanner = crate::markup::scan::Scanner::new(style);
         let style = parse_page_styles(&mut scanner).unwrap();
         assert_eq!(
@@ -451,7 +450,7 @@ mod test {
                         }),
                         InlineStyle::WithArg(WithArg {
                             name: Token::new(TokenKind::Identifier, 1, "zip"),
-                            arg: Token::new(TokenKind::String, 1, "\"90210\"")
+                            arg: Token::new(TokenKind::String, 1, r#""90210""#)
                         })
                     ]
                 }

@@ -215,7 +215,9 @@ mod test {
         assert_eq!(response.version, crate::FROGGI_VERSION);
         assert_eq!(
             &response.page,
-            "(img \"white.png\")\n(txt \"fugheddaboudit\")\n(img \"magenta.png\")"
+            r#"(img "white.png")
+(txt "fugheddaboudit")
+(img "magenta.png")"#
         );
         assert_eq!(&response.items[0].name, "white.png");
         assert_eq!(&response.items[1].name, "magenta.png");
@@ -232,8 +234,11 @@ mod test {
             include_bytes!("../1px_magenta.png").to_vec(),
         );
 
-        let page =
-            String::from("(img \"white.png\")\n(txt \"fugheddaboudit\")\n(img \"magenta.png\")");
+        let page = String::from(
+            r#"(img "white.png")
+(txt "fugheddaboudit")
+(img "magenta.png")"#,
+        );
         let response = Response::new(page, vec![white, magenta]);
         let data_test: Vec<u8> = response.into();
 
