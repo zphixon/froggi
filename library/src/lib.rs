@@ -4,7 +4,6 @@ use std::io::{self, Write};
 use std::net::{TcpStream, ToSocketAddrs};
 use std::str;
 
-pub mod layout;
 pub mod markup;
 pub mod request;
 pub mod response;
