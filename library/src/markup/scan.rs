@@ -2,21 +2,6 @@ use crate::{FroggiError, ScanError};
 
 use std::collections::VecDeque;
 
-pub fn lex(data: &str) -> Result<Vec<Token<'_>>, FroggiError> {
-    let mut tokens = Vec::new();
-    let mut scanner = Scanner::new(data);
-
-    #[allow(irrefutable_let_patterns)]
-    while let token = scanner.next_token()? {
-        if token.kind == TokenKind::End {
-            break;
-        }
-        tokens.push(token);
-    }
-
-    Ok(tokens)
-}
-
 fn is_control_character(c: u8) -> bool {
     c == b'{'
         || c == b'}'
