@@ -15,15 +15,6 @@ fn is_control_character(c: u8) -> bool {
         || c.is_ascii_whitespace()
 }
 
-#[derive(Debug)]
-pub struct Scanner<'a> {
-    start: usize,
-    current: usize,
-    line: usize,
-    tokens: VecDeque<Token<'a>>,
-    source: &'a [u8],
-}
-
 #[derive(Copy, Clone, PartialEq, Debug)]
 pub enum TokenKind {
     String,
@@ -89,15 +80,30 @@ impl Token<'_> {
     }
 }
 
+#[derive(Debug)]
+pub struct Scanner<'a> {
+    start: usize,
+    current: usize,
+    line: usize,
+    paren_level: usize,
+    tokens: VecDeque<Token<'a>>,
+    source: &'a [u8],
+}
+
 impl<'a> Scanner<'a> {
     pub fn new(s: &str) -> Scanner<'_> {
         Scanner {
             start: 0,
             current: 0,
             line: 1,
+            paren_level: 0,
             tokens: VecDeque::with_capacity(2),
             source: s.as_bytes(),
         }
+    }
+
+    pub fn at_top_level(&self) -> bool {
+        self.paren_level == 0
     }
 
     pub fn peek_token(&mut self, idx: usize) -> Result<Token<'a>, FroggiError> {
@@ -135,10 +141,25 @@ impl<'a> Scanner<'a> {
                     }
 
                     b'"' => self.text(),
-                    b'(' => Ok(TokenKind::LeftParen),
-                    b')' => Ok(TokenKind::RightParen),
                     b'{' => Ok(TokenKind::LeftBrace),
                     b'}' => Ok(TokenKind::RightBrace),
+
+                    b'(' => {
+                        self.paren_level += 1;
+                        Ok(TokenKind::LeftParen)
+                    }
+
+                    b')' => {
+                        if self.paren_level != 0 {
+                            self.paren_level -= 1;
+                            Ok(TokenKind::RightParen)
+                        } else {
+                            Err(FroggiError::parse(
+                                crate::ParseError::UnbalancedParentheses,
+                                self.line,
+                            ))
+                        }
+                    }
 
                     b'&' => Ok(TokenKind::Blob),
                     b'^' => Ok(TokenKind::Link),
