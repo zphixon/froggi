@@ -7,10 +7,10 @@ use crate::{AddMsg, FroggiError, MarkupError};
 /// Style on a FML item.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Style {
-    fill: Option<u8>,
-    foreground: Color,
-    background: Color,
-    font_properties: FontProperties,
+    pub fill: Option<u8>,
+    pub foreground: Color,
+    pub background: Color,
+    pub font_properties: FontProperties,
 }
 
 impl Default for Style {
