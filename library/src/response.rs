@@ -45,6 +45,10 @@ impl Response {
         }
     }
 
+    pub fn parse(&self) -> Result<crate::markup::Page<'_>, Vec<FroggiError>> {
+        crate::markup::parse::parse(&self.page)
+    }
+
     /// Read a response from a source of bytes.
     pub fn from_bytes(bytes: &mut impl Read) -> Result<Self, FroggiError> {
         // response header, 5 bytes long
