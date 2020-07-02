@@ -1,7 +1,7 @@
 use crate::{AddMsg, FroggiError, ParseError};
 
 use super::scan::{Scanner, Token, TokenKind};
-use super::{InlineStyle, ItemPayload, Page, PageItem, PageStyle, WithArg, WithoutArg};
+use super::{InlineStyle, ItemPayload, Page, PageItem, PageStyle};
 
 /// Parse some data into a Page.
 pub fn parse(data: &str) -> Result<Page<'_>, Vec<FroggiError>> {
@@ -63,36 +63,7 @@ fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<PageStyle<'a>>
         let selector = consume_selector(scanner)?;
 
         // styles that belong to the rule
-        let mut styles = Vec::new();
-        while scanner.peek_token(0)?.kind() != TokenKind::RightParen {
-            let token = scanner.next_token()?;
-            match token.kind() {
-                TokenKind::Identifier => {
-                    styles.push(InlineStyle::WithoutArg(WithoutArg { name: token }));
-                }
-
-                TokenKind::LeftParen => {
-                    styles.push(InlineStyle::WithArg(WithArg {
-                        name: consume(scanner, TokenKind::Identifier)
-                            .msg_str("expected a built-in style rule")?,
-                        arg: consume(scanner, TokenKind::String)
-                            .msg_str("expected an argument to the built-in style rule")?,
-                    }));
-                    consume(scanner, TokenKind::RightParen)
-                        .msg_str("style rules only take one argument")?;
-                }
-
-                _ => {
-                    return Err(FroggiError::parse(
-                        ParseError::ExpectedStyle {
-                            got: token.clone_lexeme(),
-                        },
-                        token.line(),
-                    ))
-                    .msg_str("expected a style rule")
-                }
-            }
-        }
+        let styles = parse_style_list(scanner)?;
 
         page_styles.push(PageStyle { selector, styles });
         consume(scanner, TokenKind::RightParen).msg_str("end of the style rule")?;
@@ -236,41 +207,102 @@ fn parse_implicit_text<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, Fr
 }
 
 fn parse_inline_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<InlineStyle<'a>>, FroggiError> {
-    let mut inline_styles = Vec::new();
     if scanner.peek_token(0)?.kind() == TokenKind::LeftBrace {
         consume(scanner, TokenKind::LeftBrace)?;
+        let inline_styles = parse_style_list(scanner)?;
+        consume(scanner, TokenKind::RightBrace).msg_str("expected the end of the inline style")?;
+        Ok(inline_styles)
+    } else {
+        Ok(Vec::new())
+    }
+}
 
-        while scanner.peek_token(0)?.kind() != TokenKind::RightBrace {
-            let token = scanner.next_token()?;
-            match token.kind() {
-                TokenKind::Identifier => {
-                    inline_styles.push(InlineStyle::WithoutArg(WithoutArg { name: token }));
+fn parse_style_list<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<InlineStyle<'a>>, FroggiError> {
+    let mut inline_styles = Vec::new();
+
+    while scanner.peek_token(0)?.kind() != TokenKind::RightBrace
+        && scanner.peek_token(0)?.kind() != TokenKind::RightParen
+    {
+        let token = scanner.next_token()?;
+        match token.kind() {
+            TokenKind::Identifier => {
+                // TODO: make sure the style actually exists
+                inline_styles.push(InlineStyle::UserDefined { token });
+            }
+
+            TokenKind::Mono => {
+                inline_styles.push(InlineStyle::Mono { token });
+            }
+
+            TokenKind::Serif => {
+                inline_styles.push(InlineStyle::Serif { token });
+            }
+
+            TokenKind::Sans => {
+                inline_styles.push(InlineStyle::Sans { token });
+            }
+
+            TokenKind::Bold => {
+                inline_styles.push(InlineStyle::Bold { token });
+            }
+
+            TokenKind::Italic => {
+                inline_styles.push(InlineStyle::Italic { token });
+            }
+
+            TokenKind::Underline => {
+                inline_styles.push(InlineStyle::Underline { token });
+            }
+
+            TokenKind::Strike => {
+                inline_styles.push(InlineStyle::Strike { token });
+            }
+
+            TokenKind::LeftParen => {
+                let token = scanner.next_token()?;
+                let arg = consume(scanner, TokenKind::String)?;
+
+                match token.kind() {
+                    TokenKind::Fg => {
+                        inline_styles.push(InlineStyle::Fg { token, arg });
+                    }
+
+                    TokenKind::Bg => {
+                        inline_styles.push(InlineStyle::Bg { token, arg });
+                    }
+
+                    TokenKind::Fill => {
+                        inline_styles.push(InlineStyle::Fill { token, arg });
+                    }
+
+                    TokenKind::Size => {
+                        inline_styles.push(InlineStyle::Size { token, arg });
+                    }
+
+                    _ => {
+                        return Err(FroggiError::parse(
+                            ParseError::ExpectedStyle {
+                                got: token.clone_lexeme(),
+                            },
+                            token.line(),
+                        ))
+                        .msg(format!("{} does not take an argument", token.lexeme()))
+                    }
                 }
 
-                TokenKind::LeftParen => {
-                    inline_styles.push(InlineStyle::WithArg(WithArg {
-                        name: consume(scanner, TokenKind::Identifier)
-                            .msg_str("expected some built-in style name")?,
-                        arg: consume(scanner, TokenKind::String)
-                            .msg_str("expected an argument to the built-in style")?,
-                    }));
-                    consume(scanner, TokenKind::RightParen)
-                        .msg_str("styles only take one argument")?;
-                }
+                consume(scanner, TokenKind::RightParen)?;
+            }
 
-                _ => {
-                    return Err(FroggiError::parse(
-                        ParseError::ExpectedStyle {
-                            got: token.clone_lexeme(),
-                        },
-                        token.line(),
-                    ))
-                    .msg_str("expected a style rule in the list of inline style rules")
-                }
+            _ => {
+                return Err(FroggiError::parse(
+                    ParseError::ExpectedStyle {
+                        got: token.clone_lexeme(),
+                    },
+                    token.line(),
+                ))
+                .msg_str("expected a style rule in the list of inline style rules")
             }
         }
-
-        consume(scanner, TokenKind::RightBrace).msg_str("expected the end of the inline style")?;
     }
 
     Ok(inline_styles)
@@ -391,7 +423,7 @@ mod test {
 
     #[test]
     fn well_formed_page_item() {
-        let item = r#"(box {user-style inline-style (with "args")} ("children") ({with} "style"))"#;
+        let item = r#"(box {user-style inline-style (fg "000000")} ("children") ({mono} "style"))"#;
         parse(item).unwrap();
     }
 
@@ -430,28 +462,29 @@ mod test {
 
     #[test]
     fn well_formed_page_style() {
-        let style = r#"{(text serif)(footnote underline (zip "90210"))}"#;
+        let style = r#"{(text serif)(footnote underline (fg "902100"))}"#;
         let mut scanner = crate::markup::scan::Scanner::new(style);
         let style = parse_page_styles(&mut scanner).unwrap();
+        dbg!(&style);
         assert_eq!(
             style,
             vec![
                 PageStyle {
                     selector: Token::new(TokenKind::Text, 1, "text"),
-                    styles: vec![InlineStyle::WithoutArg(WithoutArg {
-                        name: Token::new(TokenKind::Identifier, 1, "serif",),
-                    }),]
+                    styles: vec![InlineStyle::Serif {
+                        token: Token::new(TokenKind::Serif, 1, "serif",),
+                    }]
                 },
                 PageStyle {
                     selector: Token::new(TokenKind::Identifier, 1, "footnote"),
                     styles: vec![
-                        InlineStyle::WithoutArg(WithoutArg {
-                            name: Token::new(TokenKind::Identifier, 1, "underline")
-                        }),
-                        InlineStyle::WithArg(WithArg {
-                            name: Token::new(TokenKind::Identifier, 1, "zip"),
-                            arg: Token::new(TokenKind::String, 1, r#""90210""#)
-                        })
+                        InlineStyle::Underline {
+                            token: Token::new(TokenKind::Underline, 1, "underline")
+                        },
+                        InlineStyle::Fg {
+                            token: Token::new(TokenKind::Fg, 1, "fg"),
+                            arg: Token::new(TokenKind::String, 1, r#""902100""#)
+                        }
                     ]
                 }
             ]

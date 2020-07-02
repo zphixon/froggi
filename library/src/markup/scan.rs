@@ -46,6 +46,7 @@ pub enum TokenKind {
     RightParen,
     LeftBrace,
     RightBrace,
+
     Blob,
     Link,
     Anchor,
@@ -53,6 +54,20 @@ pub enum TokenKind {
     VBox,
     Text,
     ImplicitText,
+
+    Mono,
+    Serif,
+    Sans,
+    Bold,
+    Italic,
+    Underline,
+    Strike,
+
+    Fg,
+    Bg,
+    Fill,
+    Size,
+
     Identifier,
     End,
 }
@@ -164,6 +179,17 @@ impl<'a> Scanner<'a> {
             "box" => Ok(TokenKind::Box),
             "vbox" => Ok(TokenKind::VBox),
             "text" => Ok(TokenKind::Text),
+            "mono" => Ok(TokenKind::Mono),
+            "serif" => Ok(TokenKind::Serif),
+            "sans" => Ok(TokenKind::Sans),
+            "bold" => Ok(TokenKind::Bold),
+            "italic" => Ok(TokenKind::Italic),
+            "underline" => Ok(TokenKind::Underline),
+            "strike" => Ok(TokenKind::Strike),
+            "fg" => Ok(TokenKind::Fg),
+            "bg" => Ok(TokenKind::Bg),
+            "fill" => Ok(TokenKind::Fill),
+            "size" => Ok(TokenKind::Size),
             _ => Ok(TokenKind::Identifier),
         }
     }

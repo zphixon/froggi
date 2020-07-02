@@ -16,7 +16,7 @@ fn main() {
     let result = froggi::send_request(addr, "test_markup.fml").unwrap();
 
     println!("got {:#?}", result);
-    match result.parse_page() {
+    match froggi::parse_page(result.page()) {
         Ok(doc) => {
             println!("page ok: {:#?}", doc);
         }
