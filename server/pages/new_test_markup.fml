@@ -1,0 +1,18 @@
+("Page title")
+
+("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor"
+ " incididunt ut labore et dolore magna aliqua.")
+
+(box {(bg "f5f5f5")}
+ ({(bg "dae8fc")} "Contrary to popular belief, Lorem Ipsum is not simply random"
+  " text. It has roots in a piece of classical Latin literature")
+ ({(bg "d5e8d4")} "from 45 BC, making it over 2000 years old. Richard McClintock,"
+  " a Latin professor at Hampden-Sydney College in")
+ (vbox {(bg "ffe6cc")}
+  ({(bg "fff2cc")} "Virginia, looked up one of the more obscure Latin")
+  (^ "http://www.lipsum.com/" {(bg "f8cecc")} "from http://www.lipsum.com/")))
+
+("But I must explain to you how all this mistaken idea of denouncing pleasure"
+ " and praising pain was born and I will give you a complete account of the"
+ " system, and expound the actual teachings of the great explorer of the truth,"
+ " the master-builder of human happiness.")

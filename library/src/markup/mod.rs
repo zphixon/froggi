@@ -230,7 +230,7 @@ fn page_item_to_html(item: &PageItem) -> String {
         }
 
         ItemPayload::Link { link, text } => {
-            html.push_str(&format!("<a href=\"{}\"", link.lexeme()));
+            html.push_str("<div");
 
             if !item.inline_styles.is_empty() {
                 html.push_str(" style=\"");
@@ -255,7 +255,7 @@ fn page_item_to_html(item: &PageItem) -> String {
                 }
             }
             html.push_str(">");
-
+            html.push_str(&format!("<a href=\"{}\">", link.lexeme()));
             if !text.is_empty() {
                 html.push_str(&text.iter().fold(String::new(), |acc, next| {
                     format!("{}{}", acc, next.lexeme())
@@ -264,7 +264,7 @@ fn page_item_to_html(item: &PageItem) -> String {
                 html.push_str(link.lexeme());
             }
 
-            html.push_str("</a>\n");
+            html.push_str("</a></div>\n");
         }
 
         ItemPayload::Blob { name, alt } => {
