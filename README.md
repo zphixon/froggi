@@ -46,7 +46,7 @@ date on every commit.
     * equally, or percentage-wise.
 2. height calculation...
 
-![diagram](https://github.com/zphixon/unnamed_protocol/blob/master/notes/display.svg)
+![diagram](https://github.com/zphixon/froggi/blob/main/notes/display.svg)
 
 ## other ideas
 
