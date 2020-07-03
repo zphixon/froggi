@@ -14,7 +14,7 @@ fn main() {
     };
 
     println!("connecting to {}", addr);
-    let result = froggi::send_request(addr, "new_test_markup.fml").unwrap();
+    let result = froggi::send_request(addr, "test_markup.fml").unwrap();
 
     println!("got {:#?}", result);
     match result.parse() {
@@ -24,7 +24,7 @@ fn main() {
             let html = froggi::markup::to_html(&doc);
             println!("{}", html);
 
-            let mut file = File::create("server/pages/new_generated_test_markup.html").unwrap();
+            let mut file = File::create("server/pages/generated_test_markup.html").unwrap();
             file.write_all(html.as_bytes()).unwrap();
         }
 
