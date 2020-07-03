@@ -1,7 +1,9 @@
-("Page title")
+({bold (size "32")} "Page title")
 
 ("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor"
  " incididunt ut labore et dolore magna aliqua.")
+
+({bold} "No gray or orange boxes should be visible below.")
 
 (box {(bg "f5f5f5")}
  ({(bg "dae8fc")} "Contrary to popular belief, Lorem Ipsum is not simply random"

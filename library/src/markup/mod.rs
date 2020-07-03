@@ -122,7 +122,6 @@ div > * {
 
     for item in &page.items {
         html.push_str(&page_item_to_html(item));
-        html.push_str("<br>\n");
     }
 
     html.push_str(
@@ -297,7 +296,7 @@ fn inline_style_to_html(style: &InlineStyle) -> String {
         InlineStyle::Mono { .. } => String::from("font-family: monospace;"),
         InlineStyle::Serif { .. } => String::from("font-family: serif;"),
         InlineStyle::Sans { .. } => String::from("font-family: sans-serif;"),
-        InlineStyle::Bold { .. } => String::from("font-style: bold;"),
+        InlineStyle::Bold { .. } => String::from("font-weight: bold;"),
         InlineStyle::Italic { .. } => String::from("font-style: italic;"),
         InlineStyle::Underline { .. } => String::from("text-decoration: underline;"),
         InlineStyle::Strike { .. } => String::from("text-decoration: strikethrough;"),
