@@ -1,14 +1,3 @@
-; full specification of most page items is as follows:
-;     (text user-item (* builtin-styles) "some text")
-;     (builtin-item user-item (* builtin-styles) (some) (children))
-; every page item must have at least one "attribute," but they are all optional.
-
-; text = "text"? styles string+:text
-; vbox/box = "box"/"vbox" styles item+:children
-; anchor = "#" string:location
-; link = "^" string:location styles string+:display_text
-; blob = "&" string:name styles string+:alt
-
 ; special built-in page item is the style item: {...}
 ; takes a list of (item styles...) to apply to items in the page.
 {(text serif (fg "303030"))

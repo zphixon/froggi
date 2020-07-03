@@ -1,7 +1,8 @@
 use image::io::Reader;
 use image::GenericImageView;
 
-use std::io::Cursor;
+use std::fs::File;
+use std::io::{Cursor, Write};
 
 fn main() {
     froggi::hello();
@@ -19,6 +20,12 @@ fn main() {
     match result.parse() {
         Ok(doc) => {
             println!("page ok: {:#?}", doc);
+
+            let html = froggi::markup::to_html(&doc);
+            println!("{}", html);
+
+            let mut file = File::create("server/pages/generated_test_markup.html").unwrap();
+            file.write_all(html.as_bytes()).unwrap();
         }
 
         Err(errors) => {
