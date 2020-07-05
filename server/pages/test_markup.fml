@@ -7,24 +7,33 @@
 
 ; special built-in page item is the binary reference: (& "name"),
 ; which refers to object "name" at the end of the server's response.
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ({(size "26") bold}"Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
 
 ; this is an anchor, you can link to it with frgi://example.com/test_markup.fml#anchor
 ; the client should automatically scroll the page to this point
 (# "anchor")
 
-; strings are automatically concatenated. without a :builtin-item, the page
-; item is assumed to be :text.
+; children of an inline item do not display on a new line.
+(inline
+ ({bold} "inline")
+ ({strike} "items")
+ ("can have some")
+ ({(fg "1aff02")} "styling")
+ ({sans underline} "in one line"))
+
+; strings are automatically concatenated. without a builtin item name, the page
+; item is assumed to be text.
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
 
-; items in a :box will be added to the page horizontally rather than vertically.
+; items in a box will be added to the page horizontally rather than vertically.
+; they will have equal amounts of their parent's horizontal space allocated to them.
 (box {quote-box}
  ({quote-text} "Contrary to popular belief, Lorem Ipsum is not simply"
   " random text. It has roots in a piece of classical Latin literature")
  ({quote-text} "from 45 BC, making it over 2000 years old. Richard"
   " McClintock, a Latin professor at Hampden-Sydney College in")
- ; items in a :vbox will be added to the page vertically.
+ ; items in a vbox will be added to the page vertically.
  (vbox
   ({quote-text} "Virginia, looked up one of the more obscure Latin")
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
