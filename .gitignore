@@ -2,7 +2,7 @@ target/
 .idea/
 client/server_address
 client/server_addresses
-library/*.png
 Session.vim
-server/pages/header.jpg
 **/*.html
+**/*.png
+**/*.jpg
