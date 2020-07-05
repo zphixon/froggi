@@ -112,6 +112,7 @@ fn parse_item<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
         TokenKind::Text => parse_text(scanner)?,
         TokenKind::VBox => parse_vbox(scanner)?,
         TokenKind::Box => parse_box(scanner)?,
+        TokenKind::Inline => parse_inline(scanner)?,
         _ => parse_implicit_text(scanner)?,
     };
 
@@ -201,6 +202,25 @@ fn parse_vbox<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
 
 fn parse_box<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
     let builtin = consume(scanner, TokenKind::Box)?;
+    let inline_styles = parse_inline_styles(scanner)?;
+    let mut children = Vec::new();
+
+    while scanner.peek_token(0)?.kind() != TokenKind::RightParen {
+        children.push(parse_item(scanner)?);
+    }
+
+    Ok(PageItem {
+        builtin,
+        inline_styles,
+        payload: ItemPayload::Children {
+            children,
+            line: builtin.line(),
+        },
+    })
+}
+
+fn parse_inline<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
+    let builtin = consume(scanner, TokenKind::Inline)?;
     let inline_styles = parse_inline_styles(scanner)?;
     let mut children = Vec::new();
 
