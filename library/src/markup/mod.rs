@@ -141,12 +141,13 @@ body {
 
 fn page_item_to_html(item: &PageItem, child_of_inline: bool) -> String {
     let mut html = String::new();
+    let not_flex_column = false;
     match &item.payload {
         ItemPayload::Text { text } => {
             html.push_str("<span");
 
             if !item.inline_styles.is_empty() {
-                html.push_str(&style_list_to_html(item));
+                html.push_str(&style_list_to_html(item, not_flex_column));
             }
 
             html.push_str(">");
@@ -162,21 +163,13 @@ fn page_item_to_html(item: &PageItem, child_of_inline: bool) -> String {
         }
 
         ItemPayload::Children { children, .. } => {
-            let tag = if item.builtin.kind() == TokenKind::Inline {
-                "span"
-            } else {
-                "div"
-            };
+            let is_vertical = item.builtin.kind() == TokenKind::VBox;
+            let is_inline = item.builtin.kind() == TokenKind::Inline;
+            let tag = if is_inline { "span" } else { "div" };
 
             html.push_str(&format!("<{}", tag));
 
-            if !item.inline_styles.is_empty() {
-                html.push_str(&style_list_to_html(item));
-            }
-
-            if item.builtin.kind() == TokenKind::VBox {
-                html.push_str(" style=\"flex-direction: column;\"");
-            }
+            html.push_str(&style_list_to_html(item, is_vertical));
 
             html.push_str(&format!(
                 "> <!-- {} {} -->\n",
@@ -185,14 +178,14 @@ fn page_item_to_html(item: &PageItem, child_of_inline: bool) -> String {
             ));
 
             for child in children {
-                html.push_str(&format!(
-                    "{}",
-                    page_item_to_html(child, item.builtin.kind() == TokenKind::Inline)
-                ));
+                html.push_str(&format!("{}", page_item_to_html(child, is_inline)));
+                if is_vertical {
+                    html.push_str("<br>");
+                }
             }
 
             html.push_str(&format!("</{}>", tag));
-            if item.builtin.kind() == TokenKind::VBox || item.builtin.kind() == TokenKind::Inline {
+            if is_vertical || is_inline {
                 html.push_str("<br>\n");
             } else {
                 html.push_str("\n");
@@ -203,7 +196,7 @@ fn page_item_to_html(item: &PageItem, child_of_inline: bool) -> String {
             html.push_str("<div");
 
             if !item.inline_styles.is_empty() {
-                html.push_str(&style_list_to_html(item));
+                html.push_str(&style_list_to_html(item, not_flex_column));
             }
 
             html.push_str(">");
@@ -244,7 +237,7 @@ fn page_item_to_html(item: &PageItem, child_of_inline: bool) -> String {
     html
 }
 
-fn style_list_to_html(item: &PageItem) -> String {
+fn style_list_to_html(item: &PageItem, flex_column: bool) -> String {
     let mut html = String::new();
     let mut classes = Vec::new();
     let mut styles = Vec::new();
@@ -272,6 +265,10 @@ fn style_list_to_html(item: &PageItem) -> String {
     if !styles.is_empty() {
         html.push_str(" style=\"");
 
+        if flex_column {
+            html.push_str("flex-direction: column;");
+        }
+
         for (i, style) in styles.iter().enumerate() {
             html.push_str(style);
             if i + 1 < styles.len() {
@@ -280,6 +277,8 @@ fn style_list_to_html(item: &PageItem) -> String {
         }
 
         html.push_str("\"");
+    } else if flex_column {
+        html.push_str(" style=\"flex-direction: column;\"");
     }
 
     html
