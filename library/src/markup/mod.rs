@@ -108,7 +108,7 @@ div > * {
             }
 
             TokenKind::Text | TokenKind::ImplicitText => {
-                html.push_str("p {\n");
+                html.push_str("span {\n");
             }
 
             _ => unreachable!(),
@@ -145,7 +145,7 @@ fn page_item_to_html(item: &PageItem) -> String {
     use scan::TokenKind;
     match &item.payload {
         ItemPayload::Text { text } => {
-            html.push_str("<p");
+            html.push_str("<span");
 
             if !item.inline_styles.is_empty() {
                 html.push_str(" style=\"");
@@ -174,7 +174,10 @@ fn page_item_to_html(item: &PageItem) -> String {
             html.push_str(&text.iter().fold(String::new(), |acc, next| {
                 format!("{}{}", acc, next.lexeme())
             }));
-            html.push_str(&format!("</p> <!-- text {} -->\n", item.builtin.line()));
+            html.push_str(&format!(
+                "</span><br> <!-- text {} -->\n",
+                item.builtin.line()
+            ));
         }
 
         ItemPayload::Children { children, .. } => {
