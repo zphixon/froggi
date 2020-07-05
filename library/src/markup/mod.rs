@@ -148,26 +148,7 @@ fn page_item_to_html(item: &PageItem) -> String {
             html.push_str("<span");
 
             if !item.inline_styles.is_empty() {
-                html.push_str(" style=\"");
-                let mut classes = Vec::new();
-                for style in &item.inline_styles {
-                    match style {
-                        InlineStyle::UserDefined { token } => {
-                            classes.push(token.lexeme());
-                        }
-                        _ => html.push_str(&inline_style_to_html(style)),
-                    }
-                }
-                html.push_str("\"");
-
-                if !classes.is_empty() {
-                    html.push_str(" class=\"");
-                    for class in classes {
-                        html.push_str(class);
-                        html.push(' ');
-                    }
-                    html.push_str("\"");
-                }
+                html.push_str(&style_list_to_html(item));
             }
 
             html.push_str(">");
@@ -184,32 +165,13 @@ fn page_item_to_html(item: &PageItem) -> String {
             html.push_str("<div");
 
             if !item.inline_styles.is_empty() {
-                html.push_str(" style=\"");
-                let mut classes = Vec::new();
-                for style in &item.inline_styles {
-                    match style {
-                        InlineStyle::UserDefined { token } => {
-                            classes.push(token.lexeme());
-                        }
-                        _ => html.push_str(&inline_style_to_html(style)),
-                    }
-                }
-                if item.builtin.kind() == TokenKind::VBox {
-                    html.push_str("flex-direction: column;");
-                }
-                html.push_str("\"");
+                html.push_str(&style_list_to_html(item));
+            }
 
-                if !classes.is_empty() {
-                    html.push_str(" class=\"");
-                    for class in classes {
-                        html.push_str(class);
-                        html.push(' ');
-                    }
-                    html.push_str("\"");
-                }
-            } else if item.builtin.kind() == TokenKind::VBox {
+            if item.builtin.kind() == TokenKind::VBox {
                 html.push_str(" style=\"flex-direction: column;\"");
             }
+
             html.push_str(&format!(
                 "> <!-- {} {} -->\n",
                 if item.builtin.kind() == TokenKind::VBox {
@@ -236,27 +198,9 @@ fn page_item_to_html(item: &PageItem) -> String {
             html.push_str("<div");
 
             if !item.inline_styles.is_empty() {
-                html.push_str(" style=\"");
-                let mut classes = Vec::new();
-                for style in &item.inline_styles {
-                    match style {
-                        InlineStyle::UserDefined { token } => {
-                            classes.push(token.lexeme());
-                        }
-                        _ => html.push_str(&inline_style_to_html(style)),
-                    }
-                }
-                html.push_str("\"");
-
-                if !classes.is_empty() {
-                    html.push_str(" class=\"");
-                    for class in classes {
-                        html.push_str(class);
-                        html.push(' ');
-                    }
-                    html.push_str("\"");
-                }
+                html.push_str(&style_list_to_html(item));
             }
+
             html.push_str(">");
             html.push_str(&format!("<a href=\"{}\">", link.lexeme()));
             if !text.is_empty() {
@@ -295,6 +239,47 @@ fn page_item_to_html(item: &PageItem) -> String {
     html
 }
 
+fn style_list_to_html(item: &PageItem) -> String {
+    let mut html = String::new();
+    let mut classes = Vec::new();
+    let mut styles = Vec::new();
+
+    for style in &item.inline_styles {
+        match style {
+            InlineStyle::UserDefined { token } => {
+                classes.push(token.lexeme());
+            }
+            _ => styles.push(inline_style_to_html(style)),
+        }
+    }
+
+    if !classes.is_empty() {
+        html.push_str(" class=\"");
+        for (i, class) in classes.iter().enumerate() {
+            html.push_str(class);
+            if i + 1 < classes.len() {
+                html.push(' ');
+            }
+        }
+        html.push_str("\"");
+    }
+
+    if !styles.is_empty() {
+        html.push_str(" style=\"");
+
+        for (i, style) in styles.iter().enumerate() {
+            html.push_str(style);
+            if i + 1 < styles.len() {
+                html.push(' ');
+            }
+        }
+
+        html.push_str("\"");
+    }
+
+    html
+}
+
 fn inline_style_to_html(style: &InlineStyle) -> String {
     match style {
         InlineStyle::Mono { .. } => String::from("font-family: monospace;"),
@@ -306,7 +291,7 @@ fn inline_style_to_html(style: &InlineStyle) -> String {
         InlineStyle::Strike { .. } => String::from("text-decoration: strikethrough;"),
         InlineStyle::Fg { arg, .. } => format!("color: #{};", arg.lexeme()),
         InlineStyle::Bg { arg, .. } => format!("background-color: #{};", arg.lexeme()),
-        InlineStyle::Fill { .. } => String::new(), // TODO
+        InlineStyle::Fill { .. } => String::from("/* TODO: fill */"),
         InlineStyle::Size { arg, .. } => format!("font-size: {}px;", arg.lexeme()),
         InlineStyle::UserDefined { .. } => unreachable!(),
     }
