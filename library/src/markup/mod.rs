@@ -78,6 +78,11 @@ div > * {
     flex-grow: 1;
     padding: 3px 3px 7px 3px;
 }
+body {
+    max-width: 850px;
+    margin: 0 auto;
+    float: none;
+}
 "#,
     );
 
@@ -288,7 +293,7 @@ fn inline_style_to_html(style: &InlineStyle) -> String {
         InlineStyle::Bold { .. } => String::from("font-weight: bold;"),
         InlineStyle::Italic { .. } => String::from("font-style: italic;"),
         InlineStyle::Underline { .. } => String::from("text-decoration: underline;"),
-        InlineStyle::Strike { .. } => String::from("text-decoration: strikethrough;"),
+        InlineStyle::Strike { .. } => String::from("text-decoration: line-through;"),
         InlineStyle::Fg { arg, .. } => format!("color: #{};", arg.lexeme()),
         InlineStyle::Bg { arg, .. } => format!("background-color: #{};", arg.lexeme()),
         InlineStyle::Fill { .. } => String::from("/* TODO: fill */"),
