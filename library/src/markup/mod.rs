@@ -104,15 +104,11 @@ body {
                 // n/a
             }
 
-            TokenKind::Box => {
+            TokenKind::Box | TokenKind::VBox => {
                 html.push_str("div {\n");
             }
 
-            TokenKind::VBox => {
-                html.push_str("div {\n");
-            }
-
-            TokenKind::Text | TokenKind::ImplicitText => {
+            TokenKind::Text | TokenKind::ImplicitText | TokenKind::Inline => {
                 html.push_str("span {\n");
             }
 
@@ -127,7 +123,7 @@ body {
     html.push_str("    </style>\n  </head>\n  <body>\n");
 
     for item in &page.items {
-        html.push_str(&page_item_to_html(item));
+        html.push_str(&page_item_to_html(item, false));
     }
 
     html.push_str(
@@ -145,7 +141,7 @@ body {
     html
 }
 
-fn page_item_to_html(item: &PageItem) -> String {
+fn page_item_to_html(item: &PageItem, child_of_inline: bool) -> String {
     let mut html = String::new();
     use scan::TokenKind;
     match &item.payload {
@@ -160,14 +156,22 @@ fn page_item_to_html(item: &PageItem) -> String {
             html.push_str(&text.iter().fold(String::new(), |acc, next| {
                 format!("{}{}", acc, next.lexeme())
             }));
+
             html.push_str(&format!(
-                "</span><br> <!-- text {} -->\n",
-                item.builtin.line()
+                "</span>{} <!-- text {} -->\n",
+                if child_of_inline { "" } else { "<br>" },
+                item.builtin.line(),
             ));
         }
 
         ItemPayload::Children { children, .. } => {
-            html.push_str("<div");
+            let tag = if item.builtin.kind() == TokenKind::Inline {
+                "span"
+            } else {
+                "div"
+            };
+
+            html.push_str(&format!("<{}", tag));
 
             if !item.inline_styles.is_empty() {
                 html.push_str(&style_list_to_html(item));
@@ -179,20 +183,19 @@ fn page_item_to_html(item: &PageItem) -> String {
 
             html.push_str(&format!(
                 "> <!-- {} {} -->\n",
-                if item.builtin.kind() == TokenKind::VBox {
-                    "vbox"
-                } else {
-                    "box"
-                },
+                item.builtin.lexeme(),
                 item.builtin.line()
             ));
 
-            for item in children {
-                html.push_str(&format!("{}", page_item_to_html(item)));
+            for child in children {
+                html.push_str(&format!(
+                    "{}",
+                    page_item_to_html(child, item.builtin.kind() == TokenKind::Inline)
+                ));
             }
 
-            html.push_str("</div>");
-            if item.builtin.kind() == TokenKind::VBox {
+            html.push_str(&format!("</{}>", tag));
+            if item.builtin.kind() == TokenKind::VBox || item.builtin.kind() == TokenKind::Inline {
                 html.push_str("<br>\n");
             } else {
                 html.push_str("\n");
