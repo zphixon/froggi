@@ -68,6 +68,7 @@ pub fn to_html(page: &Page) -> String {
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf8">
     <style>
 div {
     display: flex;
