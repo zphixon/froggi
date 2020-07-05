@@ -1,7 +1,7 @@
 pub mod parse;
 pub mod scan;
 
-use scan::Token;
+use scan::{Token, TokenKind};
 
 #[derive(Debug, PartialEq)]
 pub struct Page<'a> {
@@ -61,8 +61,6 @@ pub enum InlineStyle<'a> {
 }
 
 pub fn to_html(page: &Page) -> String {
-    use scan::TokenKind;
-
     let mut html = String::from(
         r#"
 <!DOCTYPE html>
@@ -143,7 +141,6 @@ body {
 
 fn page_item_to_html(item: &PageItem, child_of_inline: bool) -> String {
     let mut html = String::new();
-    use scan::TokenKind;
     match &item.payload {
         ItemPayload::Text { text } => {
             html.push_str("<span");
