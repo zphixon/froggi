@@ -306,20 +306,10 @@ fn parse_style_list<'a>(
         let token = scanner.next_token()?;
         match token.kind() {
             TokenKind::Identifier => {
-                // if we're in the page item, we've already consumed the selector
-                if in_page_style_item {
-                    return Err(FroggiError::parse(
-                        ParseError::RecursiveStyle {
-                            style: token.clone_lexeme(),
-                        },
-                        token.line(),
-                    ))
-                    .msg_str("styles may not reference user-defined styles.");
-                } else {
+                if !in_page_style_item {
                     if page_styles.contains_key(&token) {
                         inline_styles.push(InlineStyle::UserDefined { token });
                     } else {
-                        dbg!(page_styles);
                         return Err(FroggiError::parse(
                             ParseError::UnknownStyle {
                                 style: token.clone_lexeme(),
@@ -327,6 +317,15 @@ fn parse_style_list<'a>(
                             token.line(),
                         ));
                     }
+                } else {
+                    // if we're in the page style item, we've already consumed the selector
+                    return Err(FroggiError::parse(
+                        ParseError::RecursiveStyle {
+                            style: token.clone_lexeme(),
+                        },
+                        token.line(),
+                    ))
+                    .msg_str("styles may not reference user-defined styles.");
                 }
             }
 
@@ -584,8 +583,6 @@ mod test {
                 },
             ],
         );
-        dbg!(&style);
-        dbg!(&styles);
         assert_eq!(style, styles);
     }
 
