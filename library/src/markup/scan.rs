@@ -50,11 +50,26 @@ pub enum TokenKind {
     End,
 }
 
-#[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
+#[derive(Copy, Clone, Debug)]
 pub struct Token<'a> {
     kind: TokenKind,
     line: usize,
     lexeme: &'a str,
+}
+
+impl PartialEq for Token<'_> {
+    fn eq(&self, other: &Self) -> bool {
+        self.kind == other.kind && self.lexeme == other.lexeme
+    }
+}
+
+impl Eq for Token<'_> {}
+
+impl std::hash::Hash for Token<'_> {
+    fn hash<H: std::hash::Hasher>(&self, hasher: &mut H) {
+        self.kind.hash(hasher);
+        self.lexeme.hash(hasher);
+    }
 }
 
 impl Token<'_> {
@@ -338,5 +353,25 @@ mod test {
                 Token::new(TokenKind::Identifier, 2, "i"),
             ]
         );
+    }
+
+    #[test]
+    fn line_number_partial_eq() {
+        assert_eq!(
+            Token::new(TokenKind::Identifier, 1, "i"),
+            Token::new(TokenKind::Identifier, 25565, "i")
+        );
+
+        assert_eq!(
+            Token::new(TokenKind::LeftParen, 1, "("),
+            Token::new(TokenKind::LeftParen, 25565, "(")
+        );
+    }
+
+    #[test]
+    fn hash_token() {
+        let mut map = std::collections::HashMap::new();
+        map.insert(Token::new(TokenKind::Identifier, 1, "i"), ());
+        assert!(map.contains_key(&Token::new(TokenKind::Identifier, 3889583, "i")));
     }
 }

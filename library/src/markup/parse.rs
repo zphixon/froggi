@@ -306,17 +306,27 @@ fn parse_style_list<'a>(
         let token = scanner.next_token()?;
         match token.kind() {
             TokenKind::Identifier => {
-                // if we're in the page's style item, we're currently defining the styles,
-                // so don't worry about the ones that don't exist yet
-                if in_page_style_item || page_styles.contains_key(&token) {
-                    inline_styles.push(InlineStyle::UserDefined { token });
-                } else {
+                // if we're in the page item, we've already consumed the selector
+                if in_page_style_item {
                     return Err(FroggiError::parse(
-                        ParseError::UnknownStyle {
+                        ParseError::RecursiveStyle {
                             style: token.clone_lexeme(),
                         },
                         token.line(),
-                    ));
+                    ))
+                    .msg_str("styles may not reference user-defined styles.");
+                } else {
+                    if page_styles.contains_key(&token) {
+                        inline_styles.push(InlineStyle::UserDefined { token });
+                    } else {
+                        dbg!(page_styles);
+                        return Err(FroggiError::parse(
+                            ParseError::UnknownStyle {
+                                style: token.clone_lexeme(),
+                            },
+                            token.line(),
+                        ));
+                    }
                 }
             }
 
@@ -459,7 +469,8 @@ mod test {
 
     #[test]
     fn references() {
-        let sample = r#"(& "image.jpg" {user-style (fg "30300") serif} "with alt" " text")"#;
+        let sample =
+            r#"{(user-style)}(& "image.jpg" {user-style (fg "30300") serif} "with alt" " text")"#;
         parse(sample).unwrap();
 
         let sample = r#"(& "somewhere")"#;
@@ -468,8 +479,7 @@ mod test {
 
     #[test]
     fn links() {
-        let sample =
-            r#"(^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")"#;
+        let sample = r#"{(footnote)}(^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")"#;
         parse(sample).unwrap();
 
         let sample = r#"(^ "frgi://www.lipsum.com/" {serif })"#;
@@ -513,7 +523,7 @@ mod test {
 
     #[test]
     fn well_formed_page_item() {
-        let item = r#"(box {user-style inline-style (fg "000000")} ("children") ({mono} "style"))"#;
+        let item = r#"{(user-style) (inline-style)}(box {user-style inline-style (fg "000000")} ("children") ({mono} "style"))"#;
         parse(item).unwrap();
     }
 

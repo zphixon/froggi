@@ -102,6 +102,7 @@ pub enum ParseError {
     ExpectedItem { got: String },
     UnknownBuiltinItem { item: String },
     UnknownStyle { style: String },
+    RecursiveStyle { style: String },
 }
 
 #[rustfmt::skip]
@@ -121,6 +122,8 @@ impl fmt::Display for ParseError {
             ParseError::UnknownBuiltinItem { item }
                 => write!(f, "unknown builtin item {:?}", item),
             ParseError::UnknownStyle { style }
+                => write!(f, "unknown style {:?}", style),
+            ParseError::RecursiveStyle { style }
                 => write!(f, "unknown style {:?}", style),
         }
     }
