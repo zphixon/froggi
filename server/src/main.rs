@@ -16,13 +16,13 @@ fn handle_client(mut stream: TcpStream) {
     // todo: verify markup is correct
     // todo: some sort of page and page data cache
     let page = String::from(include_str!("../pages/test_markup.fml"));
-    let header_img_data = include_bytes!("../pages/header.jpg");
+    let header_img_data = include_bytes!("../pages/red_toy_small.png");
     let mut header_img = Vec::new();
     header_img.extend_from_slice(header_img_data);
 
     let response = Response::new(
         page,
-        vec![Item::new(String::from("header.jpg"), header_img)],
+        vec![Item::new(String::from("red_toy_small.png"), header_img)],
     );
 
     stream.write_all(&response.into_bytes()).unwrap();

@@ -7,7 +7,7 @@
 
 ; special built-in page item is the binary reference: (& "name"),
 ; which refers to object "name" at the end of the server's response.
-(box ({(size "26") bold}"Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ({(size "26") bold}"Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 
 ; this is an anchor, you can link to it with frgi://example.com/test_markup.fml#anchor
 ; the client should automatically scroll the page to this point
@@ -29,7 +29,7 @@
 ; items in a box will be added to the page horizontally rather than vertically.
 ; they will have equal amounts of their parent's horizontal space allocated to them.
 (box {quote-box}
- ({quote-text} "Contrary to popular belief, Lorem Ipsum is not simply"
+ ({quote-text (fill "50")} "Contrary to popular belief, Lorem Ipsum is not simply"
   " random text. It has roots in a piece of classical Latin literature")
  ({quote-text} "from 45 BC, making it over 2000 years old. Richard"
   " McClintock, a Latin professor at Hampden-Sydney College in")

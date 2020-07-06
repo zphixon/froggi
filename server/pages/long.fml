@@ -2,7 +2,7 @@
  (quote-box (bg "fff8dc"))
  (quote-text sans (fg "606060"))
  (footnote (fg "757575") sans italic)}
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -16,7 +16,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -30,7 +30,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -44,7 +44,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -58,7 +58,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -72,7 +72,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -86,7 +86,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -100,7 +100,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -114,7 +114,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -128,7 +128,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -142,7 +142,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -156,7 +156,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -170,7 +170,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -184,7 +184,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -198,7 +198,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -212,7 +212,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -226,7 +226,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -240,7 +240,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -254,7 +254,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -268,7 +268,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -282,7 +282,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -296,7 +296,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -310,7 +310,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -324,7 +324,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -338,7 +338,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -352,7 +352,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -366,7 +366,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -380,7 +380,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -394,7 +394,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -408,7 +408,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -422,7 +422,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -436,7 +436,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -450,7 +450,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -464,7 +464,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -478,7 +478,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -492,7 +492,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -506,7 +506,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -520,7 +520,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -534,7 +534,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -548,7 +548,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -562,7 +562,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -576,7 +576,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -590,7 +590,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -604,7 +604,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -618,7 +618,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -632,7 +632,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -646,7 +646,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -660,7 +660,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -674,7 +674,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -688,7 +688,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -702,7 +702,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -716,7 +716,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -730,7 +730,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -744,7 +744,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -758,7 +758,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -772,7 +772,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -786,7 +786,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -800,7 +800,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -814,7 +814,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -828,7 +828,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -842,7 +842,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -856,7 +856,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -870,7 +870,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -884,7 +884,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -898,7 +898,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -912,7 +912,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -926,7 +926,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -940,7 +940,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -954,7 +954,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -968,7 +968,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -982,7 +982,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -996,7 +996,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1010,7 +1010,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1024,7 +1024,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1038,7 +1038,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1052,7 +1052,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1066,7 +1066,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1080,7 +1080,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1094,7 +1094,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1108,7 +1108,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1122,7 +1122,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1136,7 +1136,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1150,7 +1150,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1164,7 +1164,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1178,7 +1178,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1192,7 +1192,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1206,7 +1206,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1220,7 +1220,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1234,7 +1234,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1248,7 +1248,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1262,7 +1262,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1276,7 +1276,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1290,7 +1290,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1304,7 +1304,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1318,7 +1318,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1332,7 +1332,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1346,7 +1346,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1360,7 +1360,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1374,7 +1374,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1388,7 +1388,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1402,7 +1402,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1416,7 +1416,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1430,7 +1430,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1444,7 +1444,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1458,7 +1458,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1472,7 +1472,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1486,7 +1486,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1500,7 +1500,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1514,7 +1514,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1528,7 +1528,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1542,7 +1542,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1556,7 +1556,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1570,7 +1570,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1584,7 +1584,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1598,7 +1598,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1612,7 +1612,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1626,7 +1626,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1640,7 +1640,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1654,7 +1654,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1668,7 +1668,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1682,7 +1682,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1696,7 +1696,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1710,7 +1710,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1724,7 +1724,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1738,7 +1738,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1752,7 +1752,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1766,7 +1766,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1780,7 +1780,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1794,7 +1794,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1808,7 +1808,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1822,7 +1822,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1836,7 +1836,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1850,7 +1850,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1864,7 +1864,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1878,7 +1878,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1892,7 +1892,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1906,7 +1906,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1920,7 +1920,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1934,7 +1934,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1948,7 +1948,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1962,7 +1962,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1976,7 +1976,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -1990,7 +1990,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2004,7 +2004,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2018,7 +2018,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2032,7 +2032,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2046,7 +2046,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2060,7 +2060,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2074,7 +2074,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2088,7 +2088,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2102,7 +2102,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2116,7 +2116,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2130,7 +2130,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2144,7 +2144,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2158,7 +2158,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2172,7 +2172,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2186,7 +2186,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2200,7 +2200,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2214,7 +2214,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2228,7 +2228,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2242,7 +2242,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2256,7 +2256,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2270,7 +2270,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2284,7 +2284,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2298,7 +2298,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2312,7 +2312,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2326,7 +2326,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2340,7 +2340,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2354,7 +2354,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2368,7 +2368,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2382,7 +2382,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2396,7 +2396,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2410,7 +2410,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2424,7 +2424,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2438,7 +2438,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2452,7 +2452,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2466,7 +2466,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2480,7 +2480,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2494,7 +2494,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2508,7 +2508,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2522,7 +2522,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2536,7 +2536,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2550,7 +2550,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2564,7 +2564,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2578,7 +2578,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2592,7 +2592,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2606,7 +2606,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2620,7 +2620,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2634,7 +2634,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2648,7 +2648,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2662,7 +2662,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2676,7 +2676,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2690,7 +2690,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2704,7 +2704,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2718,7 +2718,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2732,7 +2732,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2746,7 +2746,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2760,7 +2760,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2774,7 +2774,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2788,7 +2788,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2802,7 +2802,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2816,7 +2816,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2830,7 +2830,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2844,7 +2844,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2858,7 +2858,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2872,7 +2872,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2886,7 +2886,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2900,7 +2900,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2914,7 +2914,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2928,7 +2928,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2942,7 +2942,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2956,7 +2956,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2970,7 +2970,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2984,7 +2984,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -2998,7 +2998,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3012,7 +3012,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3026,7 +3026,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3040,7 +3040,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3054,7 +3054,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3068,7 +3068,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3082,7 +3082,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3096,7 +3096,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3110,7 +3110,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3124,7 +3124,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3138,7 +3138,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3152,7 +3152,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3166,7 +3166,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3180,7 +3180,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3194,7 +3194,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3208,7 +3208,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3222,7 +3222,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3236,7 +3236,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3250,7 +3250,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3264,7 +3264,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3278,7 +3278,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3292,7 +3292,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3306,7 +3306,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3320,7 +3320,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3334,7 +3334,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3348,7 +3348,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3362,7 +3362,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3376,7 +3376,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3390,7 +3390,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3404,7 +3404,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3418,7 +3418,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3432,7 +3432,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3446,7 +3446,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3460,7 +3460,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3474,7 +3474,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3488,7 +3488,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3502,7 +3502,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3516,7 +3516,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3530,7 +3530,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3544,7 +3544,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3558,7 +3558,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3572,7 +3572,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3586,7 +3586,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3600,7 +3600,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3614,7 +3614,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3628,7 +3628,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3642,7 +3642,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3656,7 +3656,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3670,7 +3670,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3684,7 +3684,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3698,7 +3698,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3712,7 +3712,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3726,7 +3726,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3740,7 +3740,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3754,7 +3754,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3768,7 +3768,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3782,7 +3782,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3796,7 +3796,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3810,7 +3810,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3824,7 +3824,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3838,7 +3838,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3852,7 +3852,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3866,7 +3866,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3880,7 +3880,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3894,7 +3894,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3908,7 +3908,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3922,7 +3922,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3936,7 +3936,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3950,7 +3950,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3964,7 +3964,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3978,7 +3978,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -3992,7 +3992,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4006,7 +4006,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4020,7 +4020,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4034,7 +4034,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4048,7 +4048,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4062,7 +4062,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4076,7 +4076,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4090,7 +4090,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4104,7 +4104,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4118,7 +4118,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4132,7 +4132,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4146,7 +4146,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4160,7 +4160,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4174,7 +4174,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4188,7 +4188,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4202,7 +4202,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4216,7 +4216,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4230,7 +4230,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4244,7 +4244,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4258,7 +4258,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4272,7 +4272,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4286,7 +4286,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4300,7 +4300,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4314,7 +4314,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4328,7 +4328,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4342,7 +4342,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4356,7 +4356,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4370,7 +4370,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4384,7 +4384,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4398,7 +4398,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4412,7 +4412,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4426,7 +4426,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4440,7 +4440,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4454,7 +4454,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4468,7 +4468,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4482,7 +4482,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4496,7 +4496,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4510,7 +4510,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4524,7 +4524,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4538,7 +4538,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4552,7 +4552,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4566,7 +4566,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4580,7 +4580,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4594,7 +4594,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4608,7 +4608,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4622,7 +4622,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4636,7 +4636,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4650,7 +4650,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4664,7 +4664,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4678,7 +4678,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4692,7 +4692,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4706,7 +4706,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4720,7 +4720,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4734,7 +4734,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4748,7 +4748,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4762,7 +4762,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4776,7 +4776,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4790,7 +4790,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4804,7 +4804,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4818,7 +4818,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4832,7 +4832,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4846,7 +4846,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4860,7 +4860,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4874,7 +4874,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4888,7 +4888,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4902,7 +4902,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4916,7 +4916,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4930,7 +4930,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4944,7 +4944,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4958,7 +4958,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4972,7 +4972,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
@@ -4986,7 +4986,7 @@
   (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
 (^ "https://github.com/zphixon/froggi" "github repository")
 (^ "https://zphixon.com/lemon")
-(box ("Lorem ipsum example") (& "header.jpg" {} "alt text is optional"))
+(box ("Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 (# "anchor")
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
