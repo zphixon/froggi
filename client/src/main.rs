@@ -5,15 +5,16 @@ use std::fs::File;
 use std::io::{Cursor, Write};
 
 fn main() {
-    froggi::hello();
+    let local = std::env::args().collect::<String>().contains("-l");
+    let server = include_str!("../server_address").trim();
 
-    let addr = if std::env::args().collect::<String>().contains("-l") {
-        "127.0.0.1:11121"
-    } else {
-        include_str!("../server_address").trim()
-    };
+    let addr = if local { "127.0.0.1:11121" } else { server };
 
-    println!("connecting to {}", addr);
+    println!(
+        "connecting to {}",
+        if local { addr } else { "a secret server" }
+    );
+
     let result = froggi::send_request(addr, "test_markup.fml").unwrap();
 
     println!("got {:#?}", result);

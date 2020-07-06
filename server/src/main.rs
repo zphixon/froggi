@@ -29,9 +29,8 @@ fn handle_client(mut stream: TcpStream) {
 }
 
 fn main() {
-    froggi::hello();
     let listener = TcpListener::bind("0.0.0.0:11121").unwrap();
-    println!("listening");
+    println!("listening at {}", listener.local_addr().unwrap());
     for stream in listener.incoming() {
         match stream {
             Ok(stream) => {

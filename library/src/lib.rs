@@ -10,10 +10,6 @@ pub mod response;
 
 pub const FROGGI_VERSION: u8 = 0;
 
-pub fn hello() {
-    println!("ribbit!");
-}
-
 pub fn parse_page(page: &str) -> Result<markup::Page<'_>, Vec<FroggiError>> {
     markup::parse::parse(page)
 }
