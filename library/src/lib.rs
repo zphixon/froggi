@@ -68,10 +68,6 @@ pub fn deserialize_four_bytes(bytes: &[u8]) -> usize {
 /// FML document scan error.
 #[derive(Debug)]
 pub enum ScanError {
-    UnknownStyle { style: char },
-    UnknownItem { item: String },
-    UnknownFontStyle { style: String },
-    InvalidColor { color: String },
     UnknownEscapeCode { code: char },
     UnterminatedString { start_line: usize },
 }
@@ -79,10 +75,6 @@ pub enum ScanError {
 impl fmt::Display for ScanError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            ScanError::UnknownStyle { style } => write!(f, "unknown style: {}", style),
-            ScanError::UnknownItem { item } => write!(f, "unknown item: {}", item),
-            ScanError::UnknownFontStyle { style } => write!(f, "unknown font style: {}", style),
-            ScanError::InvalidColor { color } => write!(f, "invalid color format: {}", color),
             ScanError::UnknownEscapeCode { code } => write!(f, "unknown escape code: {}", code),
             ScanError::UnterminatedString { start_line } => {
                 write!(f, "unterminated string starting on line {}", start_line)
@@ -97,10 +89,8 @@ use markup::scan::TokenKind;
 pub enum ParseError {
     UnexpectedToken { expected: TokenKind, got: String },
     UnbalancedParentheses,
-    ExpectedBuiltin { got: String },
     ExpectedStyle { got: String },
     ExpectedItem { got: String },
-    UnknownBuiltinItem { item: String },
     UnknownStyle { style: String },
     RecursiveStyle { style: String },
 }
@@ -113,60 +103,14 @@ impl fmt::Display for ParseError {
                 => write!(f, "unexpected token: expected {:?}, got {}", expected, got),
             ParseError::UnbalancedParentheses
                 => write!(f, "unbalanced parentheses"),
-            ParseError::ExpectedBuiltin { got }
-                => write!(f, "expected builtin, got {:?}", got),
             ParseError::ExpectedStyle { got }
                 => write!(f, "expected style, got {:?}", got),
             ParseError::ExpectedItem { got }
                 => write!(f, "expected item or page style, got {:?}", got),
-            ParseError::UnknownBuiltinItem { item }
-                => write!(f, "unknown builtin item {:?}", item),
             ParseError::UnknownStyle { style }
                 => write!(f, "unknown style {:?}", style),
             ParseError::RecursiveStyle { style }
                 => write!(f, "unknown style {:?}", style),
-        }
-    }
-}
-
-#[derive(Debug)]
-pub enum MarkupError {
-    RequiresArgument { style: String },
-    NoArgumentAllowed { style: String },
-    IncorrectPercent { percent: String },
-    IncorrectHexadecimal { hex: String, err: hex::FromHexError },
-    IncorrectColor { color: String },
-    UnknownStyle { style: String },
-    IncorrectNumber { num: String },
-    UnknownBuiltinStyle { builtin: String },
-    ExpectedChildren { item: String },
-    ExpectedText { item: String },
-}
-
-#[rustfmt::skip]
-impl fmt::Display for MarkupError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            MarkupError::RequiresArgument { style }
-                => write!(f, "{} requires an argument", style),
-            MarkupError::NoArgumentAllowed { style }
-                => write!(f, "{} does not allow an argument", style),
-            MarkupError::IncorrectPercent { percent }
-                => write!(f, "invalid percent: {}", percent),
-            MarkupError::IncorrectHexadecimal { hex, err }
-                => write!(f, "invalid hexadecimal: {} ({})", hex, err),
-            MarkupError::IncorrectColor { color }
-                => write!(f, "invalid color: {}", color),
-            MarkupError::UnknownStyle { style }
-                => write!(f, "unknown inline style: {}", style),
-            MarkupError::IncorrectNumber { num }
-                => write!(f, "number is invalid: {}", num),
-            MarkupError::UnknownBuiltinStyle { builtin }
-                => write!(f, "unknown builtin: {}", builtin),
-            MarkupError::ExpectedChildren { item }
-                => write!(f, "expected children for item {}", item),
-            MarkupError::ExpectedText { item }
-                => write!(f, "expected text for item {}", item),
         }
     }
 }
@@ -179,7 +123,6 @@ pub enum ErrorKind {
     IOError { error: io::Error },
     ScanError { error: ScanError, line: usize },
     ParseError { error: ParseError, line: usize },
-    MarkupError { error: MarkupError, line: usize },
 }
 
 #[rustfmt::skip]
@@ -196,8 +139,6 @@ impl fmt::Display for ErrorKind {
                 => write!(f, "scan error on line {} - {}", line, error),
             ErrorKind::ParseError { error, line }
                 => write!(f, "parse error on line {} - {}", line, error),
-            ErrorKind::MarkupError { error, line }
-                => write!(f, "markup error on line {} - {}", line, error),
         }
     }
 }
@@ -237,13 +178,6 @@ impl FroggiError {
             msg: None,
         }
     }
-
-    pub fn markup(error: MarkupError, line: usize) -> FroggiError {
-        FroggiError {
-            error: ErrorKind::MarkupError { error, line },
-            msg: None,
-        }
-    }
 }
 
 impl AddMsg for FroggiError {
@@ -271,10 +205,6 @@ impl Error for FroggiError {
             ErrorKind::IOError { error } => error.source(),
             ErrorKind::ScanError { .. } => None,
             ErrorKind::ParseError { .. } => None,
-            ErrorKind::MarkupError { error, .. } => match error {
-                MarkupError::IncorrectHexadecimal { err, .. } => err.source(),
-                _ => None,
-            },
         }
     }
 }
