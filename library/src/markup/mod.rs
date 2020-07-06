@@ -3,17 +3,15 @@ pub mod scan;
 
 use scan::{Token, TokenKind};
 
+use std::collections::HashMap;
+
 #[derive(Debug, PartialEq)]
 pub struct Page<'a> {
-    pub page_styles: Vec<PageStyle<'a>>,
+    pub page_styles: PageStyles<'a>,
     pub items: Vec<PageItem<'a>>,
 }
 
-#[derive(Debug, PartialEq)]
-pub struct PageStyle<'a> {
-    pub selector: Token<'a>,
-    pub styles: Vec<InlineStyle<'a>>,
-}
+pub type PageStyles<'a> = HashMap<Token<'a>, Vec<InlineStyle<'a>>>;
 
 #[derive(Debug, PartialEq)]
 pub struct PageItem<'a> {
@@ -84,10 +82,10 @@ body {
 "#,
     );
 
-    for page_style in &page.page_styles {
-        match page_style.selector.kind() {
+    for (selector, page_styles) in &page.page_styles {
+        match selector.kind() {
             TokenKind::Identifier => {
-                html.push_str(&format!(".{} {{\n", page_style.selector.lexeme()));
+                html.push_str(&format!(".{} {{\n", selector.lexeme()));
             }
 
             TokenKind::Blob => {
@@ -113,7 +111,7 @@ body {
             _ => unreachable!(),
         }
 
-        for inline_style in &page_style.styles {
+        for inline_style in page_styles {
             html.push_str(&format!("    {}\n", inline_style_to_html(inline_style)));
         }
         html.push_str("}\n");

@@ -1,13 +1,15 @@
 use crate::{AddMsg, FroggiError, ParseError};
 
 use super::scan::{Scanner, Token, TokenKind};
-use super::{InlineStyle, ItemPayload, Page, PageItem, PageStyle};
+use super::{InlineStyle, ItemPayload, Page, PageItem, PageStyles};
+
+use std::collections::HashMap;
 
 /// Parse some data into a Page.
 pub fn parse(data: &str) -> Result<Page<'_>, Vec<FroggiError>> {
     let mut errors = Vec::new();
     let mut items = Vec::new();
-    let mut page_styles = Vec::new();
+    let mut page_styles = HashMap::new();
 
     let mut first_item = true;
     let mut scanner = Scanner::new(data);
@@ -72,11 +74,11 @@ pub fn parse(data: &str) -> Result<Page<'_>, Vec<FroggiError>> {
 }
 
 // consume top-level page style
-fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<PageStyle<'a>>, FroggiError> {
+fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<PageStyles<'a>, FroggiError> {
     // parse outer list of rules
     let left_brace = consume(scanner, TokenKind::LeftBrace)?;
 
-    let mut page_styles = Vec::new();
+    let mut page_styles = HashMap::new();
 
     while scanner.peek_token(0)?.kind() != TokenKind::RightBrace {
         // parse one single rule
@@ -89,7 +91,7 @@ fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<PageStyle<'a>>
         // styles that belong to the rule
         let styles = parse_style_list(scanner)?;
 
-        page_styles.push(PageStyle { selector, styles });
+        page_styles.insert(selector, styles);
         consume(scanner, TokenKind::RightParen).msg_str("end of the style rule")?;
     }
 
@@ -510,30 +512,28 @@ mod test {
         let style = r#"{(text serif)(footnote underline (fg "902100"))}"#;
         let mut scanner = crate::markup::scan::Scanner::new(style);
         let style = parse_page_styles(&mut scanner).unwrap();
-        dbg!(&style);
-        assert_eq!(
-            style,
-            vec![
-                PageStyle {
-                    selector: Token::new(TokenKind::Text, 1, "text"),
-                    styles: vec![InlineStyle::Serif {
-                        token: Token::new(TokenKind::Serif, 1, "serif",),
-                    }]
-                },
-                PageStyle {
-                    selector: Token::new(TokenKind::Identifier, 1, "footnote"),
-                    styles: vec![
-                        InlineStyle::Underline {
-                            token: Token::new(TokenKind::Underline, 1, "underline")
-                        },
-                        InlineStyle::Fg {
-                            token: Token::new(TokenKind::Fg, 1, "fg"),
-                            arg: Token::new(TokenKind::String, 1, r#""902100""#)
-                        }
-                    ]
-                }
-            ]
+        let mut styles = HashMap::new();
+        styles.insert(
+            Token::new(TokenKind::Text, 1, "text"),
+            vec![InlineStyle::Serif {
+                token: Token::new(TokenKind::Serif, 1, "serif"),
+            }],
         );
+        styles.insert(
+            Token::new(TokenKind::Identifier, 1, "footnote"),
+            vec![
+                InlineStyle::Underline {
+                    token: Token::new(TokenKind::Underline, 1, "underline"),
+                },
+                InlineStyle::Fg {
+                    token: Token::new(TokenKind::Fg, 1, "fg"),
+                    arg: Token::new(TokenKind::String, 1, r#""902100""#),
+                },
+            ],
+        );
+        dbg!(&style);
+        dbg!(&styles);
+        assert_eq!(style, styles);
     }
 
     #[test]

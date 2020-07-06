@@ -16,7 +16,7 @@ fn is_control_character(c: u8) -> bool {
         || c.is_ascii_whitespace()
 }
 
-#[derive(Copy, Clone, PartialEq, Debug)]
+#[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
 pub enum TokenKind {
     String,
     LeftParen,
@@ -50,7 +50,7 @@ pub enum TokenKind {
     End,
 }
 
-#[derive(Copy, Clone, PartialEq, Debug)]
+#[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
 pub struct Token<'a> {
     kind: TokenKind,
     line: usize,
