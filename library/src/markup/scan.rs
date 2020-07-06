@@ -11,6 +11,7 @@ fn is_control_character(c: u8) -> bool {
         || c == b'#'
         || c == b'&'
         || c == b'"'
+        || c == b';'
         || c.is_ascii_control()
         || c.is_ascii_whitespace()
 }
@@ -313,6 +314,28 @@ mod test {
                 Token::new(TokenKind::String, 1, "\"text\""),
                 Token::new(TokenKind::Identifier, 1, "something"),
                 Token::new(TokenKind::LeftBrace, 1, "{"),
+            ]
+        );
+    }
+
+    #[test]
+    fn comments() {
+        let mut scanner = Scanner::new("(ident;\ni");
+
+        let mut tokens = Vec::new();
+        while let Ok(token) = scanner.next_token() {
+            if token.kind() == TokenKind::End {
+                break;
+            }
+            tokens.push(token);
+        }
+
+        assert_eq!(
+            tokens,
+            vec![
+                Token::new(TokenKind::LeftParen, 1, "("),
+                Token::new(TokenKind::Identifier, 1, "ident"),
+                Token::new(TokenKind::Identifier, 2, "i"),
             ]
         );
     }
