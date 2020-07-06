@@ -293,7 +293,7 @@ fn inline_style_to_html(style: &InlineStyle) -> String {
         InlineStyle::Strike { .. } => String::from("text-decoration: line-through;"),
         InlineStyle::Fg { arg, .. } => format!("color: #{};", arg.lexeme()),
         InlineStyle::Bg { arg, .. } => format!("background-color: #{};", arg.lexeme()),
-        InlineStyle::Fill { .. } => String::from("/* TODO: fill */"),
+        InlineStyle::Fill { .. } => String::from("flex-basis: 50%; flex-grow: 0;"),
         InlineStyle::Size { arg, .. } => format!("font-size: {}px;", arg.lexeme()),
         InlineStyle::UserDefined { .. } => unreachable!(),
     }
