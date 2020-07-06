@@ -293,7 +293,11 @@ fn inline_style_to_html(style: &InlineStyle) -> String {
         InlineStyle::Strike { .. } => String::from("text-decoration: line-through;"),
         InlineStyle::Fg { arg, .. } => format!("color: #{};", arg.lexeme()),
         InlineStyle::Bg { arg, .. } => format!("background-color: #{};", arg.lexeme()),
-        InlineStyle::Fill { .. } => String::from("flex-basis: 50%; flex-grow: 0;"),
+        InlineStyle::Fill { arg, .. } => {
+            // this is still only sort of correct - vertical flex-basis doesn't really do this
+            // the way we expect it to
+            String::from(format!("flex-basis: {}%; flex-grow: 0;", arg.lexeme()))
+        }
         InlineStyle::Size { arg, .. } => format!("font-size: {}px;", arg.lexeme()),
         InlineStyle::UserDefined { .. } => unreachable!(),
     }
