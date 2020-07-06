@@ -41,7 +41,7 @@ pub fn parse(data: &str) -> Result<Page<'_>, Vec<FroggiError>> {
 
             TokenKind::LeftParen => {
                 first_item = false;
-                match parse_item(&mut scanner) {
+                match parse_item(&mut scanner, &page_styles) {
                     Ok(item) => {
                         items.push(item);
                     }
@@ -78,6 +78,7 @@ fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<PageStyles<'a>, Fr
     // parse outer list of rules
     let left_brace = consume(scanner, TokenKind::LeftBrace)?;
 
+    let in_page_style_item = true;
     let mut page_styles = HashMap::new();
 
     while scanner.peek_token(0)?.kind() != TokenKind::RightBrace {
@@ -89,7 +90,7 @@ fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<PageStyles<'a>, Fr
         let selector = consume_selector(scanner)?;
 
         // styles that belong to the rule
-        let styles = parse_style_list(scanner)?;
+        let styles = parse_style_list(scanner, &HashMap::with_capacity(0), in_page_style_item)?;
 
         page_styles.insert(selector, styles);
         consume(scanner, TokenKind::RightParen).msg_str("end of the style rule")?;
@@ -104,18 +105,21 @@ fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<PageStyles<'a>, Fr
 }
 
 // parse some normal page item
-fn parse_item<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
+fn parse_item<'a>(
+    scanner: &mut Scanner<'a>,
+    page_styles: &PageStyles<'a>,
+) -> Result<PageItem<'a>, FroggiError> {
     let left_paren = consume(scanner, TokenKind::LeftParen)?;
 
     let result = match scanner.peek_token(0)?.kind() {
-        TokenKind::Blob => parse_blob(scanner)?,
-        TokenKind::Link => parse_link(scanner)?,
+        TokenKind::Blob => parse_blob(scanner, page_styles)?,
+        TokenKind::Link => parse_link(scanner, page_styles)?,
         TokenKind::Anchor => parse_anchor(scanner)?,
-        TokenKind::Text => parse_text(scanner)?,
-        TokenKind::VBox => parse_vbox(scanner)?,
-        TokenKind::Box => parse_box(scanner)?,
-        TokenKind::Inline => parse_inline(scanner)?,
-        _ => parse_implicit_text(scanner)?,
+        TokenKind::Text => parse_text(scanner, page_styles)?,
+        TokenKind::VBox => parse_vbox(scanner, page_styles)?,
+        TokenKind::Box => parse_box(scanner, page_styles)?,
+        TokenKind::Inline => parse_inline(scanner, page_styles)?,
+        _ => parse_implicit_text(scanner, page_styles)?,
     };
 
     consume(scanner, TokenKind::RightParen).msg(format!(
@@ -126,11 +130,14 @@ fn parse_item<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
     Ok(result)
 }
 
-fn parse_blob<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
+fn parse_blob<'a>(
+    scanner: &mut Scanner<'a>,
+    page_styles: &PageStyles<'a>,
+) -> Result<PageItem<'a>, FroggiError> {
     let builtin = consume(scanner, TokenKind::Blob)?;
     let name = consume(scanner, TokenKind::String)?;
 
-    let inline_styles = parse_inline_styles(scanner)?;
+    let inline_styles = parse_inline_styles(scanner, page_styles)?;
     let payload = ItemPayload::Blob {
         name,
         alt: collect_text(scanner)?,
@@ -143,11 +150,14 @@ fn parse_blob<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
     })
 }
 
-fn parse_link<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
+fn parse_link<'a>(
+    scanner: &mut Scanner<'a>,
+    page_styles: &PageStyles<'a>,
+) -> Result<PageItem<'a>, FroggiError> {
     let builtin = consume(scanner, TokenKind::Link)?;
     let link = consume(scanner, TokenKind::String)?;
 
-    let inline_styles = parse_inline_styles(scanner)?;
+    let inline_styles = parse_inline_styles(scanner, page_styles)?;
     let payload = ItemPayload::Link {
         link,
         text: collect_text(scanner)?,
@@ -171,9 +181,12 @@ fn parse_anchor<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiErr
     })
 }
 
-fn parse_text<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
+fn parse_text<'a>(
+    scanner: &mut Scanner<'a>,
+    page_styles: &PageStyles<'a>,
+) -> Result<PageItem<'a>, FroggiError> {
     let builtin = consume(scanner, TokenKind::Text)?;
-    let inline_styles = parse_inline_styles(scanner)?;
+    let inline_styles = parse_inline_styles(scanner, page_styles)?;
     let text = collect_text(scanner)?;
 
     Ok(PageItem {
@@ -183,13 +196,16 @@ fn parse_text<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
     })
 }
 
-fn parse_vbox<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
+fn parse_vbox<'a>(
+    scanner: &mut Scanner<'a>,
+    page_styles: &PageStyles<'a>,
+) -> Result<PageItem<'a>, FroggiError> {
     let builtin = consume(scanner, TokenKind::VBox)?;
-    let inline_styles = parse_inline_styles(scanner)?;
+    let inline_styles = parse_inline_styles(scanner, page_styles)?;
     let mut children = Vec::new();
 
     while scanner.peek_token(0)?.kind() != TokenKind::RightParen {
-        children.push(parse_item(scanner)?);
+        children.push(parse_item(scanner, page_styles)?);
     }
 
     Ok(PageItem {
@@ -202,13 +218,16 @@ fn parse_vbox<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError
     })
 }
 
-fn parse_box<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
+fn parse_box<'a>(
+    scanner: &mut Scanner<'a>,
+    page_styles: &PageStyles<'a>,
+) -> Result<PageItem<'a>, FroggiError> {
     let builtin = consume(scanner, TokenKind::Box)?;
-    let inline_styles = parse_inline_styles(scanner)?;
+    let inline_styles = parse_inline_styles(scanner, page_styles)?;
     let mut children = Vec::new();
 
     while scanner.peek_token(0)?.kind() != TokenKind::RightParen {
-        children.push(parse_item(scanner)?);
+        children.push(parse_item(scanner, page_styles)?);
     }
 
     Ok(PageItem {
@@ -221,13 +240,16 @@ fn parse_box<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError>
     })
 }
 
-fn parse_inline<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
+fn parse_inline<'a>(
+    scanner: &mut Scanner<'a>,
+    page_styles: &PageStyles<'a>,
+) -> Result<PageItem<'a>, FroggiError> {
     let builtin = consume(scanner, TokenKind::Inline)?;
-    let inline_styles = parse_inline_styles(scanner)?;
+    let inline_styles = parse_inline_styles(scanner, page_styles)?;
     let mut children = Vec::new();
 
     while scanner.peek_token(0)?.kind() != TokenKind::RightParen {
-        children.push(parse_item(scanner)?);
+        children.push(parse_item(scanner, page_styles)?);
     }
 
     Ok(PageItem {
@@ -240,9 +262,12 @@ fn parse_inline<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiErr
     })
 }
 
-fn parse_implicit_text<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
+fn parse_implicit_text<'a>(
+    scanner: &mut Scanner<'a>,
+    page_styles: &PageStyles<'a>,
+) -> Result<PageItem<'a>, FroggiError> {
     let implicit = Token::new(TokenKind::ImplicitText, scanner.peek_token(0)?.line(), "");
-    let inline_styles = parse_inline_styles(scanner)?;
+    let inline_styles = parse_inline_styles(scanner, page_styles)?;
     let text = collect_text(scanner)?;
 
     Ok(PageItem {
@@ -252,10 +277,14 @@ fn parse_implicit_text<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, Fr
     })
 }
 
-fn parse_inline_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<InlineStyle<'a>>, FroggiError> {
+fn parse_inline_styles<'a>(
+    scanner: &mut Scanner<'a>,
+    page_styles: &PageStyles<'a>,
+) -> Result<Vec<InlineStyle<'a>>, FroggiError> {
+    let in_page_style_item = false;
     if scanner.peek_token(0)?.kind() == TokenKind::LeftBrace {
         consume(scanner, TokenKind::LeftBrace)?;
-        let inline_styles = parse_style_list(scanner)?;
+        let inline_styles = parse_style_list(scanner, page_styles, in_page_style_item)?;
         consume(scanner, TokenKind::RightBrace).msg_str("expected the end of the inline style")?;
         Ok(inline_styles)
     } else {
@@ -263,7 +292,11 @@ fn parse_inline_styles<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<InlineStyle<
     }
 }
 
-fn parse_style_list<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<InlineStyle<'a>>, FroggiError> {
+fn parse_style_list<'a>(
+    scanner: &mut Scanner<'a>,
+    page_styles: &PageStyles<'a>,
+    in_page_style_item: bool,
+) -> Result<Vec<InlineStyle<'a>>, FroggiError> {
     let mut inline_styles = Vec::new();
 
     // this could be called from either inline style parsing or page style parsing
@@ -273,8 +306,18 @@ fn parse_style_list<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<InlineStyle<'a>
         let token = scanner.next_token()?;
         match token.kind() {
             TokenKind::Identifier => {
-                // TODO: make sure the style actually exists
-                inline_styles.push(InlineStyle::UserDefined { token });
+                // if we're in the page's style item, we're currently defining the styles,
+                // so don't worry about the ones that don't exist yet
+                if in_page_style_item || page_styles.contains_key(&token) {
+                    inline_styles.push(InlineStyle::UserDefined { token });
+                } else {
+                    return Err(FroggiError::parse(
+                        ParseError::UnknownStyle {
+                            style: token.clone_lexeme(),
+                        },
+                        token.line(),
+                    ));
+                }
             }
 
             TokenKind::Mono => {
@@ -458,14 +501,14 @@ mod test {
     fn item_inline_style_missing_arg() {
         let item = r#"(item {style (missing)} "arg")"#;
         let mut scanner = Scanner::new(item);
-        assert!(parse_item(&mut scanner).is_err());
+        assert!(parse_item(&mut scanner, &HashMap::new()).is_err());
     }
 
     #[test]
     fn inline_style_missing_arg() {
         let style = "{inline-style (something)}";
         let mut scanner = Scanner::new(style);
-        assert!(parse_inline_styles(&mut scanner).is_err());
+        assert!(parse_inline_styles(&mut scanner, &HashMap::new()).is_err());
     }
 
     #[test]

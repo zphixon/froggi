@@ -101,6 +101,7 @@ pub enum ParseError {
     ExpectedStyle { got: String },
     ExpectedItem { got: String },
     UnknownBuiltinItem { item: String },
+    UnknownStyle { style: String },
 }
 
 #[rustfmt::skip]
@@ -119,6 +120,8 @@ impl fmt::Display for ParseError {
                 => write!(f, "expected item or page style, got {:?}", got),
             ParseError::UnknownBuiltinItem { item }
                 => write!(f, "unknown builtin item {:?}", item),
+            ParseError::UnknownStyle { style }
+                => write!(f, "unknown style {:?}", style),
         }
     }
 }
@@ -205,6 +208,10 @@ pub struct FroggiError {
 impl FroggiError {
     pub fn new(error: ErrorKind) -> FroggiError {
         FroggiError { error, msg: None }
+    }
+
+    pub fn kind(&self) -> &ErrorKind {
+        &self.error
     }
 
     pub fn scan(error: ScanError, line: usize) -> FroggiError {
