@@ -363,18 +363,40 @@ fn parse_style_list<'a>(
 
                 match token.kind() {
                     TokenKind::Fg => {
+                        let arg = parse_hex_color(arg)?;
                         inline_styles.push(InlineStyle::Fg { token, arg });
                     }
 
                     TokenKind::Bg => {
+                        let arg = parse_hex_color(arg)?;
                         inline_styles.push(InlineStyle::Bg { token, arg });
                     }
 
                     TokenKind::Fill => {
+                        let arg = arg.lexeme().parse::<u8>().map_err(|_| {
+                            FroggiError::parse(
+                                ParseError::IncorrectNumberFormat {
+                                    num: arg.clone_lexeme(),
+                                    wanted: String::from("0-100"),
+                                },
+                                arg.line(),
+                            )
+                        })?;
+
                         inline_styles.push(InlineStyle::Fill { token, arg });
                     }
 
                     TokenKind::Size => {
+                        let arg = arg.lexeme().parse::<usize>().map_err(|_| {
+                            FroggiError::parse(
+                                ParseError::IncorrectNumberFormat {
+                                    num: arg.clone_lexeme(),
+                                    wanted: String::from("valid size"),
+                                },
+                                arg.line(),
+                            )
+                        })?;
+
                         inline_styles.push(InlineStyle::Size { token, arg });
                     }
 
@@ -405,6 +427,31 @@ fn parse_style_list<'a>(
     }
 
     Ok(inline_styles)
+}
+
+fn parse_hex_color(arg: Token) -> Result<(u8, u8, u8), FroggiError> {
+    // TODO: support hsv/rgb/3-digit hex values?
+    let bytes = hex::decode(arg.lexeme()).map_err(|_| {
+        FroggiError::parse(
+            ParseError::IncorrectNumberFormat {
+                num: arg.clone_lexeme(),
+                wanted: String::from("valid hex number"),
+            },
+            arg.line(),
+        )
+    })?;
+
+    if bytes.len() != 3 {
+        return Err(FroggiError::parse(
+            ParseError::IncorrectNumberFormat {
+                num: arg.clone_lexeme(),
+                wanted: String::from("6-digit hex number"),
+            },
+            arg.line(),
+        ));
+    }
+
+    Ok((bytes[0], bytes[1], bytes[2]))
 }
 
 fn collect_text<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<Token<'a>>, FroggiError> {
@@ -469,7 +516,7 @@ mod test {
     #[test]
     fn references() {
         let sample =
-            r#"{(user-style)}(& "image.jpg" {user-style (fg "30300") serif} "with alt" " text")"#;
+            r#"{(user-style)}(& "image.jpg" {user-style (fg "300300") serif} "with alt" " text")"#;
         parse(sample).unwrap();
 
         let sample = r#"(& "somewhere")"#;
@@ -579,7 +626,7 @@ mod test {
                 },
                 InlineStyle::Fg {
                     token: Token::new(TokenKind::Fg, 1, "fg"),
-                    arg: Token::new(TokenKind::String, 1, r#""902100""#),
+                    arg: (0x90, 0x21, 0x00),
                 },
             ],
         );

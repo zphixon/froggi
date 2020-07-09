@@ -89,6 +89,7 @@ pub enum ParseError {
     ExpectedItem { got: String },
     UnknownStyle { style: String },
     RecursiveStyle { style: String },
+    IncorrectNumberFormat { num: String, wanted: String },
 }
 
 #[rustfmt::skip]
@@ -107,6 +108,8 @@ impl fmt::Display for ParseError {
                 => write!(f, "unknown style {:?}", style),
             ParseError::RecursiveStyle { style }
                 => write!(f, "unknown style {:?}", style),
+            ParseError::IncorrectNumberFormat { num, wanted }
+                => write!(f, "incorrect number format: wanted {}, {:?}", wanted, num),
         }
     }
 }

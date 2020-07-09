@@ -111,6 +111,7 @@ name = "froggi"
 version = "0.1.0"
 dependencies = [
  "float_eq 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "hex 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "lazy_static 1.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -145,6 +146,11 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "libc 0.2.71 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
+
+[[package]]
+name = "hex"
+version = "0.4.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "image"
@@ -326,6 +332,7 @@ dependencies = [
 "checksum float_eq 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)" = "c7e578cadc35bbb29693b20d3d80038cac80bd2642c63963a046557b8236d2de"
 "checksum gif 0.10.3 (registry+https://github.com/rust-lang/crates.io-index)" = "471d90201b3b223f3451cd4ad53e34295f16a1df17b1edf3736d47761c3981af"
 "checksum hermit-abi 0.1.14 (registry+https://github.com/rust-lang/crates.io-index)" = "b9586eedd4ce6b3c498bc3b4dd92fc9f11166aa908a914071953768066c67909"
+"checksum hex 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)" = "644f9158b2f133fd50f5fb3242878846d9eb792e445c893805ff0e3824006e35"
 "checksum image 0.23.6 (registry+https://github.com/rust-lang/crates.io-index)" = "b5b0553fec6407d63fe2975b794dfb099f3f790bdc958823851af37b26404ab4"
 "checksum jpeg-decoder 0.1.19 (registry+https://github.com/rust-lang/crates.io-index)" = "5b47b4c4e017b01abdc5bcc126d2d1002e5a75bbe3ce73f9f4f311a916363704"
 "checksum lazy_static 1.4.0 (registry+https://github.com/rust-lang/crates.io-index)" = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"

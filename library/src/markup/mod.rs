@@ -51,10 +51,10 @@ pub enum InlineStyle<'a> {
     Italic { token: Token<'a> },
     Underline { token: Token<'a> },
     Strike { token: Token<'a> },
-    Fg { token: Token<'a>, arg: Token<'a> },
-    Bg { token: Token<'a>, arg: Token<'a> },
-    Fill { token: Token<'a>, arg: Token<'a> },
-    Size { token: Token<'a>, arg: Token<'a> },
+    Fg { token: Token<'a>, arg: (u8, u8, u8) },
+    Bg { token: Token<'a>, arg: (u8, u8, u8) },
+    Fill { token: Token<'a>, arg: u8 },
+    Size { token: Token<'a>, arg: usize },
     UserDefined { token: Token<'a> },
 }
 
@@ -291,14 +291,17 @@ fn inline_style_to_html(style: &InlineStyle) -> String {
         InlineStyle::Italic { .. } => String::from("font-style: italic;"),
         InlineStyle::Underline { .. } => String::from("text-decoration: underline;"),
         InlineStyle::Strike { .. } => String::from("text-decoration: line-through;"),
-        InlineStyle::Fg { arg, .. } => format!("color: #{};", arg.lexeme()),
-        InlineStyle::Bg { arg, .. } => format!("background-color: #{};", arg.lexeme()),
+        InlineStyle::Fg { arg, .. } => format!("color: #{:02x}{:02x}{:02x};", arg.0, arg.1, arg.2,),
+        InlineStyle::Bg { arg, .. } => format!(
+            "background-color: #{:02x}{:02x}{:02x};",
+            arg.0, arg.1, arg.2,
+        ),
         InlineStyle::Fill { arg, .. } => {
             // this is still only sort of correct - vertical flex-basis doesn't really do this
             // the way we expect it to
-            String::from(format!("flex-basis: {}%; flex-grow: 0;", arg.lexeme()))
+            String::from(format!("flex-basis: {}%; flex-grow: 0;", arg))
         }
-        InlineStyle::Size { arg, .. } => format!("font-size: {}px;", arg.lexeme()),
+        InlineStyle::Size { arg, .. } => format!("font-size: {}px;", arg),
         InlineStyle::UserDefined { .. } => unreachable!(),
     }
 }
