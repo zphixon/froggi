@@ -4,6 +4,11 @@ use std::io::{self, Write};
 use std::net::{TcpStream, ToSocketAddrs};
 use std::str;
 
+#[cfg(feature = "layout")]
+pub mod layout;
+#[cfg(feature = "layout")]
+pub extern crate druid;
+
 pub mod markup;
 pub mod request;
 pub mod response;

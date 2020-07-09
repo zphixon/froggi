@@ -1,3 +1,6 @@
+use druid::widget::{Align, Flex, Label, TextBox};
+use druid::{AppLauncher, Data, Env, Lens, LocalizedString, Widget, WidgetExt, WindowDesc};
+
 use image::io::Reader;
 use image::GenericImageView;
 
@@ -27,6 +30,14 @@ fn main() {
 
             let mut file = File::create("server/pages/generated_test_markup.html").unwrap();
             file.write_all(html.as_bytes()).unwrap();
+
+            let main_window = WindowDesc::new(|| froggi::layout::PageWidget)
+                .title("Hello, froggi")
+                .window_size((400.0, 400.0));
+
+            AppLauncher::with_window(main_window)
+                .launch(froggi::layout::OwnedPage::from(doc))
+                .unwrap();
         }
 
         Err(errors) => {
