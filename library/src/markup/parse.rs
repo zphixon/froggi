@@ -13,8 +13,8 @@ pub fn parse(data: &str) -> Result<Page<'_>, Vec<FroggiError>> {
 
     let mut first_item = true;
     let mut scanner = Scanner::new(data);
-    while scanner.peek_token(0)?.kind() != TokenKind::End {
-        match scanner.peek_token(0)?.kind() {
+    while scanner.peek_token()?.kind() != TokenKind::End {
+        match scanner.peek_token()?.kind() {
             // there should only be a single page-level style element,
             // and it should be the first item
             TokenKind::LeftBrace if first_item => {
@@ -29,11 +29,11 @@ pub fn parse(data: &str) -> Result<Page<'_>, Vec<FroggiError>> {
                 errors.push(
                     FroggiError::parse(
                         ParseError::ExpectedItem { got: "{".into() },
-                        scanner.peek_token(0)?.line(),
+                        scanner.peek_token()?.line(),
                     )
                     .msg_str("page items must be the first item in the page"),
                 );
-                while scanner.peek_token(0)?.kind() != TokenKind::RightBrace {
+                while scanner.peek_token()?.kind() != TokenKind::RightBrace {
                     scanner.next_token()?;
                 }
                 scanner.next_token()?;
@@ -54,9 +54,9 @@ pub fn parse(data: &str) -> Result<Page<'_>, Vec<FroggiError>> {
             _ => {
                 errors.push(FroggiError::parse(
                     ParseError::ExpectedItem {
-                        got: scanner.peek_token(0)?.clone_lexeme(),
+                        got: scanner.peek_token()?.clone_lexeme(),
                     },
-                    scanner.peek_token(0)?.line(),
+                    scanner.peek_token()?.line(),
                 ));
                 scanner.next_token()?;
                 while !scanner.at_top_level() {
@@ -81,7 +81,7 @@ fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<PageStyles<'a>, Fr
     let in_page_style_item = true;
     let mut page_styles = HashMap::new();
 
-    while scanner.peek_token(0)?.kind() != TokenKind::RightBrace {
+    while scanner.peek_token()?.kind() != TokenKind::RightBrace {
         // parse one single rule
         consume(scanner, TokenKind::LeftParen)
             .msg_str("expected style rules inside page style item")?;
@@ -111,7 +111,7 @@ fn parse_item<'a>(
 ) -> Result<PageItem<'a>, FroggiError> {
     let left_paren = consume(scanner, TokenKind::LeftParen)?;
 
-    let result = match scanner.peek_token(0)?.kind() {
+    let result = match scanner.peek_token()?.kind() {
         TokenKind::Blob => parse_blob(scanner, page_styles)?,
         TokenKind::Link => parse_link(scanner, page_styles)?,
         TokenKind::Anchor => parse_anchor(scanner)?,
@@ -204,7 +204,7 @@ fn parse_vbox<'a>(
     let inline_styles = parse_inline_styles(scanner, page_styles)?;
     let mut children = Vec::new();
 
-    while scanner.peek_token(0)?.kind() != TokenKind::RightParen {
+    while scanner.peek_token()?.kind() != TokenKind::RightParen {
         children.push(parse_item(scanner, page_styles)?);
     }
 
@@ -226,7 +226,7 @@ fn parse_box<'a>(
     let inline_styles = parse_inline_styles(scanner, page_styles)?;
     let mut children = Vec::new();
 
-    while scanner.peek_token(0)?.kind() != TokenKind::RightParen {
+    while scanner.peek_token()?.kind() != TokenKind::RightParen {
         children.push(parse_item(scanner, page_styles)?);
     }
 
@@ -248,7 +248,7 @@ fn parse_inline<'a>(
     let inline_styles = parse_inline_styles(scanner, page_styles)?;
     let mut children = Vec::new();
 
-    while scanner.peek_token(0)?.kind() != TokenKind::RightParen {
+    while scanner.peek_token()?.kind() != TokenKind::RightParen {
         children.push(parse_item(scanner, page_styles)?);
     }
 
@@ -266,7 +266,7 @@ fn parse_implicit_text<'a>(
     scanner: &mut Scanner<'a>,
     page_styles: &PageStyles<'a>,
 ) -> Result<PageItem<'a>, FroggiError> {
-    let implicit = Token::new(TokenKind::ImplicitText, scanner.peek_token(0)?.line(), "");
+    let implicit = Token::new(TokenKind::ImplicitText, scanner.peek_token()?.line(), "");
     let inline_styles = parse_inline_styles(scanner, page_styles)?;
     let text = collect_text(scanner)?;
 
@@ -282,7 +282,7 @@ fn parse_inline_styles<'a>(
     page_styles: &PageStyles<'a>,
 ) -> Result<Vec<InlineStyle<'a>>, FroggiError> {
     let in_page_style_item = false;
-    if scanner.peek_token(0)?.kind() == TokenKind::LeftBrace {
+    if scanner.peek_token()?.kind() == TokenKind::LeftBrace {
         consume(scanner, TokenKind::LeftBrace)?;
         let inline_styles = parse_style_list(scanner, page_styles, in_page_style_item)?;
         consume(scanner, TokenKind::RightBrace).msg_str("expected the end of the inline style")?;
@@ -300,8 +300,8 @@ fn parse_style_list<'a>(
     let mut inline_styles = Vec::new();
 
     // this could be called from either inline style parsing or page style parsing
-    while scanner.peek_token(0)?.kind() != TokenKind::RightBrace
-        && scanner.peek_token(0)?.kind() != TokenKind::RightParen
+    while scanner.peek_token()?.kind() != TokenKind::RightBrace
+        && scanner.peek_token()?.kind() != TokenKind::RightParen
     {
         let token = scanner.next_token()?;
         match token.kind() {
@@ -457,7 +457,7 @@ fn parse_hex_color(arg: Token) -> Result<(u8, u8, u8), FroggiError> {
 fn collect_text<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<Token<'a>>, FroggiError> {
     let mut text = Vec::new();
 
-    while scanner.peek_token(0)?.kind() != TokenKind::RightParen {
+    while scanner.peek_token()?.kind() != TokenKind::RightParen {
         text.push(consume(scanner, TokenKind::String)?);
     }
 

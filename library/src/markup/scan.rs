@@ -1,7 +1,5 @@
 use crate::{FroggiError, ScanError};
 
-use std::collections::VecDeque;
-
 fn is_control_character(c: u8) -> bool {
     c == b'{'
         || c == b'}'
@@ -103,7 +101,7 @@ pub struct Scanner<'a> {
     current: usize,
     line: usize,
     paren_level: usize,
-    tokens: VecDeque<Token<'a>>,
+    token: Option<Token<'a>>,
     source: &'a [u8],
 }
 
@@ -114,7 +112,7 @@ impl<'a> Scanner<'a> {
             current: 0,
             line: 1,
             paren_level: 0,
-            tokens: VecDeque::with_capacity(2),
+            token: None,
             source: s.as_bytes(),
         }
     }
@@ -123,24 +121,20 @@ impl<'a> Scanner<'a> {
         self.paren_level == 0
     }
 
-    pub fn peek_token(&mut self, idx: usize) -> Result<Token<'a>, FroggiError> {
-        if self.tokens.is_empty() {
+    pub fn peek_token(&mut self) -> Result<Token<'a>, FroggiError> {
+        if self.token.is_none() {
             self.next()?;
         }
 
-        while self.tokens.len() <= idx {
-            self.next()?;
-        }
-
-        Ok(self.tokens[idx])
+        Ok(self.token.unwrap())
     }
 
     pub fn next_token(&mut self) -> Result<Token<'a>, FroggiError> {
-        if self.tokens.is_empty() {
+        if self.token.is_none() {
             self.next()?;
         }
 
-        Ok(self.tokens.pop_front().unwrap())
+        Ok(self.token.take().unwrap())
     }
 
     fn next(&mut self) -> Result<Token<'a>, FroggiError> {
@@ -152,8 +146,7 @@ impl<'a> Scanner<'a> {
             Token::new(
                 match self.advance() {
                     b'\0' => {
-                        self.tokens
-                            .push_back(Token::new(TokenKind::End, self.line, ""));
+                        self.token = Some(Token::new(TokenKind::End, self.line, ""));
                         return Ok(Token::new(TokenKind::End, self.line, ""));
                     }
 
@@ -189,7 +182,7 @@ impl<'a> Scanner<'a> {
             )
         };
 
-        self.tokens.push_back(token);
+        self.token = Some(token);
         Ok(token)
     }
 
@@ -293,9 +286,9 @@ mod test {
     #[test]
     fn next_then_peek() {
         let mut s = Scanner::new("({:&name\"text\"})");
-        assert_eq!(s.peek_token(0).unwrap().kind(), TokenKind::LeftParen);
+        assert_eq!(s.peek_token().unwrap().kind(), TokenKind::LeftParen);
         assert_eq!(s.next_token().unwrap().kind(), TokenKind::LeftParen);
-        assert_eq!(s.peek_token(0).unwrap().kind(), TokenKind::LeftBrace);
+        assert_eq!(s.peek_token().unwrap().kind(), TokenKind::LeftBrace);
         assert_eq!(s.next_token().unwrap().kind(), TokenKind::LeftBrace);
     }
 
