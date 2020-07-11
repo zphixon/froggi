@@ -67,7 +67,10 @@ pub fn parse(data: &str) -> Result<Page<'_>, Vec<FroggiError>> {
     }
 
     if errors.is_empty() {
-        Ok(Page { page_styles, items })
+        Ok(Page {
+            styles: page_styles,
+            items,
+        })
     } else {
         Err(errors)
     }
@@ -137,7 +140,7 @@ fn parse_blob<'a>(
     let builtin = consume(scanner, TokenKind::Blob)?;
     let name = consume(scanner, TokenKind::String)?;
 
-    let inline_styles = parse_inline_styles(scanner, page_styles)?;
+    let styles = parse_inline_styles(scanner, page_styles)?;
     let payload = ItemPayload::Blob {
         name,
         alt: collect_text(scanner)?,
@@ -145,7 +148,7 @@ fn parse_blob<'a>(
 
     Ok(PageItem {
         builtin,
-        inline_styles,
+        styles,
         payload,
     })
 }
@@ -157,7 +160,7 @@ fn parse_link<'a>(
     let builtin = consume(scanner, TokenKind::Link)?;
     let link = consume(scanner, TokenKind::String)?;
 
-    let inline_styles = parse_inline_styles(scanner, page_styles)?;
+    let styles = parse_inline_styles(scanner, page_styles)?;
     let payload = ItemPayload::Link {
         link,
         text: collect_text(scanner)?,
@@ -165,7 +168,7 @@ fn parse_link<'a>(
 
     Ok(PageItem {
         builtin,
-        inline_styles,
+        styles,
         payload,
     })
 }
@@ -176,7 +179,7 @@ fn parse_anchor<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiErr
     let payload = ItemPayload::Anchor { anchor };
     Ok(PageItem {
         builtin,
-        inline_styles: Vec::new(),
+        styles: Vec::new(),
         payload,
     })
 }
@@ -186,12 +189,12 @@ fn parse_text<'a>(
     page_styles: &PageStyles<'a>,
 ) -> Result<PageItem<'a>, FroggiError> {
     let builtin = consume(scanner, TokenKind::Text)?;
-    let inline_styles = parse_inline_styles(scanner, page_styles)?;
+    let styles = parse_inline_styles(scanner, page_styles)?;
     let text = collect_text(scanner)?;
 
     Ok(PageItem {
         builtin,
-        inline_styles,
+        styles,
         payload: ItemPayload::Text { text },
     })
 }
@@ -201,7 +204,7 @@ fn parse_vbox<'a>(
     page_styles: &PageStyles<'a>,
 ) -> Result<PageItem<'a>, FroggiError> {
     let builtin = consume(scanner, TokenKind::VBox)?;
-    let inline_styles = parse_inline_styles(scanner, page_styles)?;
+    let styles = parse_inline_styles(scanner, page_styles)?;
     let mut children = Vec::new();
 
     while scanner.peek_token()?.kind() != TokenKind::RightParen {
@@ -210,7 +213,7 @@ fn parse_vbox<'a>(
 
     Ok(PageItem {
         builtin,
-        inline_styles,
+        styles,
         payload: ItemPayload::Children {
             children,
             line: builtin.line(),
@@ -223,7 +226,7 @@ fn parse_box<'a>(
     page_styles: &PageStyles<'a>,
 ) -> Result<PageItem<'a>, FroggiError> {
     let builtin = consume(scanner, TokenKind::Box)?;
-    let inline_styles = parse_inline_styles(scanner, page_styles)?;
+    let styles = parse_inline_styles(scanner, page_styles)?;
     let mut children = Vec::new();
 
     while scanner.peek_token()?.kind() != TokenKind::RightParen {
@@ -232,7 +235,7 @@ fn parse_box<'a>(
 
     Ok(PageItem {
         builtin,
-        inline_styles,
+        styles,
         payload: ItemPayload::Children {
             children,
             line: builtin.line(),
@@ -245,7 +248,7 @@ fn parse_inline<'a>(
     page_styles: &PageStyles<'a>,
 ) -> Result<PageItem<'a>, FroggiError> {
     let builtin = consume(scanner, TokenKind::Inline)?;
-    let inline_styles = parse_inline_styles(scanner, page_styles)?;
+    let styles = parse_inline_styles(scanner, page_styles)?;
     let mut children = Vec::new();
 
     while scanner.peek_token()?.kind() != TokenKind::RightParen {
@@ -254,7 +257,7 @@ fn parse_inline<'a>(
 
     Ok(PageItem {
         builtin,
-        inline_styles,
+        styles,
         payload: ItemPayload::Children {
             children,
             line: builtin.line(),
@@ -267,12 +270,12 @@ fn parse_implicit_text<'a>(
     page_styles: &PageStyles<'a>,
 ) -> Result<PageItem<'a>, FroggiError> {
     let implicit = Token::new(TokenKind::ImplicitText, scanner.peek_token()?.line(), "");
-    let inline_styles = parse_inline_styles(scanner, page_styles)?;
+    let styles = parse_inline_styles(scanner, page_styles)?;
     let text = collect_text(scanner)?;
 
     Ok(PageItem {
         builtin: implicit,
-        inline_styles,
+        styles,
         payload: ItemPayload::Text { text },
     })
 }
@@ -297,7 +300,7 @@ fn parse_style_list<'a>(
     page_styles: &PageStyles<'a>,
     in_page_style_item: bool,
 ) -> Result<Vec<InlineStyle<'a>>, FroggiError> {
-    let mut inline_styles = Vec::new();
+    let mut styles = Vec::new();
 
     // this could be called from either inline style parsing or page style parsing
     while scanner.peek_token()?.kind() != TokenKind::RightBrace
@@ -308,7 +311,7 @@ fn parse_style_list<'a>(
             TokenKind::Identifier => {
                 if !in_page_style_item {
                     if page_styles.contains_key(&token) {
-                        inline_styles.push(InlineStyle::UserDefined { token });
+                        styles.push(InlineStyle::UserDefined { token });
                     } else {
                         return Err(FroggiError::parse(
                             ParseError::UnknownStyle {
@@ -330,31 +333,31 @@ fn parse_style_list<'a>(
             }
 
             TokenKind::Mono => {
-                inline_styles.push(InlineStyle::Mono { token });
+                styles.push(InlineStyle::Mono { token });
             }
 
             TokenKind::Serif => {
-                inline_styles.push(InlineStyle::Serif { token });
+                styles.push(InlineStyle::Serif { token });
             }
 
             TokenKind::Sans => {
-                inline_styles.push(InlineStyle::Sans { token });
+                styles.push(InlineStyle::Sans { token });
             }
 
             TokenKind::Bold => {
-                inline_styles.push(InlineStyle::Bold { token });
+                styles.push(InlineStyle::Bold { token });
             }
 
             TokenKind::Italic => {
-                inline_styles.push(InlineStyle::Italic { token });
+                styles.push(InlineStyle::Italic { token });
             }
 
             TokenKind::Underline => {
-                inline_styles.push(InlineStyle::Underline { token });
+                styles.push(InlineStyle::Underline { token });
             }
 
             TokenKind::Strike => {
-                inline_styles.push(InlineStyle::Strike { token });
+                styles.push(InlineStyle::Strike { token });
             }
 
             TokenKind::LeftParen => {
@@ -364,12 +367,12 @@ fn parse_style_list<'a>(
                 match token.kind() {
                     TokenKind::Fg => {
                         let arg = parse_hex_color(arg)?;
-                        inline_styles.push(InlineStyle::Fg { token, arg });
+                        styles.push(InlineStyle::Fg { token, arg });
                     }
 
                     TokenKind::Bg => {
                         let arg = parse_hex_color(arg)?;
-                        inline_styles.push(InlineStyle::Bg { token, arg });
+                        styles.push(InlineStyle::Bg { token, arg });
                     }
 
                     TokenKind::Fill => {
@@ -383,7 +386,7 @@ fn parse_style_list<'a>(
                             )
                         })?;
 
-                        inline_styles.push(InlineStyle::Fill { token, arg });
+                        styles.push(InlineStyle::Fill { token, arg });
                     }
 
                     TokenKind::Size => {
@@ -397,7 +400,7 @@ fn parse_style_list<'a>(
                             )
                         })?;
 
-                        inline_styles.push(InlineStyle::Size { token, arg });
+                        styles.push(InlineStyle::Size { token, arg });
                     }
 
                     _ => {
@@ -426,7 +429,7 @@ fn parse_style_list<'a>(
         }
     }
 
-    Ok(inline_styles)
+    Ok(styles)
 }
 
 fn parse_hex_color(arg: Token) -> Result<(u8, u8, u8), FroggiError> {

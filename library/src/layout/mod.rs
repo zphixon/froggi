@@ -136,7 +136,7 @@ impl From<&InlineStyle<'_>> for OwnedInlineStyle {
 impl From<&PageItem<'_>> for OwnedPageItem {
     fn from(item: &PageItem) -> Self {
         let builtin = (&item.builtin).into();
-        let inline_styles = item.inline_styles.iter().map(From::from).collect();
+        let inline_styles = item.styles.iter().map(From::from).collect();
         let payload = match &item.payload {
             ItemPayload::Text { text } => OwnedItemPayload::Text {
                 text: text.iter().map(From::from).collect(),
@@ -169,7 +169,7 @@ impl From<&PageItem<'_>> for OwnedPageItem {
 impl From<Page<'_>> for OwnedPage {
     fn from(page: Page<'_>) -> Self {
         let mut page_styles = HashMap::new();
-        for (selector, styles) in &page.page_styles {
+        for (selector, styles) in &page.styles {
             page_styles.insert(selector.into(), styles.iter().map(From::from).collect());
         }
 

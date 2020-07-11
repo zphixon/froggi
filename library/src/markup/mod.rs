@@ -7,7 +7,7 @@ use std::collections::HashMap;
 
 #[derive(Debug, PartialEq)]
 pub struct Page<'a> {
-    pub page_styles: PageStyles<'a>,
+    pub styles: PageStyles<'a>,
     pub items: Vec<PageItem<'a>>,
 }
 
@@ -16,7 +16,7 @@ pub type PageStyles<'a> = HashMap<Token<'a>, Vec<InlineStyle<'a>>>;
 #[derive(Debug, PartialEq)]
 pub struct PageItem<'a> {
     pub builtin: Token<'a>,
-    pub inline_styles: Vec<InlineStyle<'a>>,
+    pub styles: Vec<InlineStyle<'a>>,
     pub payload: ItemPayload<'a>,
 }
 
@@ -82,7 +82,7 @@ body {
 "#,
     );
 
-    for (selector, page_styles) in &page.page_styles {
+    for (selector, page_styles) in &page.styles {
         match selector.kind() {
             TokenKind::Identifier => {
                 html.push_str(&format!(".{} {{\n", selector.lexeme()));
@@ -144,7 +144,7 @@ fn page_item_to_html(item: &PageItem, child_of_inline: bool) -> String {
         ItemPayload::Text { text } => {
             html.push_str("<span");
 
-            if !item.inline_styles.is_empty() {
+            if !item.styles.is_empty() {
                 html.push_str(&style_list_to_html(item, not_flex_column));
             }
 
@@ -193,7 +193,7 @@ fn page_item_to_html(item: &PageItem, child_of_inline: bool) -> String {
         ItemPayload::Link { link, text } => {
             html.push_str("<div");
 
-            if !item.inline_styles.is_empty() {
+            if !item.styles.is_empty() {
                 html.push_str(&style_list_to_html(item, not_flex_column));
             }
 
@@ -240,7 +240,7 @@ fn style_list_to_html(item: &PageItem, flex_column: bool) -> String {
     let mut classes = Vec::new();
     let mut styles = Vec::new();
 
-    for style in &item.inline_styles {
+    for style in &item.styles {
         match style {
             InlineStyle::UserDefined { token } => {
                 classes.push(token.lexeme());
