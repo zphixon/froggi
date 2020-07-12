@@ -38,7 +38,6 @@ struct StyleBuilder {
     size: Option<usize>,
 }
 
-#[allow(dead_code)]
 impl StyleBuilder {
     fn build(self) -> Style {
         Style {
@@ -49,36 +48,6 @@ impl StyleBuilder {
             fill: self.fill.unwrap_or_else(|| 1),
             size: self.size.unwrap_or_else(|| 12),
         }
-    }
-
-    fn font_type(mut self, font_type: FontType) -> Self {
-        self.font_type = Some(font_type);
-        self
-    }
-
-    fn font_style(mut self, font_style: HashSet<FontStyle>) -> Self {
-        self.font_style = Some(font_style);
-        self
-    }
-
-    fn background(mut self, background: (u8, u8, u8)) -> Self {
-        self.background = Some(background);
-        self
-    }
-
-    fn foreground(mut self, foreground: (u8, u8, u8)) -> Self {
-        self.foreground = Some(foreground);
-        self
-    }
-
-    fn fill(mut self, fill: u8) -> Self {
-        self.fill = Some(fill);
-        self
-    }
-
-    fn size(mut self, size: usize) -> Self {
-        self.size = Some(size);
-        self
     }
 
     fn set_font_type(&mut self, font_type: FontType) {
@@ -150,7 +119,11 @@ pub struct Space {
     pub height: Option<usize>,
 }
 
-pub fn draw_item(item: &PageItem, available_width: usize) -> Space {
+pub fn draw_item(item: &PageItem, page_styles: &PageStyles, available_width: usize) -> Space {
+    let mut builder = StyleBuilder::default();
+    inline_styles_to_style(&item.styles, page_styles, &mut builder);
+    let _style = builder.build();
+
     match &item.payload {
         ItemPayload::Children { children, .. } => {
             let per_child = available_width / children.len();
