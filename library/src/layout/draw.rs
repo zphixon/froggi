@@ -28,82 +28,59 @@ pub struct Style {
     pub size: usize,
 }
 
-#[derive(Default, Clone)]
-struct StyleBuilder {
-    font_type: Option<FontType>,
-    font_style: Option<HashSet<FontStyle>>,
-    background: Option<(u8, u8, u8)>,
-    foreground: Option<(u8, u8, u8)>,
-    fill: Option<u8>,
-    size: Option<usize>,
-}
-
-impl StyleBuilder {
-    fn build(self) -> Style {
+impl Style {
+    fn new() -> Style {
         Style {
-            font_type: self.font_type.unwrap_or_else(|| FontType::Serif),
-            font_style: self.font_style.unwrap_or_else(|| HashSet::new()),
-            background: self.background.unwrap_or_else(|| (0xff, 0xff, 0xff)),
-            foreground: self.foreground.unwrap_or_else(|| (0x00, 0x00, 0x00)),
-            fill: self.fill.unwrap_or_else(|| 1),
-            size: self.size.unwrap_or_else(|| 12),
+            font_type: FontType::Serif,
+            font_style: HashSet::new(),
+            background: (0xff, 0xff, 0xff),
+            foreground: (0x00, 0x00, 0x00),
+            fill: 1,
+            size: 12,
         }
     }
 
     fn set_font_type(&mut self, font_type: FontType) {
-        self.font_type = Some(font_type);
+        self.font_type = font_type;
     }
 
     fn add_font_style(&mut self, font_style: FontStyle) {
-        match &mut self.font_style {
-            Some(set) => {
-                set.insert(font_style);
-            }
-            None => {
-                let mut set = HashSet::new();
-                set.insert(font_style);
-                self.font_style = Some(set);
-            }
-        }
+        self.font_style.insert(font_style);
     }
 
     fn set_background(&mut self, background: (u8, u8, u8)) {
-        self.background = Some(background);
+        self.background = background;
     }
 
     fn set_foreground(&mut self, foreground: (u8, u8, u8)) {
-        self.foreground = Some(foreground);
+        self.foreground = foreground;
     }
 
     fn set_fill(&mut self, fill: u8) {
-        self.fill = Some(fill);
+        self.fill = fill;
     }
 
     fn set_size(&mut self, size: usize) {
-        self.size = Some(size);
+        self.size = size;
     }
 }
 
-fn inline_styles_to_style(
-    styles: &[InlineStyle],
-    page_styles: &PageStyles,
-    builder: &mut StyleBuilder,
-) {
-    for style in styles {
-        match style {
-            InlineStyle::Mono { .. } => builder.set_font_type(FontType::Mono),
-            InlineStyle::Serif { .. } => builder.set_font_type(FontType::Serif),
-            InlineStyle::Sans { .. } => builder.set_font_type(FontType::Sans),
-            InlineStyle::Bold { .. } => builder.add_font_style(FontStyle::Bold),
-            InlineStyle::Italic { .. } => builder.add_font_style(FontStyle::Italic),
-            InlineStyle::Underline { .. } => builder.add_font_style(FontStyle::Underline),
-            InlineStyle::Strike { .. } => builder.add_font_style(FontStyle::Strike),
-            InlineStyle::Fg { arg, .. } => builder.set_foreground(*arg),
-            InlineStyle::Bg { arg, .. } => builder.set_background(*arg),
-            InlineStyle::Fill { arg, .. } => builder.set_fill(*arg),
-            InlineStyle::Size { arg, .. } => builder.set_size(*arg),
+fn inline_styles_to_style(styles: &[InlineStyle], page_styles: &PageStyles, style: &mut Style) {
+    for inline_style in styles {
+        match inline_style {
+            InlineStyle::Mono { .. } => style.set_font_type(FontType::Mono),
+            InlineStyle::Serif { .. } => style.set_font_type(FontType::Serif),
+            InlineStyle::Sans { .. } => style.set_font_type(FontType::Sans),
+            InlineStyle::Bold { .. } => style.add_font_style(FontStyle::Bold),
+            InlineStyle::Italic { .. } => style.add_font_style(FontStyle::Italic),
+            InlineStyle::Underline { .. } => style.add_font_style(FontStyle::Underline),
+            InlineStyle::Strike { .. } => style.add_font_style(FontStyle::Strike),
+            InlineStyle::Fg { arg, .. } => style.set_foreground(*arg),
+            InlineStyle::Bg { arg, .. } => style.set_background(*arg),
+            InlineStyle::Fill { arg, .. } => style.set_fill(*arg),
+            InlineStyle::Size { arg, .. } => style.set_size(*arg),
             InlineStyle::UserDefined { token, .. } => {
-                inline_styles_to_style(page_styles.get(token).unwrap(), page_styles, builder)
+                inline_styles_to_style(page_styles.get(token).unwrap(), page_styles, style)
             }
         }
     }
@@ -120,9 +97,8 @@ pub struct Space {
 }
 
 pub fn draw_item(item: &PageItem, page_styles: &PageStyles, available_width: usize) -> Space {
-    let mut builder = StyleBuilder::default();
-    inline_styles_to_style(&item.styles, page_styles, &mut builder);
-    let _style = builder.build();
+    let mut style = Style::new();
+    inline_styles_to_style(&item.styles, page_styles, &mut style);
 
     match &item.payload {
         ItemPayload::Children { children, .. } => {
@@ -144,15 +120,16 @@ pub fn draw_item(item: &PageItem, page_styles: &PageStyles, available_width: usi
 #[cfg(test)]
 mod test {
     use super::*;
+
     #[test]
     fn font_style() {
         let page = r#"{(a italic) (b bold) (c mono)} ({a b c underline} "")"#;
         let page = crate::parse_page(page).unwrap();
-        let mut builder = StyleBuilder::default();
-        inline_styles_to_style(&page.items[0].styles, &page.styles, &mut builder);
+        let mut style = Style::new();
+        inline_styles_to_style(&page.items[0].styles, &page.styles, &mut style);
 
         assert_eq!(
-            builder.build(),
+            style,
             Style {
                 font_type: FontType::Mono,
                 font_style: {
@@ -171,7 +148,7 @@ mod test {
     }
 
     #[test]
-    fn background_foreground_application_order() {
+    fn bg_fg_application_order() {
         let page = r#"
         {(a (bg "b11111"))
          (b (fg "f22222") (bg "baaaad"))
@@ -181,11 +158,11 @@ mod test {
         "#;
 
         let page = crate::parse_page(page).unwrap();
-        let mut builder = StyleBuilder::default();
-        inline_styles_to_style(&page.items[0].styles, &page.styles, &mut builder);
+        let mut style = Style::new();
+        inline_styles_to_style(&page.items[0].styles, &page.styles, &mut style);
 
         assert_eq!(
-            builder.build(),
+            style,
             Style {
                 font_type: FontType::Serif,
                 font_style: HashSet::new(),
@@ -201,11 +178,11 @@ mod test {
     fn font_type_application_order() {
         let page = r#"{(a sans) (b serif) (c mono)} ({a b c} "")"#;
         let page = crate::parse_page(page).unwrap();
-        let mut builder = StyleBuilder::default();
-        inline_styles_to_style(&page.items[0].styles, &page.styles, &mut builder);
+        let mut style = Style::new();
+        inline_styles_to_style(&page.items[0].styles, &page.styles, &mut style);
 
         assert_eq!(
-            builder.build(),
+            style,
             Style {
                 font_type: FontType::Mono,
                 font_style: HashSet::new(),
