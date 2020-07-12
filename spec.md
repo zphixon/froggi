@@ -108,5 +108,5 @@ style name or built-in item name.
   * `(size "1em")`
 * other styles with args:
   * `(bg "color")`
-  * `(fill "percent")`
+  * `(fill "ratio")`
 

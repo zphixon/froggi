@@ -380,7 +380,7 @@ fn parse_style_list<'a>(
                             FroggiError::parse(
                                 ParseError::IncorrectNumberFormat {
                                     num: arg.clone_lexeme(),
-                                    wanted: String::from("0-100"),
+                                    wanted: String::from("1 or more"),
                                 },
                                 arg.line(),
                             )

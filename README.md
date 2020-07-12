@@ -43,7 +43,7 @@ date on every commit.
     * shape each text item (harfbuzz). the longest word of a text item is the required width
     * the width of an image after any scaling
   * distribute the maximum of required and available pixels among horizontal items:
-    * equally, or percentage-wise.
+    * equally, or by ratio
 2. height calculation...
 
 ![diagram](https://github.com/zphixon/froggi/blob/main/notes/display.svg)
