@@ -572,7 +572,7 @@ mod test {
 
     #[test]
     fn well_formed_page_item() {
-        let item = r#"{(user-style) (inline-style)}(box {user-style inline-style (fg "000000")} ("children") ({mono} "style"))"#;
+        let item = r#"{(user-style (fg "333333")) (inline-style (bg "222222"))}(box {user-style inline-style (fg "111111")} ("children") ({mono} "style"))"#;
         parse(item).unwrap();
     }
 
