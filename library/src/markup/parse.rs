@@ -362,7 +362,10 @@ fn parse_style_list<'a>(
 
             TokenKind::LeftParen => {
                 let token = scanner.next_token()?;
-                let arg = consume(scanner, TokenKind::String)?;
+                let arg = consume(scanner, TokenKind::String).msg(format!(
+                    "expected an argument for the style {}",
+                    token.lexeme()
+                ))?;
 
                 match token.kind() {
                     TokenKind::Fg => {
@@ -507,6 +510,19 @@ mod test {
     use super::*;
 
     #[test]
+    fn recursive_user_style() {
+        let page = "{(a b) (b a)}";
+
+        match parse(page).unwrap_err()[0].kind() {
+            crate::ErrorKind::ParseError { error, .. } => match error {
+                ParseError::RecursiveStyle { .. } => {}
+                _ => panic!(),
+            },
+            _ => panic!(),
+        }
+    }
+
+    #[test]
     fn anchor() {
         let sample = r#"(# "something")"#;
         let page = parse(sample).unwrap();
@@ -540,34 +556,50 @@ mod test {
 
     #[test]
     fn parent_style_missing_arg() {
-        let item = r#"(this {style (missing)} ("multiple children?") (doesnt-work "why"))"#;
-        assert!(parse(item).is_err());
+        let item = r#"(box {(fg)} ("multiple children?") (style "why"))"#;
+
+        match parse(item).unwrap_err()[0].kind() {
+            crate::ErrorKind::ParseError { error, .. } => match error {
+                ParseError::UnexpectedToken { expected, .. } => match expected {
+                    TokenKind::String => {}
+                    _ => panic!(),
+                },
+                _ => panic!(),
+            },
+            _ => panic!(),
+        }
     }
 
     #[test]
     fn child_style_missing_arg() {
-        let item = r#"(this (doesnt-work {style (missing)} "why"))"#;
-        assert!(parse(item).is_err());
+        let item = r#"{(style)} (box ({style (fg)} "why"))"#;
+
+        match parse(item).unwrap_err()[0].kind() {
+            crate::ErrorKind::ParseError { error, .. } => match error {
+                ParseError::UnexpectedToken { expected, .. } => match expected {
+                    TokenKind::String => {}
+                    _ => panic!(),
+                },
+                _ => panic!(),
+            },
+            _ => panic!(),
+        }
     }
 
     #[test]
     fn page_style_missing_arg() {
-        let style = "{(item style (missing))}";
-        assert!(parse(style).is_err());
-    }
+        let style = "{(style (fg))}";
 
-    #[test]
-    fn item_inline_style_missing_arg() {
-        let item = r#"(item {style (missing)} "arg")"#;
-        let mut scanner = Scanner::new(item);
-        assert!(parse_item(&mut scanner, &HashMap::new()).is_err());
-    }
-
-    #[test]
-    fn inline_style_missing_arg() {
-        let style = "{inline-style (something)}";
-        let mut scanner = Scanner::new(style);
-        assert!(parse_inline_styles(&mut scanner, &HashMap::new()).is_err());
+        match parse(style).unwrap_err()[0].kind() {
+            crate::ErrorKind::ParseError { error, .. } => match error {
+                ParseError::UnexpectedToken { expected, .. } => match expected {
+                    TokenKind::String => {}
+                    _ => panic!(),
+                },
+                _ => panic!(),
+            },
+            _ => panic!(),
+        }
     }
 
     #[test]
@@ -580,6 +612,8 @@ mod test {
     fn ill_formed_page_styles() {
         use crate::markup::scan::Scanner;
 
+        // these .is_err()'s are OK since we know that they
+        // can never fail for a reason that we don't expect
         let style = "{";
         let mut scanner = Scanner::new(style);
         assert!(parse_page_styles(&mut scanner).is_err());
