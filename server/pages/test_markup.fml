@@ -30,17 +30,17 @@
 ; they will have equal amounts of their parent's horizontal space allocated to them.
 (box {quote-box}
  ; fill on a horizontal item will take up the ratio of space of its parent's width
- ({quote-text (fill "3")} "Contrary to popular belief, Lorem Ipsum is not simply"
+ ({quote-text (fill "2")} "Contrary to popular belief, Lorem Ipsum is not simply"
   " random text. It has roots in a piece of classical Latin literature")
  ({quote-text} "from 45 BC, making it over 2000 years old. Richard"
   " McClintock, a Latin professor at Hampden-Sydney College in")
  ; items in a vbox will be added to the page vertically.
  (vbox
-  ({quote-text} "Virginia, looked up one of the more obscure Latin")
+  ({quote-text (fill "4")} "Virginia, looked up one of the more obscure Latin")
   ; fill on a vertical item changes vertical space allocation depending on
   ; the content height of its sibling items as well as its parents' siblings.
   ; vertical fill will never increase or decrease the height of its ancestors.
-  (^ "frgi://www.lipsum.com/" {footnote (fill "20")} "from frgi://www.lipsum.com/")))
+  (^ "frgi://www.lipsum.com/" {footnote} "from frgi://www.lipsum.com/")))
 
 ; link text is optional
 (^ "https://github.com/zphixon/froggi" "github repository")
