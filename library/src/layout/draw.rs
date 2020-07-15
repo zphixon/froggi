@@ -124,7 +124,7 @@ mod test {
     #[test]
     fn font_style() {
         let page = r#"{(a italic) (b bold) (c mono)} ({a b c underline} "")"#;
-        let page = crate::parse_page(page).unwrap();
+        let page = crate::markup::parse::parse(page).unwrap();
         let mut style = Style::new();
         inline_styles_to_style(&page.items[0].styles, &page.styles, &mut style);
 
@@ -157,7 +157,7 @@ mod test {
         ({(fg "f11111") a (bg "b22222") b (fg "f33333") c} "")
         "#;
 
-        let page = crate::parse_page(page).unwrap();
+        let page = crate::markup::parse::parse(page).unwrap();
         let mut style = Style::new();
         inline_styles_to_style(&page.items[0].styles, &page.styles, &mut style);
 
@@ -177,7 +177,7 @@ mod test {
     #[test]
     fn font_type_application_order() {
         let page = r#"{(a sans) (b serif) (c mono)} ({a b c} "")"#;
-        let page = crate::parse_page(page).unwrap();
+        let page = crate::markup::parse::parse(page).unwrap();
         let mut style = Style::new();
         inline_styles_to_style(&page.items[0].styles, &page.styles, &mut style);
 
