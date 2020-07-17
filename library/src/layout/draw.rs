@@ -1,4 +1,3 @@
-//use crate::markup::scan::TokenKind;
 use crate::markup::{InlineStyle, ItemPayload, PageItem, PageStyles};
 
 use std::collections::HashSet;
