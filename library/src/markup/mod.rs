@@ -296,11 +296,7 @@ fn inline_style_to_html(style: &InlineStyle) -> String {
             "background-color: #{:02x}{:02x}{:02x};",
             arg.0, arg.1, arg.2,
         ),
-        InlineStyle::Fill { arg, .. } => {
-            // this is still only sort of correct - vertical flex-basis doesn't really do this
-            // the way we expect it to
-            String::from(format!("flex-basis: {}%; flex-grow: 0;", arg))
-        }
+        InlineStyle::Fill { arg, .. } => String::from(format!("flex-grow: {};", arg)),
         InlineStyle::Size { arg, .. } => format!("font-size: {}px;", arg),
         InlineStyle::UserDefined { .. } => unreachable!(),
     }

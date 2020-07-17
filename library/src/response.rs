@@ -228,6 +228,7 @@ mod test {
             "white.png".into(),
             include_bytes!("../1px_white.png").to_vec(),
         );
+
         let magenta = Item::new(
             "magenta.png".into(),
             include_bytes!("../1px_magenta.png").to_vec(),
@@ -238,6 +239,7 @@ mod test {
 (txt "fugheddaboudit")
 (img "magenta.png")"#,
         );
+
         let response = Response::new(page, vec![white, magenta]);
         let data_test: Vec<u8> = response.into();
 

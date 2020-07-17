@@ -15,10 +15,6 @@ pub mod response;
 
 pub const FROGGI_VERSION: u8 = 0;
 
-pub fn parse_page(page: &str) -> Result<markup::Page<'_>, Vec<FroggiError>> {
-    markup::parse::parse(page)
-}
-
 /// Send a froggi request to a server and return its response.
 pub fn send_request(to: impl ToSocketAddrs, path: &str) -> Result<response::Response, FroggiError> {
     let mut stream = TcpStream::connect(to)?;
