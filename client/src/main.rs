@@ -22,21 +22,15 @@ fn main() {
 
     println!("got {:#?}", result);
     match result.parse() {
-        Ok(doc) => {
-            println!("page ok: {:#?}", doc);
-
-            let html = froggi::markup::to_html(&doc);
-            println!("{}", html);
-
-            let mut file = File::create("server/pages/generated_test_markup.html").unwrap();
-            file.write_all(html.as_bytes()).unwrap();
+        Ok(page) => {
+            println!("page ok: {:#?}", page);
 
             let main_window = WindowDesc::new(|| froggi::layout::PageWidget)
                 .title("Hello, froggi")
                 .window_size((400.0, 400.0));
 
             AppLauncher::with_window(main_window)
-                .launch(froggi::layout::OwnedPage::from(doc))
+                .launch(froggi::layout::OwnedPage::from(page))
                 .unwrap();
         }
 
