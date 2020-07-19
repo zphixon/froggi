@@ -237,3 +237,13 @@ impl Widget<OwnedPage> for PageWidget {
         }
     }
 }
+
+// should eventually store position and size
+struct DrawItem<'a: 'b, 'b> {
+    pub item: &'b PageItem<'a>,
+    pub style: draw::Style,
+    // pub x: usize,
+    // pub y: usize,
+    // pub width: usize,
+    // pub height: usize,
+}
