@@ -9,7 +9,8 @@ use std::io::{Cursor, Write};
 
 fn main() {
     let local = std::env::args().collect::<String>().contains("-l");
-    let server = include_str!("../server_address").trim();
+    //let server = include_str!("../server_address").trim();
+    let server = "gang-and-friends.com:11121";
 
     let addr = if local { "127.0.0.1:11121" } else { server };
 

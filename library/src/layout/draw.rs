@@ -24,7 +24,7 @@ pub struct Style {
     pub font_style: FontStyle,
     pub background: (u8, u8, u8),
     pub foreground: (u8, u8, u8),
-    pub fill: u8,
+    pub fill: Option<f32>,
     pub size: usize,
 }
 
@@ -35,7 +35,7 @@ impl Style {
             font_style: FontStyle::default(),
             background: (0xff, 0xff, 0xff),
             foreground: (0x00, 0x00, 0x00),
-            fill: 1,
+            fill: None,
             size: 12,
         }
     }
@@ -68,7 +68,7 @@ impl Style {
         self.foreground = foreground;
     }
 
-    fn set_fill(&mut self, fill: u8) {
+    fn set_fill(&mut self, fill: Option<f32>) {
         self.fill = fill;
     }
 
@@ -89,7 +89,7 @@ fn inline_styles_to_style(styles: &[InlineStyle], page_styles: &PageStyles, styl
             InlineStyle::Strike { .. } => style.set_strike(),
             InlineStyle::Fg { arg, .. } => style.set_foreground(*arg),
             InlineStyle::Bg { arg, .. } => style.set_background(*arg),
-            InlineStyle::Fill { arg, .. } => style.set_fill(*arg),
+            InlineStyle::Fill { arg, .. } => style.set_fill(Some(*arg)),
             InlineStyle::Size { arg, .. } => style.set_size(*arg),
             InlineStyle::UserDefined { token, .. } => {
                 inline_styles_to_style(page_styles.get(token).unwrap(), page_styles, style)
@@ -119,12 +119,12 @@ pub fn draw_item(
     let dy = match &item.payload {
         ItemPayload::Children { children, .. } => match item.builtin.kind() {
             TokenKind::Box => {
-                let mut total_units = 0;
+                let mut total_units = 0.0;
                 let mut draw_items = Vec::new();
                 for child in children {
                     let mut child_style = Style::new();
                     inline_styles_to_style(&child.styles, page_styles, &mut child_style);
-                    total_units += child_style.fill;
+                    total_units += child_style.fill.unwrap_or(0.0);
                     draw_items.push(DrawItem {
                         item: child,
                         style: child_style,
@@ -137,7 +137,7 @@ pub fn draw_item(
                 let mut current_x = 0;
                 let mut largest_dy = 0;
                 for child in draw_items {
-                    let child_max_width = width_per_unit * child.style.fill as usize;
+                    let child_max_width = width_per_unit * child.style.fill.unwrap_or(0.0) as usize;
                     let dy = draw_item(
                         child.item,
                         page_styles,
@@ -146,7 +146,7 @@ pub fn draw_item(
                     );
 
                     println!(
-                        "fill {} takes up {} px, should draw this item at relative x={} --- {:?}",
+                        "fill {:?} takes up {} px, should draw this item at relative x={} --- {:?}",
                         child.style.fill, child_max_width, current_x, child.item.builtin,
                     );
 
@@ -224,7 +224,7 @@ mod test {
                 },
                 background: (0xff, 0xff, 0xff),
                 foreground: (0x00, 0x00, 0x00),
-                fill: 1,
+                fill: None,
                 size: 12,
             }
         );
@@ -251,7 +251,7 @@ mod test {
                 font_style: FontStyle::default(),
                 background: (0xb3, 0x33, 0x33),
                 foreground: (0xf3, 0x33, 0x33),
-                fill: 1,
+                fill: None,
                 size: 12,
             }
         );
@@ -271,7 +271,7 @@ mod test {
                 font_style: FontStyle::default(),
                 background: (0xff, 0xff, 0xff),
                 foreground: (0x00, 0x00, 0x00),
-                fill: 1,
+                fill: None,
                 size: 12,
             }
         );

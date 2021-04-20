@@ -379,7 +379,7 @@ fn parse_style_list<'a>(
                     }
 
                     TokenKind::Fill => {
-                        let arg = arg.lexeme().parse::<u8>().map_err(|_| {
+                        let arg = arg.lexeme().parse::<f32>().map_err(|_| {
                             FroggiError::parse(
                                 ParseError::IncorrectNumberFormat {
                                     num: arg.clone_lexeme(),

@@ -81,7 +81,7 @@ pub enum OwnedInlineStyle {
     Strike { token: OwnedToken },
     Fg { token: OwnedToken, arg: (u8, u8, u8) },
     Bg { token: OwnedToken, arg: (u8, u8, u8) },
-    Fill { token: OwnedToken, arg: u8 },
+    Fill { token: OwnedToken, arg: f32 },
     Size { token: OwnedToken, arg: usize },
     UserDefined { token: OwnedToken },
 }

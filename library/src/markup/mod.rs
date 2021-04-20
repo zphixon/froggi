@@ -53,7 +53,7 @@ pub enum InlineStyle<'a> {
     Strike { token: Token<'a> },
     Fg { token: Token<'a>, arg: (u8, u8, u8) },
     Bg { token: Token<'a>, arg: (u8, u8, u8) },
-    Fill { token: Token<'a>, arg: u8 },
+    Fill { token: Token<'a>, arg: f32 },
     Size { token: Token<'a>, arg: usize },
     UserDefined { token: Token<'a> },
 }
