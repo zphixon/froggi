@@ -1,51 +1,70 @@
-use crate::{serialize_to_bytes, AddMsg, ErrorKind, FroggiError};
+use crate::{protocol::*, serialize_to_bytes, AddMsg, ErrorKind, FroggiError};
 
 use std::io::Read;
+
+crate::u8enum! { RequestKind {
+    Page = 0,
+    PageNoItems = 1,
+} }
 
 /// Represents a froggi request to a server.
 pub struct Request {
     version: u8,
-    path: String,
+    kind: RequestKind,
+    request: String,
 }
 
 impl Request {
     /// Create a new request.
-    pub fn new(path: impl ToString) -> Result<Self, FroggiError> {
-        let path = path.to_string();
+    pub fn new(request: impl ToString, kind: RequestKind) -> Result<Self, FroggiError> {
+        let request = request.to_string();
         let version = crate::FROGGI_VERSION;
 
-        if path.len() > u16::MAX as usize {
+        if request.len() > u16::MAX as usize {
             Err(FroggiError::new(ErrorKind::RequestFormatError).msg_str("The path is too large."))
         } else {
-            Ok(Request { version, path })
+            Ok(Request {
+                version,
+                kind,
+                request,
+            })
         }
     }
 
     /// Read a requets from a source of bytes.
     pub fn from_bytes(bytes: &mut impl Read) -> Result<Self, FroggiError> {
-        // request header
-        let mut header = [0u8; 3];
+        // request header, four bytes
+        let mut header = [0u8; REQUEST_OFFSET];
         bytes.read_exact(&mut header)?;
 
-        // consists of version and path length
-        let version = header[0];
-        let path_len = crate::deserialize_bytes(&header[1..]);
+        // first byte is version
+        let version = header[FROGGI_VERSION_OFFSET];
 
-        // Vec::with_capacity doesn't work here for some reason
-        let mut path_buf = vec![0; path_len];
-        bytes.read_exact(&mut path_buf)?;
+        // next byte is request kind
+        let kind = header[REQUEST_RESPONSE_KIND_OFFSET].into();
 
-        let path = String::from_utf8(path_buf)?;
+        // next two bytes are request length
+        let request_length = crate::deserialize_bytes(&header[REQUEST_LENGTH_OFFSET..]);
 
-        Ok(Request { version, path })
+        // remaining bytes are the request itself
+        let mut request_buf = vec![0; request_length];
+        bytes.read_exact(&mut request_buf)?;
+
+        let request = String::from_utf8(request_buf)?;
+
+        Ok(Request {
+            version,
+            kind,
+            request,
+        })
     }
 
     pub fn version(&self) -> u8 {
         self.version
     }
 
-    pub fn path(&self) -> &str {
-        &self.path
+    pub fn request(&self) -> &str {
+        &self.request
     }
 
     pub fn into_bytes(self) -> Vec<u8> {
@@ -59,13 +78,16 @@ impl Into<Vec<u8>> for Request {
         let mut data = Vec::new();
         data.push(self.version);
 
-        // next two bytes are request path length
-        let (low, high) = serialize_to_bytes(self.path.len());
+        // second byte is request kind
+        data.push(self.kind.into());
+
+        // next two bytes are request length
+        let (low, high) = serialize_to_bytes(self.request.len());
         data.push(low);
         data.push(high);
 
         // remainder of request is the path
-        data.extend(self.path.bytes());
+        data.extend(self.request.bytes());
 
         data
     }
@@ -78,7 +100,8 @@ mod test {
     #[rustfmt::skip]
     const REQUEST_BYTES: &[u8] = &[
         0x00,                                                       // version
-        0x09, 0x00,                                                 // path length
+        0x00,                                                       // kind
+        0x09, 0x00,                                                 // request length
         0x69, 0x6e, 0x64, 0x65, 0x78, 0x2e, 0x66, 0x6d, 0x6c,       // request path
     ];
 
@@ -87,12 +110,12 @@ mod test {
         let mut bytes = REQUEST_BYTES.clone();
         let request = Request::from_bytes(&mut bytes).unwrap();
         assert_eq!(request.version, crate::FROGGI_VERSION);
-        assert_eq!(&request.path, "index.fml");
+        assert_eq!(&request.request, "index.fml");
     }
 
     #[test]
     fn to_bytes() {
-        let request = Request::new("index.fml").unwrap();
+        let request = Request::new("index.fml", RequestKind::Page).unwrap();
         let data_test = request.into_bytes();
 
         assert_eq!(data_test.len(), REQUEST_BYTES.len());

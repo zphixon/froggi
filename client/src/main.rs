@@ -4,6 +4,7 @@ use druid::{AppLauncher, Data, Env, Lens, LocalizedString, Widget, WidgetExt, Wi
 use image::io::Reader;
 use image::GenericImageView;
 
+use froggi::request::RequestKind;
 use std::fs::File;
 use std::io::{Cursor, Write};
 
@@ -19,7 +20,7 @@ fn main() {
         if local { addr } else { "a secret server" }
     );
 
-    let result = froggi::send_request(addr, "test_markup.fml").unwrap();
+    let result = froggi::send_request(addr, "test_markup.fml", RequestKind::Page).unwrap();
 
     println!("got {:#?}", result);
     match result.parse() {

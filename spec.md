@@ -40,6 +40,7 @@ request kinds:
 
 * 0x0 = page
 * 0x1 = page with no items
+* 0x2 = additional
 
 ## server
 
@@ -51,13 +52,24 @@ response format: (offsets and lengths are in bytes)
 |1|1|response kind|
 |2|4|total response length|
 |6|4|page length = P|
-|12|P|page|
-|12+P|1|number of items|
-|13+P|1|item kind|
-|14+P|1|length of item name = N|
-|15+P|N|item name|
-|15+P+N|4|length of item = L|
-|19+P+N|L|item|
+|10|P|page|
+|10+P|1|number of items|
+|11+P|1|item kind|
+|12+P|1|length of item name = N|
+|13+P|N|item name|
+|13+P+N|4|length of item = L|
+|17+P+N|L|item|
+
+response kinds:
+
+* 0x0 = page
+* 0x1 = page with no items
+* 0x2 = embed
+
+item kinds:
+* 0x0 = png
+* 0x1 = jpg
+* 0x2 = gif
 
 ## markup
 

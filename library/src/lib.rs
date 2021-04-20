@@ -17,9 +17,13 @@ pub mod response;
 pub const FROGGI_VERSION: u8 = 0;
 
 /// Send a froggi request to a server and return its response.
-pub fn send_request(to: impl ToSocketAddrs, path: &str) -> Result<response::Response, FroggiError> {
+pub fn send_request(
+    to: impl ToSocketAddrs,
+    request: &str,
+    kind: RequestKind,
+) -> Result<response::Response, FroggiError> {
     let mut stream = TcpStream::connect(to)?;
-    stream.write_all(&request::Request::new(path)?.into_bytes())?;
+    stream.write_all(&request::Request::new(request, kind)?.into_bytes())?;
 
     Ok(response::Response::from_bytes(&mut stream)?)
 }
@@ -81,6 +85,7 @@ impl fmt::Display for ScanError {
     }
 }
 
+use crate::request::RequestKind;
 use markup::scan::TokenKind;
 
 #[derive(Debug)]
@@ -268,6 +273,34 @@ impl From<io::Error> for FroggiError {
     fn from(error: io::Error) -> FroggiError {
         FroggiError::io(error)
     }
+}
+
+#[macro_export]
+macro_rules! u8enum {
+    ($name:ident { $($variant:ident = $value:expr),* $(,)? }) => {
+        #[repr(u8)]
+        #[derive(Copy, Clone, Debug)]
+        pub enum $name {
+            $($variant = $value,)*
+        }
+
+        impl Into<u8> for $name {
+            fn into(self) -> u8 {
+                match self {
+                    $($name::$variant => $value,)*
+                }
+            }
+        }
+
+        impl From<u8> for $name {
+            fn from(b: u8) -> $name {
+                match b {
+                    $($value => $name::$variant,)*
+                    _ => panic!("no value {} for {}", b, stringify!($name)),
+                }
+            }
+        }
+    };
 }
 
 #[cfg(test)]

@@ -1,4 +1,4 @@
-use froggi::response::{Item, Response};
+use froggi::response::{Item, ItemKind, Response, ResponseKind};
 
 use std::io::Write;
 use std::net::{TcpListener, TcpStream};
@@ -9,8 +9,8 @@ fn handle_client(mut stream: TcpStream) {
     println!(
         "request (version {}, length {}): {}",
         request.version(),
-        request.path().len(),
-        request.path()
+        request.request().len(),
+        request.request()
     );
 
     // todo: verify markup is correct
@@ -21,8 +21,13 @@ fn handle_client(mut stream: TcpStream) {
     header_img.extend_from_slice(header_img_data);
 
     let response = Response::new(
+        ResponseKind::Page,
         page,
-        vec![Item::new(String::from("red_toy_small.png"), header_img)],
+        vec![Item::new(
+            String::from("red_toy_small.png"),
+            ItemKind::Png,
+            header_img,
+        )],
     );
 
     stream.write_all(&response.into_bytes()).unwrap();

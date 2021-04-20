@@ -12,10 +12,10 @@ pub const VERSION_KIND_HEADER_LEN: usize = FROGGI_VERSION_LEN + REQUEST_RESPONSE
 
 // request constants
 
-pub const REQUEST_STRING_LENGTH_LEN: usize = 2;
-pub const REQUEST_STRING_LENGTH_OFFSET: usize = VERSION_KIND_HEADER_LEN;
+pub const REQUEST_LENGTH_LEN: usize = 2;
+pub const REQUEST_LENGTH_OFFSET: usize = VERSION_KIND_HEADER_LEN;
 
-pub const REQUEST_STRING_OFFSET: usize = REQUEST_STRING_LENGTH_OFFSET + REQUEST_STRING_LENGTH_LEN;
+pub const REQUEST_OFFSET: usize = REQUEST_LENGTH_OFFSET + REQUEST_LENGTH_LEN;
 
 // response constants
 
@@ -29,7 +29,7 @@ pub const PAGE_OFFSET: usize = PAGE_LENGTH_LEN + PAGE_LENGTH_OFFSET;
 
 pub const NUM_ITEMS_LEN: usize = 1;
 pub const ITEM_KIND_LEN: usize = 1;
-pub const ITEM_NAME_LEN: usize = 1;
+pub const ITEM_NAME_LENGTH_LEN: usize = 1;
 pub const ITEM_LENGTH_LEN: usize = 4;
 
 #[cfg(test)]
@@ -46,9 +46,9 @@ mod test {
 
     #[test]
     fn request_constants() {
-        assert_eq!(2, REQUEST_STRING_LENGTH_LEN);
-        assert_eq!(2, REQUEST_STRING_LENGTH_OFFSET);
-        assert_eq!(4, REQUEST_STRING_OFFSET);
+        assert_eq!(2, REQUEST_LENGTH_LEN);
+        assert_eq!(2, REQUEST_LENGTH_OFFSET);
+        assert_eq!(4, REQUEST_OFFSET);
     }
 
     #[test]
@@ -57,5 +57,6 @@ mod test {
         assert_eq!(2, TOTAL_RESPONSE_LENGTH_OFFSET);
         assert_eq!(4, PAGE_LENGTH_LEN);
         assert_eq!(6, PAGE_LENGTH_OFFSET);
+        assert_eq!(10, PAGE_OFFSET);
     }
 }
