@@ -22,7 +22,8 @@ Wild West Web.
 
 ## compatibility
 
-froggi data is always utf8, aside from bonus items which have no specified encoding.
+froggi data is always utf8, aside from bonus items which have no specified encoding. numbers
+are little-endian.
 
 ## client
 
@@ -31,8 +32,14 @@ request format: (offsets and lengths are in bytes)
 |offset|length|purpose|
 |-|-|-|
 |0|1|froggi version|
-|1|2|request length|
-|3|R|request|
+|1|1|request kind|
+|2|2|request length = R|
+|4|R|request|
+
+request kinds:
+
+* 0x0 = page
+* 0x1 = page with no items
 
 ## server
 
@@ -40,14 +47,17 @@ response format: (offsets and lengths are in bytes)
 
 |offset|length|purpose|
 |-|-|-|
-|0          |1|froggi version|
-|1          |4|page length|
-|5          |P|page|
-|5+P        |2|number of items|
-|5+P+2      |2|length of item name|
-|5+P+2+2    |N|item name|
-|5+P+2+2+N  |4|length of item|
-|5+P+2+2+N+4|B|item|
+|0|1|froggi version|
+|1|1|response kind|
+|2|4|total response length|
+|6|4|page length = P|
+|12|P|page|
+|12+P|1|number of items|
+|13+P|1|item kind|
+|14+P|1|length of item name = N|
+|15+P|N|item name|
+|15+P+N|4|length of item = L|
+|19+P+N|L|item|
 
 ## markup
 

@@ -10,6 +10,7 @@ pub mod layout;
 pub extern crate druid;
 
 pub mod markup;
+pub mod protocol;
 pub mod request;
 pub mod response;
 
