@@ -30,8 +30,13 @@ big-endian.
 
 request format: (offsets and lengths are in bytes)
 
-|offset|length|purpose| |-|-|-| |0|1|froggi version| |1|1|request kind|
-|2|16|client ID| |18|2|request length = R| |20|R|request|
+|offset|length|purpose|
+|-|-|-|
+|0|1|froggi version|
+|1|1|request kind|
+|2|16|client ID|
+|18|2|request length = R|
+|20|R|request|
 
 client ID is a UUID issued by a server if the client requests additional data
 with request kind 0x2.
@@ -46,10 +51,20 @@ request kinds:
 
 response format: (offsets and lengths are in bytes)
 
-|offset|length|purpose| |-|-|-| |0|1|froggi version| |1|1|response kind|
-|2|16|client ID| |18|4|total response length| |22|4|page length = P| |26|P|page|
-|26+P|1|number of items| |27+P|1|item kind| |28+P|1|length of item name = N|
-|29+P|N|item name| |29+P+N|4|length of item = L| |33+P+N|L|item|
+|offset|length|purpose|
+|-|-|-|
+|0|1|froggi version|
+|1|1|response kind|
+|2|16|client ID|
+|18|4|total response length|
+|22|4|page length = P|
+|26|P|page|
+|26+P|1|number of items|
+|27+P|1|item kind|
+|28+P|1|length of item name = N|
+|29+P|N|item name|
+|29+P+N|4|length of item = L|
+|33+P+N|L|item|
 
 response kinds:
 
