@@ -23,7 +23,7 @@ Wild West Web.
 ## compatibility
 
 froggi data is always utf8, aside from bonus items which have no specified encoding. numbers
-are little-endian.
+are little-endian, except for client IDs, which are big-endian.
 
 ## client
 
@@ -33,8 +33,12 @@ request format: (offsets and lengths are in bytes)
 |-|-|-|
 |0|1|froggi version|
 |1|1|request kind|
-|2|2|request length = R|
-|4|R|request|
+|2|16|client ID|
+|18|2|request length = R|
+|20|R|request|
+
+client ID is a UUID issued by a server if the client requests additional data
+with request kind 0x2.
 
 request kinds:
 
@@ -50,15 +54,16 @@ response format: (offsets and lengths are in bytes)
 |-|-|-|
 |0|1|froggi version|
 |1|1|response kind|
-|2|4|total response length|
-|6|4|page length = P|
-|10|P|page|
-|10+P|1|number of items|
-|11+P|1|item kind|
-|12+P|1|length of item name = N|
-|13+P|N|item name|
-|13+P+N|4|length of item = L|
-|17+P+N|L|item|
+|2|16|client ID|
+|18|4|total response length|
+|22|4|page length = P|
+|26|P|page|
+|26+P|1|number of items|
+|27+P|1|item kind|
+|28+P|1|length of item name = N|
+|29+P|N|item name|
+|29+P+N|4|length of item = L|
+|33+P+N|L|item|
 
 response kinds:
 

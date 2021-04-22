@@ -20,8 +20,9 @@ fn handle_client(mut stream: TcpStream) {
     let mut header_img = Vec::new();
     header_img.extend_from_slice(header_img_data);
 
-    let response = Response::new(
+    let response = Response::new_with_id(
         ResponseKind::Page,
+        froggi::Uuid::new_v4(),
         page,
         vec![Item::new(
             String::from("red_toy_small.png"),

@@ -1,5 +1,6 @@
-use crate::{protocol::*, FroggiError};
+use crate::{protocol::*, FroggiError, Uuid};
 
+use std::convert::TryInto;
 use std::io::Read;
 
 crate::u8enum! { ResponseKind {
@@ -48,17 +49,31 @@ impl Item {
 pub struct Response {
     version: u8,
     kind: ResponseKind,
+    id: Uuid,
     page: String,
     items: Vec<Item>,
 }
 
 impl Response {
-    /// Create a new response.
+    /// Create a new response with no client ID.
     pub fn new(kind: ResponseKind, page: String, items: Vec<Item>) -> Self {
         assert!(items.len() <= u8::MAX as usize);
         Self {
             version: crate::FROGGI_VERSION,
             kind,
+            id: Uuid::nil(),
+            page,
+            items,
+        }
+    }
+
+    /// Create a new response with a client ID.
+    pub fn new_with_id(kind: ResponseKind, id: Uuid, page: String, items: Vec<Item>) -> Self {
+        assert!(items.len() <= u8::MAX as usize);
+        Self {
+            version: crate::FROGGI_VERSION,
+            kind,
+            id,
             page,
             items,
         }
@@ -70,7 +85,7 @@ impl Response {
 
     /// Read a response from a source of bytes.
     pub fn from_bytes(bytes: &mut impl Read) -> Result<Self, FroggiError> {
-        // response header, 10 bytes long
+        // response header, 26 bytes long
         let mut header = [0u8; PAGE_OFFSET];
         bytes.read_exact(&mut header)?;
 
@@ -78,10 +93,19 @@ impl Response {
         let version = header[FROGGI_VERSION_OFFSET];
         let kind = header[REQUEST_RESPONSE_KIND_OFFSET].into();
 
+        // next 16 is client ID
+        let id = Uuid::from_bytes(
+            header[REQUEST_RESPONSE_UUID_OFFSET..TOTAL_RESPONSE_LENGTH_OFFSET]
+                .try_into()
+                .unwrap(),
+        );
+
+        // next four bytes is response length
         let _total_response_length = crate::deserialize_four_bytes(
             &header[TOTAL_RESPONSE_LENGTH_OFFSET..PAGE_LENGTH_OFFSET],
         );
 
+        // next four bytes is page length
         let page_len = crate::deserialize_four_bytes(&header[PAGE_LENGTH_OFFSET..PAGE_OFFSET]);
 
         // read page
@@ -97,12 +121,12 @@ impl Response {
         // read items
         let mut items = Vec::with_capacity(num_items);
         for _ in 0..num_items {
-            // item kind
+            // item kind, 1 byte
             let mut item_kind = [0u8; ITEM_KIND_LEN];
             bytes.read_exact(&mut item_kind)?;
             let kind = item_kind[0].into();
 
-            // length of the item's name
+            // length of the item's name, 1 byte
             let mut item_name_len = [0u8; ITEM_NAME_LENGTH_LEN];
             bytes.read_exact(&mut item_name_len)?;
             let item_name_len = item_name_len[0] as usize;
@@ -112,7 +136,7 @@ impl Response {
             bytes.read_exact(&mut name_buf)?;
             let name = String::from_utf8(name_buf)?;
 
-            // item length
+            // item length, 4 bytes
             let mut item_len = [0u8; ITEM_LENGTH_LEN];
             bytes.read_exact(&mut item_len)?;
             let item_len = crate::deserialize_four_bytes(&item_len);
@@ -127,6 +151,7 @@ impl Response {
         Ok(Self {
             version,
             kind,
+            id,
             page,
             items,
         })
@@ -138,6 +163,10 @@ impl Response {
 
     pub fn kind(&self) -> ResponseKind {
         self.kind
+    }
+
+    pub fn id(&self) -> Uuid {
+        self.id
     }
 
     pub fn page(&self) -> &str {
@@ -162,6 +191,9 @@ impl Into<Vec<u8>> for Response {
 
         // next byte: response kind
         data.push(self.kind.into());
+
+        // next 16 bytes: client ID
+        data.extend_from_slice(self.id.as_bytes());
 
         // next four bytes: total response length
         data.push(0);
@@ -219,7 +251,8 @@ impl Into<Vec<u8>> for Response {
 pub const DATA_REAL: &[u8] = &[
     0,                                                                                      // version
     0,                                                                                      // response kind
-    85, 1, 0, 0,                                                                            // total length
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,                                         // client ID
+    101, 1, 0, 0,                                                                           // total length
     60, 0, 0, 0,                                                                            // page length
     40, 105, 109, 103, 32, 34, 119, 104, 105, 116, 101, 46, 112, 110, 103, 34, 41, 10, 40,  // page
     116, 120, 116, 32, 34, 102, 117, 103, 104, 101, 100, 100, 97, 98, 111, 117, 100, 105,
@@ -230,20 +263,20 @@ pub const DATA_REAL: &[u8] = &[
     9,                                                                                      // item name length
     119, 104, 105, 116, 101, 46, 112, 110, 103,                                             // item name
     119, 0, 0, 0,                                                                           // item length
-    137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0, 1, 0, 0, 0, 1,   // item
-    8, 2, 0, 0, 0, 144, 119, 83, 222, 0, 0, 0, 1, 115, 82, 71, 66, 0, 174, 206, 28, 233, 0,
-    0, 0, 4, 103, 65, 77, 65, 0, 0, 177, 143, 11, 252, 97, 5, 0, 0, 0, 9, 112, 72, 89, 115,
-    0, 0, 14, 194, 0, 0, 14, 194, 1, 21, 40, 74, 128, 0, 0, 0, 12, 73, 68, 65, 84, 24, 87,
-    99, 248, 255, 255, 63, 0, 5, 254, 2, 254, 167, 53, 129, 132, 0, 0, 0, 0, 73, 69, 78,
-    68, 174, 66, 96, 130,
+    137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0, 1, 0, 0, 0, 1,   // white.png
+    8, 2, 0, 0, 0, 144, 119, 83, 222, 0, 0, 0, 1, 115, 82, 71, 66, 0, 174, 206, 28, 233,
+    0, 0, 0, 4, 103, 65, 77, 65, 0, 0, 177, 143, 11, 252, 97, 5, 0, 0, 0, 9, 112, 72, 89,
+    115, 0, 0, 14, 192, 0, 0, 14, 192, 1, 106, 214, 137, 9, 0, 0, 0, 12, 73, 68, 65, 84,
+    24, 87, 99, 248, 255, 255, 63, 0, 5, 254, 2, 254, 167, 53, 129, 132, 0, 0, 0, 0, 73,
+    69, 78, 68, 174, 66, 96, 130,
     0,                                                                                      // item kind
     11,                                                                                     // item name length
     109, 97, 103, 101, 110, 116, 97, 46, 112, 110, 103,                                     // item name
     119, 0, 0, 0,                                                                           // item length
-    137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0, 1, 0, 0, 0, 1,   // item
+    137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0, 1, 0, 0, 0, 1,   // magenta.png
     8, 2, 0, 0, 0, 144, 119, 83, 222, 0, 0, 0, 1, 115, 82, 71, 66, 0, 174, 206, 28, 233, 0,
     0, 0, 4, 103, 65, 77, 65, 0, 0, 177, 143, 11, 252, 97, 5, 0, 0, 0, 9, 112, 72, 89, 115,
-    0, 0, 14, 194, 0, 0, 14, 194, 1, 21, 40, 74, 128, 0, 0, 0, 12, 73, 68, 65, 84, 24, 87,
+    0, 0, 14, 192, 0, 0, 14, 192, 1, 106, 214, 137, 9, 0, 0, 0, 12, 73, 68, 65, 84, 24, 87,
     99, 248, 207, 112, 7, 0, 3, 221, 1, 220, 85, 162, 120, 96, 0, 0, 0, 0, 73, 69, 78, 68,
     174, 66, 96, 130,
 ];
@@ -289,6 +322,8 @@ mod test {
 
         let response = Response::new(ResponseKind::Page, page, vec![white, magenta]);
         let data_test: Vec<u8> = response.into();
+
+        println!("{:?}", data_test);
 
         assert_eq!(data_test.len(), DATA_REAL.len());
 

@@ -4,6 +4,8 @@ use std::io::{self, Write};
 use std::net::{TcpStream, ToSocketAddrs};
 use std::str;
 
+pub use uuid::Uuid;
+
 #[cfg(feature = "layout")]
 pub mod layout;
 #[cfg(feature = "layout")]
@@ -23,7 +25,20 @@ pub fn send_request(
     kind: RequestKind,
 ) -> Result<response::Response, FroggiError> {
     let mut stream = TcpStream::connect(to)?;
-    stream.write_all(&request::Request::new(request, kind)?.into_bytes())?;
+    stream.write_all(&request::Request::new_with_id(request, Uuid::nil(), kind)?.into_bytes())?;
+
+    Ok(response::Response::from_bytes(&mut stream)?)
+}
+
+/// Send a froggi request to a server with a client ID and return its response.
+pub fn send_request_with_id(
+    to: impl ToSocketAddrs,
+    request: &str,
+    id: Uuid,
+    kind: RequestKind,
+) -> Result<response::Response, FroggiError> {
+    let mut stream = TcpStream::connect(to)?;
+    stream.write_all(&request::Request::new_with_id(request, id, kind)?.into_bytes())?;
 
     Ok(response::Response::from_bytes(&mut stream)?)
 }

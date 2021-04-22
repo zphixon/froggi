@@ -1,5 +1,6 @@
-use crate::{protocol::*, serialize_to_bytes, AddMsg, ErrorKind, FroggiError};
+use crate::{protocol::*, serialize_to_bytes, AddMsg, ErrorKind, FroggiError, Uuid};
 
+use std::convert::TryInto;
 use std::io::Read;
 
 crate::u8enum! { RequestKind {
@@ -11,11 +12,12 @@ crate::u8enum! { RequestKind {
 pub struct Request {
     version: u8,
     kind: RequestKind,
+    id: Uuid,
     request: String,
 }
 
 impl Request {
-    /// Create a new request.
+    /// Create a new request with no client ID.
     pub fn new(request: impl ToString, kind: RequestKind) -> Result<Self, FroggiError> {
         let request = request.to_string();
         let version = crate::FROGGI_VERSION;
@@ -26,14 +28,36 @@ impl Request {
             Ok(Request {
                 version,
                 kind,
+                id: Uuid::nil(),
                 request,
             })
         }
     }
 
-    /// Read a requets from a source of bytes.
+    /// Create a new request with client id.
+    pub fn new_with_id(
+        request: impl ToString,
+        id: Uuid,
+        kind: RequestKind,
+    ) -> Result<Self, FroggiError> {
+        let request = request.to_string();
+        let version = crate::FROGGI_VERSION;
+
+        if request.len() > u16::MAX as usize {
+            Err(FroggiError::new(ErrorKind::RequestFormatError).msg_str("The path is too large."))
+        } else {
+            Ok(Request {
+                version,
+                kind,
+                id,
+                request,
+            })
+        }
+    }
+
+    /// Read a request from a source of bytes.
     pub fn from_bytes(bytes: &mut impl Read) -> Result<Self, FroggiError> {
-        // request header, four bytes
+        // request header, twenty bytes
         let mut header = [0u8; REQUEST_OFFSET];
         bytes.read_exact(&mut header)?;
 
@@ -42,6 +66,13 @@ impl Request {
 
         // next byte is request kind
         let kind = header[REQUEST_RESPONSE_KIND_OFFSET].into();
+
+        // next 16 bytes are client id - unwrap is OK since the slice length is definitely 16 bytes
+        let id = Uuid::from_bytes(
+            header[REQUEST_RESPONSE_UUID_OFFSET..REQUEST_LENGTH_OFFSET]
+                .try_into()
+                .unwrap(),
+        );
 
         // next two bytes are request length
         let request_length = crate::deserialize_bytes(&header[REQUEST_LENGTH_OFFSET..]);
@@ -55,12 +86,17 @@ impl Request {
         Ok(Request {
             version,
             kind,
+            id,
             request,
         })
     }
 
     pub fn version(&self) -> u8 {
         self.version
+    }
+
+    pub fn id(&self) -> Uuid {
+        self.id
     }
 
     pub fn request(&self) -> &str {
@@ -80,6 +116,9 @@ impl Into<Vec<u8>> for Request {
 
         // second byte is request kind
         data.push(self.kind.into());
+
+        // next 16 bytes are client ID
+        data.extend(self.id.as_bytes());
 
         // next two bytes are request length
         let (low, high) = serialize_to_bytes(self.request.len());
@@ -101,6 +140,7 @@ mod test {
     const REQUEST_BYTES: &[u8] = &[
         0x00,                                                       // version
         0x00,                                                       // kind
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  // UUID
         0x09, 0x00,                                                 // request length
         0x69, 0x6e, 0x64, 0x65, 0x78, 0x2e, 0x66, 0x6d, 0x6c,       // request path
     ];
