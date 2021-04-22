@@ -4,5 +4,3 @@ client/server_address
 client/server_addresses
 Session.vim
 **/*.html
-**/*.png
-**/*.jpg
