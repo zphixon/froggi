@@ -49,42 +49,64 @@ pub fn send_request_with_id(
 }
 
 /// Serialize a usize into a little-endian pair of bytes.
-pub fn serialize_to_bytes(bytes: usize) -> (u8, u8) {
-    assert!(bytes <= u16::MAX as usize);
+pub fn serialize_to_bytes(bytes: usize) -> Result<(u8, u8), FroggiError> {
+    if bytes > u16::MAX as usize {
+        return Err(FroggiError::new(ErrorKind::BitWidthError {
+            wanted: 16,
+            got: bytes,
+        }));
+    }
 
     let high = (bytes >> 8) as u8;
     let low = (bytes & 0xff) as u8;
 
-    (low, high)
+    Ok((low, high))
 }
 
 /// Serialize a usize into a little-endian quartet of bytes.
-pub fn serialize_to_four_bytes(bytes: usize) -> [u8; 4] {
-    assert!(bytes <= u32::MAX as usize);
+pub fn serialize_to_four_bytes(bytes: usize) -> Result<[u8; 4], FroggiError> {
+    if bytes > u32::MAX as usize {
+        return Err(FroggiError::new(ErrorKind::BitWidthError {
+            wanted: 32,
+            got: bytes,
+        }));
+    }
 
     let a: u8 = ((bytes & 0xff_00_00_00) >> 24) as u8;
     let b: u8 = ((bytes & 0x00_ff_00_00) >> 16) as u8;
     let c: u8 = ((bytes & 0x00_00_ff_00) >> 8) as u8;
     let d: u8 = bytes as u8;
 
-    [d, c, b, a]
+    Ok([d, c, b, a])
 }
 
 /// Deserialize a pair of bytes into a usize.
-pub fn deserialize_bytes(bytes: &[u8]) -> usize {
-    assert_eq!(bytes.len(), 2);
+pub fn deserialize_bytes(bytes: &[u8]) -> Result<usize, FroggiError> {
+    if bytes.len() != 2 {
+        return Err(FroggiError::new(ErrorKind::ArrayLengthError {
+            wanted: 2,
+            got: bytes.len(),
+        }));
+    }
+
     let low = bytes[0];
     let high = bytes[1];
-    ((high as usize) << 8) | (low as usize)
+    Ok(((high as usize) << 8) | (low as usize))
 }
 
 /// Deserialize a quartet of bytes into a usize.
-pub fn deserialize_four_bytes(bytes: &[u8]) -> usize {
-    assert_eq!(bytes.len(), 4);
-    ((bytes[3] as usize) << 24)
+pub fn deserialize_four_bytes(bytes: &[u8]) -> Result<usize, FroggiError> {
+    if bytes.len() != 4 {
+        return Err(FroggiError::new(ErrorKind::ArrayLengthError {
+            wanted: 4,
+            got: bytes.len(),
+        }));
+    }
+
+    Ok(((bytes[3] as usize) << 24)
         | ((bytes[2] as usize) << 16)
         | ((bytes[1] as usize) << 8)
-        | (bytes[0] as usize)
+        | (bytes[0] as usize))
 }
 
 /// FML document scan error.
@@ -182,6 +204,20 @@ impl fmt::Display for ParseError {
 /// Errors that are possible in the froggi protocol.
 #[derive(Debug)]
 pub enum ErrorKind {
+    /// The array was too small or large
+    ArrayLengthError {
+        /// Size we wanted
+        wanted: usize,
+        /// Size we got
+        got: usize,
+    },
+    /// The integer wasn't able to fit in the specified bit width
+    BitWidthError {
+        /// Number of bits we wanted
+        wanted: usize,
+        /// The value we got instead
+        got: usize,
+    },
     /// The string was not UTF-8
     EncodingError {
         /// Stdlib Utf8Error that caused this
@@ -189,6 +225,8 @@ pub enum ErrorKind {
     },
     /// The request was formatted incorrectly
     RequestFormatError,
+    /// The response was formatted incorrectly
+    ResponseFormatError,
     /// Encountered a problem in reading or writing
     IOError {
         /// The error that occurred
@@ -214,10 +252,16 @@ pub enum ErrorKind {
 impl fmt::Display for ErrorKind {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
+            ErrorKind::ArrayLengthError { wanted, got }
+                => write!(f, "array length - wanted {} elements, got {}", wanted, got),
+            ErrorKind::BitWidthError { wanted, got }
+                => write!(f, "bit width error - value {} cannot fit in {} bits", got, wanted),
             ErrorKind::EncodingError { error }
                 => write!(f, "encoding error - {}", error),
             ErrorKind::RequestFormatError
                 => write!(f, "request format error - {:?}", self),
+            ErrorKind::ResponseFormatError
+                => write!(f, "response format error - {:?}", self),
             ErrorKind::IOError { error }
                 => write!(f, "io error - {}", error),
             ErrorKind::ScanError { error, line }
@@ -291,8 +335,11 @@ impl AddMsg for FroggiError {
 impl Error for FroggiError {
     fn source(&self) -> Option<&(dyn Error + 'static)> {
         match &self.error {
+            ErrorKind::ArrayLengthError { .. } => None,
+            ErrorKind::BitWidthError { .. } => None,
             ErrorKind::EncodingError { error } => error.source(),
             ErrorKind::RequestFormatError => None,
+            ErrorKind::ResponseFormatError => None,
             ErrorKind::IOError { error } => error.source(),
             ErrorKind::ScanError { .. } => None,
             ErrorKind::ParseError { .. } => None,
@@ -382,7 +429,7 @@ macro_rules! u8enum {
             fn from(b: u8) -> $name {
                 match b {
                     $($value => $name::$variant,)*
-                    _ => panic!("no value {} for {}", b, stringify!($name)),
+                    _ => $name::Unknown,
                 }
             }
         }

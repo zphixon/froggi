@@ -49,7 +49,8 @@ Request kinds:
   expressions. I won't be talking to you again.
 * 2 - Give me everything. I'll be in touch again for those extra page
   expressions.
-* 15 - Here's some data. I'm eagerly awaiting your response.
+* 14 - Here's some data. I'm eagerly awaiting your response.
+* 15 - Unknown.
 
 ## Server
 
@@ -82,6 +83,7 @@ Item kinds:
 * 0 - PNG image. The one and only.
 * 1 - JPG image. Our small friend.
 * 2 - GIF image. The life of the party.
+* 15 - Unknown.
 
 ## Markup
 

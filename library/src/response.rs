@@ -1,7 +1,8 @@
 //! Types for dealing with a froggi protocol response.
 
-use crate::{protocol::*, FroggiError, Uuid};
+use crate::{protocol::*, AddMsg, ErrorKind, FroggiError, Uuid};
 
+use crate::ErrorKind::ResponseFormatError;
 use std::convert::TryInto;
 use std::io::Read;
 
@@ -9,6 +10,7 @@ use std::io::Read;
 crate::u8enum! { ResponseKind {
     Page = 0,
     PageNoItems = 1,
+    Unknown = 15,
 } }
 
 // TODO proc macro
@@ -16,6 +18,7 @@ crate::u8enum! { ItemKind {
     Png = 0,
     Jpg = 1,
     Gif = 2,
+    Unknown = 15,
 } }
 
 /// An extra item that may appear at the end of a page.
@@ -63,29 +66,84 @@ pub struct Response {
     items: Vec<Item>,
 }
 
+fn check_page_and_items(page: &str, items: &[Item]) -> Result<(), FroggiError> {
+    if items.len() > u8::MAX as usize {
+        return Err(
+            FroggiError::new(ErrorKind::ResponseFormatError).msg_str("There are too many items.")
+        );
+    }
+
+    for item in items.iter() {
+        if item.data.len() > u32::MAX as usize {
+            return Err(FroggiError::new(ErrorKind::ResponseFormatError)
+                .msg(format!("The item {} is too long.", item.name)));
+        }
+
+        if item.name.len() > u8::MAX as usize {
+            return Err(FroggiError::new(ErrorKind::ResponseFormatError)
+                .msg(format!("The item name {} is too long.", item.name)));
+        }
+    }
+
+    if page.len() > u32::MAX as usize {
+        return Err(
+            FroggiError::new(ErrorKind::ResponseFormatError).msg_str("The page is too long.")
+        );
+    }
+
+    if FROGGI_HEADER_LEN
+        + items
+            .iter()
+            .map(|item| {
+                item.data.len()
+                    + item.name.len()
+                    + ITEM_KIND_LEN
+                    + ITEM_KIND_LEN
+                    + ITEM_NAME_LENGTH_LEN
+            })
+            .sum::<usize>()
+        + PAGE_LENGTH_LEN
+        + page.len()
+        > (u32::MAX as usize)
+    {
+        return Err(
+            FroggiError::new(ResponseFormatError).msg_str("The page and items are too large.")
+        );
+    }
+
+    Ok(())
+}
+
 impl Response {
     /// Create a new response with a random ID.
-    pub fn new(kind: ResponseKind, page: String, items: Vec<Item>) -> Self {
-        assert!(items.len() <= u8::MAX as usize);
-        Self {
+    pub fn new(kind: ResponseKind, page: String, items: Vec<Item>) -> Result<Self, FroggiError> {
+        check_page_and_items(&page, &items)?;
+
+        Ok(Self {
             version: crate::FROGGI_VERSION,
             kind,
             id: Uuid::new_v4(),
             page,
             items,
-        }
+        })
     }
 
     /// Create a new response with a client ID.
-    pub fn new_with_id(kind: ResponseKind, id: Uuid, page: String, items: Vec<Item>) -> Self {
-        assert!(items.len() <= u8::MAX as usize);
-        Self {
+    pub fn new_with_id(
+        kind: ResponseKind,
+        id: Uuid,
+        page: String,
+        items: Vec<Item>,
+    ) -> Result<Self, FroggiError> {
+        check_page_and_items(&page, &items)?;
+
+        Ok(Self {
             version: crate::FROGGI_VERSION,
             kind,
             id,
             page,
             items,
-        }
+        })
     }
 
     /// Parse the response into a page. Zero-copy.
@@ -116,7 +174,7 @@ impl Response {
         );
 
         // next four bytes is page length
-        let page_len = crate::deserialize_four_bytes(&header[PAGE_LENGTH_OFFSET..PAGE_OFFSET]);
+        let page_len = crate::deserialize_four_bytes(&header[PAGE_LENGTH_OFFSET..PAGE_OFFSET])?;
 
         // read page
         let mut page_buf = vec![0; page_len];
@@ -149,7 +207,7 @@ impl Response {
             // item length, 4 bytes
             let mut item_len = [0u8; ITEM_LENGTH_LEN];
             bytes.read_exact(&mut item_len)?;
-            let item_len = crate::deserialize_four_bytes(&item_len);
+            let item_len = crate::deserialize_four_bytes(&item_len)?;
 
             // item
             let mut data = vec![0; item_len];
@@ -218,7 +276,8 @@ impl Into<Vec<u8>> for Response {
         data.push(0);
 
         // next four bytes: page length
-        let page_len = crate::serialize_to_four_bytes(self.page.len());
+        // unwrap safety - we checked that the page fits in a u32
+        let page_len = crate::serialize_to_four_bytes(self.page.len()).unwrap();
         data.push(page_len[0]);
         data.push(page_len[1]);
         data.push(page_len[2]);
@@ -228,6 +287,7 @@ impl Into<Vec<u8>> for Response {
         data.extend_from_slice(self.page.as_bytes());
 
         // next byte: number of items
+        // overflow safety - we checked the number of items fits in a u8
         data.push(self.items.len() as u8);
 
         for item in self.items.iter() {
@@ -235,13 +295,15 @@ impl Into<Vec<u8>> for Response {
             data.push(item.kind.into());
 
             // next byte: item name length
+            // overflow safety - we checked the item name length fits in a u8
             data.push(item.name.len() as u8);
 
             // next string: item name
             data.extend_from_slice(item.name.as_bytes());
 
             // next four bytes: item length
-            let item_len = crate::serialize_to_four_bytes(item.data.len());
+            // unwrap safety - we checked the item size fits in a u32
+            let item_len = crate::serialize_to_four_bytes(item.data.len()).unwrap();
             data.push(item_len[0]);
             data.push(item_len[1]);
             data.push(item_len[2]);
@@ -251,9 +313,8 @@ impl Into<Vec<u8>> for Response {
             data.extend_from_slice(&item.data);
         }
 
-        assert!(data.len() <= u32::MAX as usize);
-
-        let total_len = crate::serialize_to_four_bytes(data.len());
+        // unwrap safety - we checked that the size of everything can fit in a u32
+        let total_len = crate::serialize_to_four_bytes(data.len()).unwrap();
         data[TOTAL_RESPONSE_LENGTH_OFFSET] = total_len[0];
         data[TOTAL_RESPONSE_LENGTH_OFFSET + 1] = total_len[1];
         data[TOTAL_RESPONSE_LENGTH_OFFSET + 2] = total_len[2];
@@ -338,7 +399,8 @@ mod test {
         );
 
         let response =
-            Response::new_with_id(ResponseKind::Page, Uuid::nil(), page, vec![white, magenta]);
+            Response::new_with_id(ResponseKind::Page, Uuid::nil(), page, vec![white, magenta])
+                .unwrap();
         let data_test: Vec<u8> = response.into();
 
         println!("{:?}", data_test);

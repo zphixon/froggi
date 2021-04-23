@@ -19,7 +19,8 @@ crate::u8enum! { RequestKind {
     PageOnly = 0,
     PageItems = 1,
     Page = 2,
-    Put = 15,
+    Put = 14,
+    Unknown = 15,
 } }
 
 /// Represents a froggi request to a server.
@@ -90,7 +91,7 @@ impl Request {
         );
 
         // next two bytes are request length
-        let request_length = crate::deserialize_bytes(&header[REQUEST_LENGTH_OFFSET..]);
+        let request_length = crate::deserialize_bytes(&header[REQUEST_LENGTH_OFFSET..])?;
 
         // remaining bytes are the request itself
         let mut request_buf = vec![0; request_length];
@@ -145,7 +146,8 @@ impl Into<Vec<u8>> for Request {
         data.extend(self.id.as_bytes());
 
         // next two bytes are request length
-        let (low, high) = serialize_to_bytes(self.request.len());
+        // unwrap safety - we check the path length before request construction
+        let (low, high) = serialize_to_bytes(self.request.len()).unwrap();
         data.push(low);
         data.push(high);
 

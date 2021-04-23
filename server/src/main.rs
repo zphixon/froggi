@@ -24,7 +24,8 @@ fn handle_client(mut stream: TcpStream) {
             ItemKind::Png,
             header_img,
         )],
-    );
+    )
+    .unwrap();
 
     println!("client: {}", response.id());
 
