@@ -49,7 +49,7 @@ Request kinds:
   expressions. I won't be talking to you again.
 * 2 - Give me everything. I'll be in touch again for those extra page
   expressions.
-* 16 - Here's some data. I'm eagerly awaiting your response.
+* 15 - Here's some data. I'm eagerly awaiting your response.
 
 ## Server
 
