@@ -1,5 +1,7 @@
 use crate::markup::scan::TokenKind;
-use crate::markup::{InlineStyle, ItemPayload, PageItem, PageStyles};
+use crate::markup::{ExpressionPayload, InlineStyle, PageExpressionAst, PageStyles};
+
+// TODO yank all this out
 
 use std::collections::HashSet;
 
@@ -106,7 +108,7 @@ fn inline_styles_to_style(styles: &[InlineStyle], page_styles: &PageStyles, styl
 // we'll do that here and then stick everything into DrawItems.
 
 pub fn draw_item(
-    item: &PageItem,
+    item: &PageExpressionAst,
     page_styles: &PageStyles,
     start_point: (usize, usize),
     max_width: usize,
@@ -117,7 +119,7 @@ pub fn draw_item(
     inline_styles_to_style(&item.styles, page_styles, &mut style);
 
     let dy = match &item.payload {
-        ItemPayload::Children { children, .. } => match item.builtin.kind() {
+        ExpressionPayload::Children { children, .. } => match item.builtin.kind() {
             TokenKind::Wide => {
                 let mut total_units = 0.0;
                 let mut draw_items = Vec::new();
@@ -175,23 +177,23 @@ pub fn draw_item(
             _ => unreachable!("non-child-bearing item has children"),
         },
 
-        ItemPayload::Text { .. } => {
+        ExpressionPayload::Text { .. } => {
             // wrap text
             println!("text");
             1
         }
 
-        ItemPayload::Link { .. } => {
+        ExpressionPayload::Link { .. } => {
             println!("link");
             1
         }
 
-        ItemPayload::Blob { .. } => {
+        ExpressionPayload::Blob { .. } => {
             println!("blob");
             1
         }
 
-        ItemPayload::Anchor { .. } => {
+        ExpressionPayload::Anchor { .. } => {
             println!("anchor");
             1
         }
@@ -210,7 +212,7 @@ mod test {
         let page = r#"{(a italic) (b bold) (c mono)} ({a b c underline} "")"#;
         let page = crate::markup::parse::parse(page).unwrap();
         let mut style = Style::new();
-        inline_styles_to_style(&page.items[0].styles, &page.styles, &mut style);
+        inline_styles_to_style(&page.expressions[0].styles, &page.styles, &mut style);
 
         assert_eq!(
             style,
@@ -242,7 +244,7 @@ mod test {
 
         let page = crate::markup::parse::parse(page).unwrap();
         let mut style = Style::new();
-        inline_styles_to_style(&page.items[0].styles, &page.styles, &mut style);
+        inline_styles_to_style(&page.expressions[0].styles, &page.styles, &mut style);
 
         assert_eq!(
             style,
@@ -262,7 +264,7 @@ mod test {
         let page = r#"{(a sans) (b serif) (c mono)} ({a b c} "")"#;
         let page = crate::markup::parse::parse(page).unwrap();
         let mut style = Style::new();
-        inline_styles_to_style(&page.items[0].styles, &page.styles, &mut style);
+        inline_styles_to_style(&page.expressions[0].styles, &page.styles, &mut style);
 
         assert_eq!(
             style,

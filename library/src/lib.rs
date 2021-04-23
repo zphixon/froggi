@@ -11,7 +11,9 @@ pub mod layout;
 #[cfg(feature = "layout")]
 pub extern crate druid;
 
+#[cfg(feature = "markup")]
 pub mod markup;
+
 pub mod protocol;
 pub mod request;
 pub mod response;
@@ -108,7 +110,7 @@ pub enum ParseError {
     UnexpectedToken { expected: TokenKind, got: String },
     UnbalancedParentheses,
     ExpectedStyle { got: String },
-    ExpectedItem { got: String },
+    ExpectedExpression { got: String },
     UnknownStyle { style: String },
     RecursiveStyle { style: String },
     IncorrectNumberFormat { num: String, wanted: String },
@@ -124,8 +126,8 @@ impl fmt::Display for ParseError {
                 => write!(f, "unbalanced parentheses"),
             ParseError::ExpectedStyle { got }
                 => write!(f, "expected style, got {:?}", got),
-            ParseError::ExpectedItem { got }
-                => write!(f, "expected item or page style, got {:?}", got),
+            ParseError::ExpectedExpression { got }
+                => write!(f, "expected page expression or page style, got {:?}", got),
             ParseError::UnknownStyle { style }
                 => write!(f, "unknown style {:?}", style),
             ParseError::RecursiveStyle { style }

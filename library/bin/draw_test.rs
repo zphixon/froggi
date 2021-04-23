@@ -22,7 +22,7 @@ fn main() {
     //    max_width: usize,
     //) {
 
-    for item in &page.items {
+    for item in &page.expressions {
         froggi::layout::draw::draw_item(item, &page.styles, (0, 0), 800);
     }
 }

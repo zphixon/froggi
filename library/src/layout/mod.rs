@@ -1,5 +1,7 @@
 use crate::markup::scan::{Token, TokenKind};
-use crate::markup::{InlineStyle, ItemPayload, Page, PageItem};
+use crate::markup::{ExpressionPayload, InlineStyle, PageAst, PageExpressionAst};
+
+// TODO yank all this out
 
 use druid::{
     BoxConstraints, Data, Env, Event, EventCtx, LayoutCtx, LifeCycle, LifeCycleCtx, PaintCtx, Size,
@@ -135,27 +137,27 @@ impl From<&InlineStyle<'_>> for OwnedInlineStyle {
     }
 }
 
-impl From<&PageItem<'_>> for OwnedPageItem {
-    fn from(item: &PageItem) -> Self {
+impl From<&PageExpressionAst<'_>> for OwnedPageItem {
+    fn from(item: &PageExpressionAst) -> Self {
         let builtin = (&item.builtin).into();
         let inline_styles = item.styles.iter().map(From::from).collect();
         let payload = match &item.payload {
-            ItemPayload::Text { text } => OwnedItemPayload::Text {
+            ExpressionPayload::Text { text } => OwnedItemPayload::Text {
                 text: text.iter().map(From::from).collect(),
             },
-            ItemPayload::Children { children, line } => OwnedItemPayload::Children {
+            ExpressionPayload::Children { children, line } => OwnedItemPayload::Children {
                 children: children.iter().map(From::from).collect(),
                 line: *line,
             },
-            ItemPayload::Link { link, text } => OwnedItemPayload::Link {
+            ExpressionPayload::Link { link, text } => OwnedItemPayload::Link {
                 link: link.into(),
                 text: text.iter().map(From::from).collect(),
             },
-            ItemPayload::Blob { name, alt } => OwnedItemPayload::Blob {
+            ExpressionPayload::Blob { name, alt } => OwnedItemPayload::Blob {
                 name: name.into(),
                 alt: alt.iter().map(From::from).collect(),
             },
-            ItemPayload::Anchor { anchor } => OwnedItemPayload::Anchor {
+            ExpressionPayload::Anchor { anchor } => OwnedItemPayload::Anchor {
                 anchor: anchor.into(),
             },
         };
@@ -168,15 +170,15 @@ impl From<&PageItem<'_>> for OwnedPageItem {
     }
 }
 
-impl From<Page<'_>> for OwnedPage {
-    fn from(page: Page<'_>) -> Self {
+impl From<PageAst<'_>> for OwnedPage {
+    fn from(page: PageAst<'_>) -> Self {
         let mut page_styles = HashMap::new();
         for (selector, styles) in &page.styles {
             page_styles.insert(selector.into(), styles.iter().map(From::from).collect());
         }
 
         let mut items = Vec::new();
-        for item in &page.items {
+        for item in &page.expressions {
             items.push(item.into());
         }
 
@@ -240,7 +242,7 @@ impl Widget<OwnedPage> for PageWidget {
 
 // should eventually store position and size
 struct DrawItem<'a: 'b, 'b> {
-    pub item: &'b PageItem<'a>,
+    pub item: &'b PageExpressionAst<'a>,
     pub style: draw::Style,
     // pub x: usize,
     // pub y: usize,

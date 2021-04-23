@@ -1,37 +1,37 @@
 use crate::{AddMsg, FroggiError, ParseError};
 
 use super::scan::{Scanner, Token, TokenKind};
-use super::{InlineStyle, ItemPayload, Page, PageItem, PageStyles};
+use super::{ExpressionPayload, InlineStyle, PageAst, PageExpressionAst, PageStyles};
 
 use std::collections::HashMap;
 
 /// Parse some data into a Page.
-pub fn parse(data: &str) -> Result<Page<'_>, Vec<FroggiError>> {
+pub fn parse(data: &str) -> Result<PageAst<'_>, Vec<FroggiError>> {
     let mut errors = Vec::new();
-    let mut items = Vec::new();
+    let mut expressions = Vec::new();
     let mut page_styles = HashMap::new();
 
-    let mut first_item = true;
+    let mut first_expression = true;
     let mut scanner = Scanner::new(data);
     while scanner.peek_token()?.kind() != TokenKind::End {
         match scanner.peek_token()?.kind() {
             // there should only be a single page-level style element,
-            // and it should be the first item
-            TokenKind::LeftBrace if first_item => {
-                first_item = false;
+            // and it should be the first expression
+            TokenKind::LeftBrace if first_expression => {
+                first_expression = false;
                 match parse_page_styles(&mut scanner) {
                     Ok(styles) => page_styles = styles,
                     Err(error) => errors.push(error),
                 }
             }
 
-            TokenKind::LeftBrace if !first_item => {
+            TokenKind::LeftBrace if !first_expression => {
                 errors.push(
                     FroggiError::parse(
-                        ParseError::ExpectedItem { got: "{".into() },
+                        ParseError::ExpectedExpression { got: "{".into() },
                         scanner.peek_token()?.line(),
                     )
-                    .msg_str("page items must be the first item in the page"),
+                    .msg_str("page style expression must be the first expression in the page"),
                 );
                 while scanner.peek_token()?.kind() != TokenKind::RightBrace {
                     scanner.next_token()?;
@@ -40,10 +40,10 @@ pub fn parse(data: &str) -> Result<Page<'_>, Vec<FroggiError>> {
             }
 
             TokenKind::LeftParen => {
-                first_item = false;
-                match parse_item(&mut scanner, &page_styles) {
-                    Ok(item) => {
-                        items.push(item);
+                first_expression = false;
+                match parse_expression(&mut scanner, &page_styles) {
+                    Ok(expression) => {
+                        expressions.push(expression);
                     }
                     Err(error) => {
                         errors.push(error);
@@ -53,7 +53,7 @@ pub fn parse(data: &str) -> Result<Page<'_>, Vec<FroggiError>> {
 
             _ => {
                 errors.push(FroggiError::parse(
-                    ParseError::ExpectedItem {
+                    ParseError::ExpectedExpression {
                         got: scanner.peek_token()?.clone_lexeme(),
                     },
                     scanner.peek_token()?.line(),
@@ -67,9 +67,9 @@ pub fn parse(data: &str) -> Result<Page<'_>, Vec<FroggiError>> {
     }
 
     if errors.is_empty() {
-        Ok(Page {
+        Ok(PageAst {
             styles: page_styles,
-            items,
+            expressions,
         })
     } else {
         Err(errors)
@@ -81,19 +81,23 @@ fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<PageStyles<'a>, Fr
     // parse outer list of rules
     let left_brace = consume(scanner, TokenKind::LeftBrace)?;
 
-    let in_page_style_item = true;
+    let in_page_style_expression = true;
     let mut page_styles = HashMap::new();
 
     while scanner.peek_token()?.kind() != TokenKind::RightBrace {
         // parse one single rule
         consume(scanner, TokenKind::LeftParen)
-            .msg_str("expected style rules inside page style item")?;
+            .msg_str("expected style rules inside page style expression")?;
 
         // name of the rule
         let selector = consume_selector(scanner)?;
 
         // styles that belong to the rule
-        let styles = parse_style_list(scanner, &HashMap::with_capacity(0), in_page_style_item)?;
+        let styles = parse_style_list(
+            scanner,
+            &HashMap::with_capacity(0),
+            in_page_style_expression,
+        )?;
 
         page_styles.insert(selector, styles);
         consume(scanner, TokenKind::RightParen).msg_str("end of the style rule")?;
@@ -107,11 +111,11 @@ fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<PageStyles<'a>, Fr
     Ok(page_styles)
 }
 
-// parse some normal page item
-fn parse_item<'a>(
+// parse some normal page expression
+fn parse_expression<'a>(
     scanner: &mut Scanner<'a>,
     page_styles: &PageStyles<'a>,
-) -> Result<PageItem<'a>, FroggiError> {
+) -> Result<PageExpressionAst<'a>, FroggiError> {
     let left_paren = consume(scanner, TokenKind::LeftParen)?;
 
     let result = match scanner.peek_token()?.kind() {
@@ -135,17 +139,17 @@ fn parse_item<'a>(
 fn parse_blob<'a>(
     scanner: &mut Scanner<'a>,
     page_styles: &PageStyles<'a>,
-) -> Result<PageItem<'a>, FroggiError> {
+) -> Result<PageExpressionAst<'a>, FroggiError> {
     let builtin = consume(scanner, TokenKind::Blob)?;
     let name = consume(scanner, TokenKind::String)?;
 
     let styles = parse_inline_styles(scanner, page_styles)?;
-    let payload = ItemPayload::Blob {
+    let payload = ExpressionPayload::Blob {
         name,
         alt: collect_text(scanner)?,
     };
 
-    Ok(PageItem {
+    Ok(PageExpressionAst {
         builtin,
         styles,
         payload,
@@ -155,28 +159,28 @@ fn parse_blob<'a>(
 fn parse_link<'a>(
     scanner: &mut Scanner<'a>,
     page_styles: &PageStyles<'a>,
-) -> Result<PageItem<'a>, FroggiError> {
+) -> Result<PageExpressionAst<'a>, FroggiError> {
     let builtin = consume(scanner, TokenKind::Link)?;
     let link = consume(scanner, TokenKind::String)?;
 
     let styles = parse_inline_styles(scanner, page_styles)?;
-    let payload = ItemPayload::Link {
+    let payload = ExpressionPayload::Link {
         link,
         text: collect_text(scanner)?,
     };
 
-    Ok(PageItem {
+    Ok(PageExpressionAst {
         builtin,
         styles,
         payload,
     })
 }
 
-fn parse_anchor<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiError> {
+fn parse_anchor<'a>(scanner: &mut Scanner<'a>) -> Result<PageExpressionAst<'a>, FroggiError> {
     let builtin = consume(scanner, TokenKind::Anchor)?;
     let anchor = consume(scanner, TokenKind::String)?;
-    let payload = ItemPayload::Anchor { anchor };
-    Ok(PageItem {
+    let payload = ExpressionPayload::Anchor { anchor };
+    Ok(PageExpressionAst {
         builtin,
         styles: Vec::new(),
         payload,
@@ -187,19 +191,19 @@ fn parse_child<'a>(
     scanner: &mut Scanner<'a>,
     page_styles: &PageStyles<'a>,
     kind: TokenKind,
-) -> Result<PageItem<'a>, FroggiError> {
+) -> Result<PageExpressionAst<'a>, FroggiError> {
     let builtin = consume(scanner, kind)?;
     let styles = parse_inline_styles(scanner, page_styles)?;
     let mut children = Vec::new();
 
     while scanner.peek_token()?.kind() != TokenKind::RightParen {
-        children.push(parse_item(scanner, page_styles)?);
+        children.push(parse_expression(scanner, page_styles)?);
     }
 
-    Ok(PageItem {
+    Ok(PageExpressionAst {
         builtin,
         styles,
-        payload: ItemPayload::Children {
+        payload: ExpressionPayload::Children {
             children,
             line: builtin.line(),
         },
@@ -209,15 +213,15 @@ fn parse_child<'a>(
 fn parse_implicit_text<'a>(
     scanner: &mut Scanner<'a>,
     page_styles: &PageStyles<'a>,
-) -> Result<PageItem<'a>, FroggiError> {
+) -> Result<PageExpressionAst<'a>, FroggiError> {
     let implicit = Token::new(TokenKind::Text, scanner.peek_token()?.line(), "");
     let styles = parse_inline_styles(scanner, page_styles)?;
     let text = collect_text(scanner)?;
 
-    Ok(PageItem {
+    Ok(PageExpressionAst {
         builtin: implicit,
         styles,
-        payload: ItemPayload::Text { text },
+        payload: ExpressionPayload::Text { text },
     })
 }
 
@@ -225,10 +229,10 @@ fn parse_inline_styles<'a>(
     scanner: &mut Scanner<'a>,
     page_styles: &PageStyles<'a>,
 ) -> Result<Vec<InlineStyle<'a>>, FroggiError> {
-    let in_page_style_item = false;
+    let in_page_style_expression = false;
     if scanner.peek_token()?.kind() == TokenKind::LeftBrace {
         consume(scanner, TokenKind::LeftBrace)?;
-        let inline_styles = parse_style_list(scanner, page_styles, in_page_style_item)?;
+        let inline_styles = parse_style_list(scanner, page_styles, in_page_style_expression)?;
         consume(scanner, TokenKind::RightBrace).msg_str("expected the end of the inline style")?;
         Ok(inline_styles)
     } else {
@@ -239,7 +243,7 @@ fn parse_inline_styles<'a>(
 fn parse_style_list<'a>(
     scanner: &mut Scanner<'a>,
     page_styles: &PageStyles<'a>,
-    in_page_style_item: bool,
+    in_page_style_expression: bool,
 ) -> Result<Vec<InlineStyle<'a>>, FroggiError> {
     let mut styles = Vec::new();
 
@@ -250,7 +254,7 @@ fn parse_style_list<'a>(
         let token = scanner.next_token()?;
         match token.kind() {
             TokenKind::Identifier => {
-                if !in_page_style_item {
+                if !in_page_style_expression {
                     if page_styles.contains_key(&token) {
                         styles.push(InlineStyle::UserDefined { token });
                     } else {
@@ -262,7 +266,7 @@ fn parse_style_list<'a>(
                         ));
                     }
                 } else {
-                    // if we're in the page style item, we've already consumed the selector
+                    // if we're in the page style expression, we've already consumed the selector
                     return Err(FroggiError::parse(
                         ParseError::RecursiveStyle {
                             style: token.clone_lexeme(),
@@ -422,7 +426,7 @@ fn consume_selector<'a>(scanner: &mut Scanner<'a>) -> Result<Token<'a>, FroggiEr
             },
             token.line(),
         ))
-        .msg_str("selectors must be either built-in items or links, or user-defined selectors"),
+        .msg_str("selectors must be either built-in expression types or links, or user-defined selectors"),
     }
 }
 
@@ -463,8 +467,8 @@ mod test {
     fn anchor() {
         let sample = r#"(# "something")"#;
         let page = parse(sample).unwrap();
-        match page.items[0].payload {
-            ItemPayload::Anchor { anchor } => assert_eq!(anchor.lexeme(), "something"),
+        match page.expressions[0].payload {
+            ExpressionPayload::Anchor { anchor } => assert_eq!(anchor.lexeme(), "something"),
             _ => panic!(),
         }
     }
@@ -493,9 +497,9 @@ mod test {
 
     #[test]
     fn parent_style_missing_arg() {
-        let item = r#"(box {(fg)} ("multiple children?") (style "why"))"#;
+        let expression = r#"(box {(fg)} ("multiple children?") (style "why"))"#;
 
-        match parse(item).unwrap_err()[0].kind() {
+        match parse(expression).unwrap_err()[0].kind() {
             crate::ErrorKind::ParseError { error, .. } => match error {
                 ParseError::UnexpectedToken { expected, .. } => match expected {
                     TokenKind::String => {}
@@ -509,9 +513,9 @@ mod test {
 
     #[test]
     fn child_style_missing_arg() {
-        let item = r#"{(style)} (box ({style (fg)} "why"))"#;
+        let expression = r#"{(style)} (box ({style (fg)} "why"))"#;
 
-        match parse(item).unwrap_err()[0].kind() {
+        match parse(expression).unwrap_err()[0].kind() {
             crate::ErrorKind::ParseError { error, .. } => match error {
                 ParseError::UnexpectedToken { expected, .. } => match expected {
                     TokenKind::String => {}
@@ -540,9 +544,9 @@ mod test {
     }
 
     #[test]
-    fn well_formed_page_item() {
-        let item = r#"{(user-style (fg "333333")) (inline-style (bg "222222"))}(wide {user-style inline-style (fg "111111")} ("children") ({mono} "style"))"#;
-        parse(item).unwrap();
+    fn well_formed_page_expression() {
+        let expression = r#"{(user-style (fg "333333")) (inline-style (bg "222222"))}(wide {user-style inline-style (fg "111111")} ("children") ({mono} "style"))"#;
+        parse(expression).unwrap();
     }
 
     #[test]

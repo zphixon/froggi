@@ -5,7 +5,8 @@ authors = ['Zack <zphixon@gmail.com>']
 edition = '2018'
 
 [features]
-default = []
+default = ['markup']
+markup = []
 layout = ['druid']
 
 [dependencies]

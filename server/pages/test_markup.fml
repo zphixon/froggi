@@ -1,11 +1,11 @@
-; special built-in page item is the style item: {...}
-; takes a list of (item styles...) to apply to items in the page.
+; special built-in page expression is the style expression: {...}
+; takes a list of (expressionType styles...) to apply to expression in the page.
 {(text serif (fg "303030"))
  (quote-wide (bg "fff8dc"))
  (quote-text sans (fg "606060"))
  (footnote (fg "757575") sans italic)}
 
-; special built-in page item is the binary reference: (& "name"),
+; special built-in page expression is the binary reference: (& "name"),
 ; which refers to object "name" at the end of the server's response.
 (wide ({(size "26") bold}"Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 
@@ -13,32 +13,32 @@
 ; the client should automatically scroll the page to this point
 (# "anchor")
 
-; children of an inline item do not display on a new line.
+; children of an inline expression do not display on a new line.
 (inline
  ({bold} "inline")
- ({strike} "items")
+ ({strike} "expressions")
  ("can have some")
  ({(fg "1aff02")} "styling")
  ({sans underline} "in one line"))
 
-; strings are automatically concatenated. without a builtin item name, the page
-; item is assumed to be text.
+; strings are automatically concatenated. without a builtin expression type, the page
+; expression is assumed to be tall.
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
 
-; items in a wide will be added to the page horizontally rather than vertically.
+; expressions in a wide will be added to the page horizontally rather than vertically.
 ; they will have equal amounts of their parent's horizontal space allocated to them.
 (wide {quote-wide}
- ; fill on a horizontal item will take up the ratio of space of its parent's width
+ ; fill on a horizontal expression will take up the ratio of space of its parent's width
  ({quote-text (fill "2")} "Contrary to popular belief, Lorem Ipsum is not simply"
   " random text. It has roots in a piece of classical Latin literature")
  ({quote-text} "from 45 BC, making it over 2000 years old. Richard"
   " McClintock, a Latin professor at Hampden-Sydney College in")
- ; items in a tall will be added to the page vertically.
+ ; expressions in a tall will be added to the page vertically.
  (tall
   ({quote-text (fill "4")} "Virginia, looked up one of the more obscure Latin")
-  ; fill on a vertical item changes vertical space allocation depending on
-  ; the content height of its sibling items as well as its parents' siblings.
+  ; fill on a vertical expression changes vertical space allocation depending on
+  ; the content height of its sibling expression as well as its parents' siblings.
   ; vertical fill will never increase or decrease the height of its ancestors.
   (^ "frgi://www.lipsum.com/" {footnote} "from frgi://www.lipsum.com/")))
 

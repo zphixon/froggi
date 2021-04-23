@@ -1,3 +1,4 @@
+pub mod page;
 pub mod parse;
 pub mod scan;
 
@@ -6,27 +7,27 @@ use scan::{Token, TokenKind};
 use std::collections::HashMap;
 
 #[derive(Debug, PartialEq)]
-pub struct Page<'a> {
+pub struct PageAst<'a> {
     pub styles: PageStyles<'a>,
-    pub items: Vec<PageItem<'a>>,
+    pub expressions: Vec<PageExpressionAst<'a>>,
 }
 
 pub type PageStyles<'a> = HashMap<Token<'a>, Vec<InlineStyle<'a>>>;
 
 #[derive(Debug, PartialEq)]
-pub struct PageItem<'a> {
+pub struct PageExpressionAst<'a> {
     pub builtin: Token<'a>,
     pub styles: Vec<InlineStyle<'a>>,
-    pub payload: ItemPayload<'a>,
+    pub payload: ExpressionPayload<'a>,
 }
 
 #[derive(Debug, PartialEq)]
-pub enum ItemPayload<'a> {
+pub enum ExpressionPayload<'a> {
     Text {
         text: Vec<Token<'a>>,
     },
     Children {
-        children: Vec<PageItem<'a>>,
+        children: Vec<PageExpressionAst<'a>>,
         line: usize,
     },
     Link {
@@ -58,7 +59,7 @@ pub enum InlineStyle<'a> {
     UserDefined { token: Token<'a> },
 }
 
-pub fn to_html(page: &Page) -> String {
+pub fn to_html(page: &PageAst) -> String {
     let mut html = String::from(
         r#"
 <!DOCTYPE html>
@@ -118,8 +119,8 @@ body {
     }
     html.push_str("    </style>\n  </head>\n  <body>\n");
 
-    for item in &page.items {
-        html.push_str(&page_item_to_html(item, false));
+    for expression in &page.expressions {
+        html.push_str(&page_expression_to_html(expression, false));
     }
 
     html.push_str(
@@ -137,15 +138,15 @@ body {
     html
 }
 
-fn page_item_to_html(item: &PageItem, child_of_inline: bool) -> String {
+fn page_expression_to_html(expression: &PageExpressionAst, child_of_inline: bool) -> String {
     let mut html = String::new();
     let not_flex_column = false;
-    match &item.payload {
-        ItemPayload::Text { text } => {
+    match &expression.payload {
+        ExpressionPayload::Text { text } => {
             html.push_str("<span");
 
-            if !item.styles.is_empty() {
-                html.push_str(&style_list_to_html(item, not_flex_column));
+            if !expression.styles.is_empty() {
+                html.push_str(&style_list_to_html(expression, not_flex_column));
             }
 
             html.push_str(">");
@@ -156,27 +157,27 @@ fn page_item_to_html(item: &PageItem, child_of_inline: bool) -> String {
             html.push_str(&format!(
                 "</span>{} <!-- text {} -->\n",
                 if child_of_inline { "" } else { "<br>" },
-                item.builtin.line(),
+                expression.builtin.line(),
             ));
         }
 
-        ItemPayload::Children { children, .. } => {
-            let is_vertical = item.builtin.kind() == TokenKind::Tall;
-            let is_inline = item.builtin.kind() == TokenKind::Inline;
+        ExpressionPayload::Children { children, .. } => {
+            let is_vertical = expression.builtin.kind() == TokenKind::Tall;
+            let is_inline = expression.builtin.kind() == TokenKind::Inline;
             let tag = if is_inline { "span" } else { "div" };
 
             html.push_str(&format!("<{}", tag));
 
-            html.push_str(&style_list_to_html(item, is_vertical));
+            html.push_str(&style_list_to_html(expression, is_vertical));
 
             html.push_str(&format!(
                 "> <!-- {} {} -->\n",
-                item.builtin.lexeme(),
-                item.builtin.line()
+                expression.builtin.lexeme(),
+                expression.builtin.line()
             ));
 
             for child in children {
-                html.push_str(&format!("{}", page_item_to_html(child, is_inline)));
+                html.push_str(&format!("{}", page_expression_to_html(child, is_inline)));
                 if is_vertical {
                     html.push_str("<br>");
                 }
@@ -190,11 +191,11 @@ fn page_item_to_html(item: &PageItem, child_of_inline: bool) -> String {
             }
         }
 
-        ItemPayload::Link { link, text } => {
+        ExpressionPayload::Link { link, text } => {
             html.push_str("<div");
 
-            if !item.styles.is_empty() {
-                html.push_str(&style_list_to_html(item, not_flex_column));
+            if !expression.styles.is_empty() {
+                html.push_str(&style_list_to_html(expression, not_flex_column));
             }
 
             html.push_str(">");
@@ -210,7 +211,7 @@ fn page_item_to_html(item: &PageItem, child_of_inline: bool) -> String {
             html.push_str("</a></div>\n");
         }
 
-        ItemPayload::Blob { name, alt } => {
+        ExpressionPayload::Blob { name, alt } => {
             // TODO: style
             // <embed>? image type?
             html.push_str(&format!("<img src=\"{}\"", name.lexeme()));
@@ -224,7 +225,7 @@ fn page_item_to_html(item: &PageItem, child_of_inline: bool) -> String {
             html.push_str(">\n");
         }
 
-        ItemPayload::Anchor { anchor } => {
+        ExpressionPayload::Anchor { anchor } => {
             html.push_str(&format!(
                 "<div id=\"{}\" style=\"display:hidden;\"></div>\n",
                 anchor.lexeme()
@@ -235,12 +236,12 @@ fn page_item_to_html(item: &PageItem, child_of_inline: bool) -> String {
     html
 }
 
-fn style_list_to_html(item: &PageItem, flex_column: bool) -> String {
+fn style_list_to_html(expression: &PageExpressionAst, flex_column: bool) -> String {
     let mut html = String::new();
     let mut classes = Vec::new();
     let mut styles = Vec::new();
 
-    for style in &item.styles {
+    for style in &expression.styles {
         match style {
             InlineStyle::UserDefined { token } => {
                 classes.push(token.lexeme());

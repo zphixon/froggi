@@ -79,7 +79,7 @@ impl Response {
         }
     }
 
-    pub fn parse(&self) -> Result<crate::markup::Page<'_>, Vec<FroggiError>> {
+    pub fn parse(&self) -> Result<crate::markup::PageAst<'_>, Vec<FroggiError>> {
         crate::markup::parse::parse(&self.page)
     }
 
