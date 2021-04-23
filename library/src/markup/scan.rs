@@ -9,6 +9,7 @@ fn is_control_character(c: u8) -> bool {
         || c == b'#'
         || c == b'&'
         || c == b'"'
+        || c == b'\''
         || c == b';'
         || c.is_ascii_control()
         || c.is_ascii_whitespace()
@@ -150,7 +151,7 @@ impl<'a> Scanner<'a> {
                         return Ok(Token::new(TokenKind::End, self.line, ""));
                     }
 
-                    b'"' => self.text(),
+                    b'"' | b'\'' => self.text(),
                     b'{' => Ok(TokenKind::LeftBrace),
                     b'}' => Ok(TokenKind::RightBrace),
 
@@ -214,13 +215,13 @@ impl<'a> Scanner<'a> {
     fn text(&mut self) -> Result<TokenKind, FroggiError> {
         let start_line = self.line;
 
-        while !self.at_end() && self.peek() != b'"' {
+        while !self.at_end() && (self.peek() != b'\'' && self.peek() != b'"') {
             if self.peek() == b'\n' {
                 self.line += 1;
             }
             if self.peek() == b'\\' {
                 self.advance();
-                if self.peek() != b'\"' {
+                if self.peek() != b'\'' || self.peek() != b'"' {
                     return self.error(ScanError::UnknownEscapeCode {
                         code: self.peek() as char,
                     });
@@ -285,7 +286,7 @@ mod test {
 
     #[test]
     fn next_then_peek() {
-        let mut s = Scanner::new("({:&name\"text\"})");
+        let mut s = Scanner::new("({:&name\'text\'})");
         assert_eq!(s.peek_token().unwrap().kind(), TokenKind::LeftParen);
         assert_eq!(s.next_token().unwrap().kind(), TokenKind::LeftParen);
         assert_eq!(s.peek_token().unwrap().kind(), TokenKind::LeftBrace);
@@ -294,7 +295,7 @@ mod test {
 
     #[test]
     fn smooshed_tokens() {
-        let mut s = Scanner::new(r#"a(&&#&text"hello"^h^h^"text"something{"#);
+        let mut s = Scanner::new(r#"a(&&#&text'hello'^h^h^'text'something{"#);
         let mut tokens = Vec::new();
         while let Ok(token) = s.next_token() {
             if token.kind() == TokenKind::End {
@@ -313,13 +314,13 @@ mod test {
                 Token::new(TokenKind::Anchor, 1, "#"),
                 Token::new(TokenKind::Blob, 1, "&"),
                 Token::new(TokenKind::Text, 1, "text"),
-                Token::new(TokenKind::String, 1, "\"hello\""),
+                Token::new(TokenKind::String, 1, "\'hello\'"),
                 Token::new(TokenKind::Link, 1, "^"),
                 Token::new(TokenKind::Identifier, 1, "h"),
                 Token::new(TokenKind::Link, 1, "^"),
                 Token::new(TokenKind::Identifier, 1, "h"),
                 Token::new(TokenKind::Link, 1, "^"),
-                Token::new(TokenKind::String, 1, "\"text\""),
+                Token::new(TokenKind::String, 1, "\'text\'"),
                 Token::new(TokenKind::Identifier, 1, "something"),
                 Token::new(TokenKind::LeftBrace, 1, "{"),
             ]
