@@ -1,19 +1,19 @@
-# froggi protocol - [spec](https://github.com/zphixon/froggi/blob/main/spec.md)
+# Froggi protocol - [spec](https://github.com/zphixon/froggi/blob/main/spec.md)
 
-this new protocol aims to be somewhere between gopher and http. somewhat
-inspired by gemini, and conceived due to its unimpressive markup language.
+This new protocol aims to be somewhere between gopher and http. Somewhat
+inspired by gemini, and conceived due to gemini's unimpressive markup language.
 
-be warned, much of the readme below is subject to change and probably goes out
+Be warned, much of the readme below is subject to change and probably goes out
 of date on every commit.
 
-## libraries
+## Libraries
 
-* network
+* Network
   * https://doc.rust-lang.org/stable/std/net/index.html
   * https://github.com/sfackler/rust-native-tls
   * https://github.com/ctz/rustls
   * https://github.com/tantivy-search/tantivy
-* client graphics
+* Client graphics
   * https://github.com/unicode-rs/unicode-segmentation
   * https://github.com/servo/unicode-bidi
   * https://crates.io/crates/harfbuzz_rs
@@ -22,7 +22,7 @@ of date on every commit.
   * https://github.com/hecrj/iced
   * https://github.com/xi-editor/druid
 
-## todo
+## TODO
 
 * possibly unify Page and Document types
   * parse would directly produce a Document rather than having to go through the
@@ -57,17 +57,13 @@ of date on every commit.
 
 2. height calculation...
 
-![diagram](https://github.com/zphixon/froggi/blob/main/notes/display.svg)
+![Diagram](https://github.com/zphixon/froggi/blob/main/notes/display.svg)
 
 ## other ideas
 
-* add flag byte?
-  * whether or not the client wants images (would be useful for crawlers or
-    search indexing)
 * semantic color schemes for compatibility with system themes?
   * note, warning, quote
 * unordered/ordered list
-* paragraphs, indented or not
 * links
   * same document jumps the view
   * other document opens that document
