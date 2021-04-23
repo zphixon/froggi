@@ -1,5 +1,5 @@
 use crate::markup::scan::TokenKind;
-use crate::markup::{ExpressionPayload, InlineStyle, PageExpressionAst, PageStyles};
+use crate::markup::{ExpressionPayload, InlineStyle, PageExpression, PageStyles};
 
 use std::collections::HashSet;
 

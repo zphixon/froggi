@@ -7,15 +7,15 @@ use scan::{Token, TokenKind};
 use std::collections::HashMap;
 
 #[derive(Debug, PartialEq)]
-pub struct PageAst<'a> {
+pub struct Page<'a> {
     pub styles: PageStyles<'a>,
-    pub expressions: Vec<PageExpressionAst<'a>>,
+    pub expressions: Vec<PageExpression<'a>>,
 }
 
 pub type PageStyles<'a> = HashMap<Token<'a>, Vec<InlineStyle<'a>>>;
 
 #[derive(Debug, PartialEq)]
-pub struct PageExpressionAst<'a> {
+pub struct PageExpression<'a> {
     pub builtin: Token<'a>,
     pub styles: Vec<InlineStyle<'a>>,
     pub payload: ExpressionPayload<'a>,
@@ -27,7 +27,7 @@ pub enum ExpressionPayload<'a> {
         text: Vec<Token<'a>>,
     },
     Children {
-        children: Vec<PageExpressionAst<'a>>,
+        children: Vec<PageExpression<'a>>,
         line: usize,
     },
     Link {
@@ -59,7 +59,7 @@ pub enum InlineStyle<'a> {
     UserDefined { token: Token<'a> },
 }
 
-pub fn to_html(page: &PageAst) -> String {
+pub fn to_html(page: &Page) -> String {
     let mut html = String::from(
         r#"
 <!DOCTYPE html>
@@ -138,7 +138,7 @@ body {
     html
 }
 
-fn page_expression_to_html(expression: &PageExpressionAst, child_of_inline: bool) -> String {
+fn page_expression_to_html(expression: &PageExpression, child_of_inline: bool) -> String {
     let mut html = String::new();
     let not_flex_column = false;
     match &expression.payload {
@@ -236,7 +236,7 @@ fn page_expression_to_html(expression: &PageExpressionAst, child_of_inline: bool
     html
 }
 
-fn style_list_to_html(expression: &PageExpressionAst, flex_column: bool) -> String {
+fn style_list_to_html(expression: &PageExpression, flex_column: bool) -> String {
     let mut html = String::new();
     let mut classes = Vec::new();
     let mut styles = Vec::new();

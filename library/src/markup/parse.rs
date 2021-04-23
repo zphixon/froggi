@@ -1,12 +1,12 @@
 use crate::{AddMsg, FroggiError, ParseError};
 
 use super::scan::{Scanner, Token, TokenKind};
-use super::{ExpressionPayload, InlineStyle, PageAst, PageExpressionAst, PageStyles};
+use super::{ExpressionPayload, InlineStyle, Page, PageExpression, PageStyles};
 
 use std::collections::HashMap;
 
 /// Parse some data into a Page.
-pub fn parse(data: &str) -> Result<PageAst<'_>, Vec<FroggiError>> {
+pub fn parse(data: &str) -> Result<Page<'_>, Vec<FroggiError>> {
     let mut errors = Vec::new();
     let mut expressions = Vec::new();
     let mut page_styles = HashMap::new();
@@ -67,7 +67,7 @@ pub fn parse(data: &str) -> Result<PageAst<'_>, Vec<FroggiError>> {
     }
 
     if errors.is_empty() {
-        Ok(PageAst {
+        Ok(Page {
             styles: page_styles,
             expressions,
         })
@@ -115,7 +115,7 @@ fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<PageStyles<'a>, Fr
 fn parse_expression<'a>(
     scanner: &mut Scanner<'a>,
     page_styles: &PageStyles<'a>,
-) -> Result<PageExpressionAst<'a>, FroggiError> {
+) -> Result<PageExpression<'a>, FroggiError> {
     let left_paren = consume(scanner, TokenKind::LeftParen)?;
 
     let result = match scanner.peek_token()?.kind() {
@@ -139,7 +139,7 @@ fn parse_expression<'a>(
 fn parse_blob<'a>(
     scanner: &mut Scanner<'a>,
     page_styles: &PageStyles<'a>,
-) -> Result<PageExpressionAst<'a>, FroggiError> {
+) -> Result<PageExpression<'a>, FroggiError> {
     let builtin = consume(scanner, TokenKind::Blob)?;
     let name = consume(scanner, TokenKind::String)?;
 
@@ -149,7 +149,7 @@ fn parse_blob<'a>(
         alt: collect_text(scanner)?,
     };
 
-    Ok(PageExpressionAst {
+    Ok(PageExpression {
         builtin,
         styles,
         payload,
@@ -159,7 +159,7 @@ fn parse_blob<'a>(
 fn parse_link<'a>(
     scanner: &mut Scanner<'a>,
     page_styles: &PageStyles<'a>,
-) -> Result<PageExpressionAst<'a>, FroggiError> {
+) -> Result<PageExpression<'a>, FroggiError> {
     let builtin = consume(scanner, TokenKind::Link)?;
     let link = consume(scanner, TokenKind::String)?;
 
@@ -169,18 +169,18 @@ fn parse_link<'a>(
         text: collect_text(scanner)?,
     };
 
-    Ok(PageExpressionAst {
+    Ok(PageExpression {
         builtin,
         styles,
         payload,
     })
 }
 
-fn parse_anchor<'a>(scanner: &mut Scanner<'a>) -> Result<PageExpressionAst<'a>, FroggiError> {
+fn parse_anchor<'a>(scanner: &mut Scanner<'a>) -> Result<PageExpression<'a>, FroggiError> {
     let builtin = consume(scanner, TokenKind::Anchor)?;
     let anchor = consume(scanner, TokenKind::String)?;
     let payload = ExpressionPayload::Anchor { anchor };
-    Ok(PageExpressionAst {
+    Ok(PageExpression {
         builtin,
         styles: Vec::new(),
         payload,
@@ -191,7 +191,7 @@ fn parse_child<'a>(
     scanner: &mut Scanner<'a>,
     page_styles: &PageStyles<'a>,
     kind: TokenKind,
-) -> Result<PageExpressionAst<'a>, FroggiError> {
+) -> Result<PageExpression<'a>, FroggiError> {
     let builtin = consume(scanner, kind)?;
     let styles = parse_inline_styles(scanner, page_styles)?;
     let mut children = Vec::new();
@@ -200,7 +200,7 @@ fn parse_child<'a>(
         children.push(parse_expression(scanner, page_styles)?);
     }
 
-    Ok(PageExpressionAst {
+    Ok(PageExpression {
         builtin,
         styles,
         payload: ExpressionPayload::Children {
@@ -213,12 +213,12 @@ fn parse_child<'a>(
 fn parse_implicit_text<'a>(
     scanner: &mut Scanner<'a>,
     page_styles: &PageStyles<'a>,
-) -> Result<PageExpressionAst<'a>, FroggiError> {
+) -> Result<PageExpression<'a>, FroggiError> {
     let implicit = Token::new(TokenKind::Text, scanner.peek_token()?.line(), "");
     let styles = parse_inline_styles(scanner, page_styles)?;
     let text = collect_text(scanner)?;
 
-    Ok(PageExpressionAst {
+    Ok(PageExpression {
         builtin: implicit,
         styles,
         payload: ExpressionPayload::Text { text },
