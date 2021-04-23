@@ -127,6 +127,10 @@ fn parse_expression<'a>(
         TokenKind::Tall => parse_child(scanner, page_styles, TokenKind::Tall)?,
         TokenKind::Wide => parse_child(scanner, page_styles, TokenKind::Wide)?,
         TokenKind::Inline => parse_child(scanner, page_styles, TokenKind::Inline)?,
+        TokenKind::Text => {
+            consume(scanner, TokenKind::Text)?; // TODO
+            parse_implicit_text(scanner, page_styles)?
+        }
         _ => parse_implicit_text(scanner, page_styles)?,
     };
 
@@ -420,7 +424,7 @@ fn collect_text<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<Token<'a>>, FroggiE
 fn consume_selector<'a>(scanner: &mut Scanner<'a>) -> Result<Token<'a>, FroggiError> {
     let token = scanner.next_token()?;
     match token.kind() {
-        TokenKind::Identifier | TokenKind::Link | TokenKind::Wide | TokenKind::Tall => Ok(token),
+        TokenKind::Identifier | TokenKind::Link | TokenKind::Wide | TokenKind::Tall | TokenKind::Text => Ok(token),
         _ => Err(FroggiError::parse(
             ParseError::UnexpectedToken {
                 expected: TokenKind::Identifier,
@@ -593,7 +597,7 @@ mod test {
         let style = parse_page_styles(&mut scanner).unwrap();
         let mut styles = HashMap::new();
         styles.insert(
-            Token::new(TokenKind::Identifier, 1, "text"),
+            Token::new(TokenKind::Text, 1, "text"),
             vec![InlineStyle::Serif {
                 token: Token::new(TokenKind::Serif, 1, "serif"),
             }],

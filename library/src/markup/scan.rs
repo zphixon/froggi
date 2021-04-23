@@ -43,8 +43,7 @@ pub enum TokenKind {
     Wide,
     /// tall - vertical layout type
     Tall,
-    /// Not a token produced at scan-time, but parse-time. Used when there is no layout type
-    /// specified.
+    /// text - text type
     Text,
 
     /// Monospace font
@@ -235,6 +234,7 @@ impl<'a> Scanner<'a> {
             "wide" => Ok(TokenKind::Wide),
             "tall" => Ok(TokenKind::Tall),
             "inline" => Ok(TokenKind::Inline),
+            "text" => Ok(TokenKind::Text),
             "mono" => Ok(TokenKind::Mono),
             "serif" => Ok(TokenKind::Serif),
             "sans" => Ok(TokenKind::Sans),
@@ -351,7 +351,7 @@ mod test {
                 Token::new(TokenKind::Blob, 1, "&"),
                 Token::new(TokenKind::Anchor, 1, "#"),
                 Token::new(TokenKind::Blob, 1, "&"),
-                Token::new(TokenKind::Identifier, 1, "text"),
+                Token::new(TokenKind::Text, 1, "text"),
                 Token::new(TokenKind::String, 1, "\'hello\'"),
                 Token::new(TokenKind::Link, 1, "^"),
                 Token::new(TokenKind::Identifier, 1, "h"),
