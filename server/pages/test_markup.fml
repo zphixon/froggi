@@ -1,13 +1,13 @@
 ; special built-in page item is the style item: {...}
 ; takes a list of (item styles...) to apply to items in the page.
 {(text serif (fg "303030"))
- (quote-box (bg "fff8dc"))
+ (quote-wide (bg "fff8dc"))
  (quote-text sans (fg "606060"))
  (footnote (fg "757575") sans italic)}
 
 ; special built-in page item is the binary reference: (& "name"),
 ; which refers to object "name" at the end of the server's response.
-(box ({(size "26") bold}"Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
+(wide ({(size "26") bold}"Lorem ipsum example") (& "red_toy_small.png" {} "alt text is optional"))
 
 ; this is an anchor, you can link to it with frgi://example.com/test_markup.fml#anchor
 ; the client should automatically scroll the page to this point
@@ -26,16 +26,16 @@
 ({mono underline} "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"
  " tempor incididunt ut labore et dolore magna aliqua.")
 
-; items in a box will be added to the page horizontally rather than vertically.
+; items in a wide will be added to the page horizontally rather than vertically.
 ; they will have equal amounts of their parent's horizontal space allocated to them.
-(box {quote-box}
+(wide {quote-wide}
  ; fill on a horizontal item will take up the ratio of space of its parent's width
  ({quote-text (fill "2")} "Contrary to popular belief, Lorem Ipsum is not simply"
   " random text. It has roots in a piece of classical Latin literature")
  ({quote-text} "from 45 BC, making it over 2000 years old. Richard"
   " McClintock, a Latin professor at Hampden-Sydney College in")
- ; items in a vbox will be added to the page vertically.
- (vbox
+ ; items in a tall will be added to the page vertically.
+ (tall
   ({quote-text (fill "4")} "Virginia, looked up one of the more obscure Latin")
   ; fill on a vertical item changes vertical space allocation depending on
   ; the content height of its sibling items as well as its parents' siblings.

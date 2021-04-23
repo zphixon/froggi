@@ -11,8 +11,14 @@ fn main() {
     let mut file = File::open(&args[1]).unwrap();
     let mut page = String::new();
     file.read_to_string(&mut page).unwrap();
-    let page = froggi::markup::parse::parse(&page).unwrap();
-
-    dbg!(page);
-    println!("page ok");
+    match froggi::markup::parse::parse(&page) {
+        Ok(page) => {
+            dbg!(page);
+        }
+        Err(e) => {
+            for error in e {
+                eprintln!("{}", error);
+            }
+        }
+    }
 }

@@ -118,7 +118,7 @@ pub fn draw_item(
 
     let dy = match &item.payload {
         ItemPayload::Children { children, .. } => match item.builtin.kind() {
-            TokenKind::Box => {
+            TokenKind::Wide => {
                 let mut total_units = 0.0;
                 let mut draw_items = Vec::new();
                 for child in children {
@@ -166,7 +166,7 @@ pub fn draw_item(
                 0
             }
 
-            TokenKind::VBox => {
+            TokenKind::Tall => {
                 // idk
                 println!("vbox");
                 1

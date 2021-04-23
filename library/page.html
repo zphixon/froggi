@@ -1,0 +1,363 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8">
+    <style>
+div {
+  display: flex;
+}
+div > * {
+  flex-basis: 0;
+  flex-grow: 1;
+  /*padding: 3px 3px 3px 3px;*/
+  margin: 3px 3px 3px 3px;
+}
+body {
+  max-width: 850px;
+  margin: 0 auto;
+  float: none;
+}
+.col {
+  flex-direction: column;
+}
+.mini {
+  flex-grow: 0;
+  flex-basis: 25%;
+}
+.grey {
+  background-color: #eee;
+}
+    </style>
+  </head>
+  <body>
+    <h1>Render Properties</h1>
+
+    <span class="mini line"><b>Sampling</b></span>
+    <div>
+      <span class=mini></span>
+      <div class="col">
+        <div>
+          <span>Integrator</span>
+          <select>
+            <option>Path tracing</option>
+            <option>Branched path tracing</option>
+          </select>
+        </div>
+        <div>
+          <span>Render samples</span>
+          <div><form><input type=text value="64"></form></div>
+        </div>
+        <div>
+          <span>Viewport samples</span>
+          <div><form><input type=text value="32"></form></div>
+        </div>
+      </div>
+    </div>
+
+    <div class=grey>
+      <span class=mini><input type=checkbox> Adaptive sampling</span>
+      <div class=col>
+        <div>
+          <span>Noise threshold</span>
+          <div><form><input type=text value="0.0000"></form><span><input type=range></span></div>
+        </div>
+        <div>
+          <span>Minimum samples</span>
+          <div><form><input type=text value="0"></form></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <span class=mini>De-noising</span>
+      <div class=col>
+        <div>
+          <span><input type=checkbox> Render</span>
+          <select>
+            <option>NLM</option>
+            <option>OpenImageDenoise</option>
+          </select>
+        </div>
+        <div>
+          <span><input type=checkbox> Viewport</span>
+          <select>
+            <option>Automatic</option>
+            <option>OpenImageDenoise</option>
+          </select>
+        </div>
+        <div>
+          <span>Start sample</span>
+          <div><form><input type=text value="1"></form></div>
+        </div>
+      </div>
+    </div>
+
+    <div class=grey>
+      <span class=mini>Advanced</span>
+      <div class=col>
+        <div>
+          <span>Noise seed</span>
+          <div><form><input type=text value="0"></form></div>
+        </div>
+        <div>
+          <span>Noise pattern</span>
+          <select>
+            <option>Sobol</option>
+            <option>Correlated multi-jitter</option>
+            <option>Progressive multi-jitter</option>
+          </select>
+        </div>
+        <div>
+          <span>Minimum light bounces</span>
+          <div><form><input type=text value="0"></form></div>
+        </div>
+        <div>
+          <span>Minimum transparent bounces</span>
+          <div><form><input type=text value="0"></form></div>
+        </div>
+        <div>
+          <span>Light threshold</span>
+          <div><form><input type=text value="0.01"></form><span><input type=range></span></div>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div>
+    </div>
+
+    <span><b>Light paths</b></span>
+    <div>
+      <div class="mini">Max bounces</div>
+      <div class=col>
+        <div>
+          <span>Total</span>
+          <div><form><input type=text value="12"></form></div>
+        </div>
+        <div>
+          <span>Diffuse</span>
+          <div><form><input type=text value="4"></form></div>
+        </div>
+        <div>
+          <span>Glossy</span>
+          <div><form><input type=text value="4"></form></div>
+        </div>
+        <div>
+          <span>Transparency</span>
+          <div><form><input type=text value="8"></form></div>
+        </div>
+        <div>
+          <span>Transmission</span>
+          <div><form><input type=text value="12"></form></div>
+        </div>
+        <div>
+          <span>Volume</span>
+          <div><form><input type=text value="0"></form></div>
+        </div>
+      </div>
+    </div>
+
+    <div class=grey>
+      <span class=mini>Clamping</span>
+      <div class=col>
+        <div>
+          <span>Direct light</span>
+          <div><form><input type=text value="0.00"></form></div>
+        </div>
+        <div>
+          <span>Indirect light</span>
+          <div><form><input type=text value="10.0"></form></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <span class=mini>Caustics</span>
+      <div class=col>
+        <div>
+          <span>Filter glossy</span>
+          <div><form><input type=text value="1.00"></form></div>
+        </div>
+        <div>
+          <span><input type=checkbox> Reflective</span>
+        </div>
+        <div>
+          <span><input type=checkbox> Refractive</span>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class=grey>
+      <span class=mini><b>Volumes</b></span>
+      <div class=col>
+        <div>
+          <span>Step rate render</span>
+          <div><form><input type=text value="1.00"></form></div>
+        </div>
+        <div>
+          <span>Viewport</span>
+          <div><form><input type=text value="1.00"></form></div>
+        </div>
+        <div>
+          <span>Max steps</span>
+          <div><form><input type=text value="1024"></form></div>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div>
+      <span class=mini><b>Hair</b></span>
+      <div class=col>
+        <div>
+          <span>Shape</span>
+          <select>
+            <option>Rounded ribbons</option>
+            <option>3d curves</option>
+          </select>
+        </div>
+        <div>
+          <span>Curve subdivisions</span>
+          <div><form><input type=text value="2"></form></div>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class=grey>
+    <span class="mini"><input type=checkbox> <b>Simplify</b></span>
+    </div>
+    <div class=grey>
+      <span class=mini>Viewport</span>
+      <div class=col>
+        <div>
+          <span>Maximum subdivisions</span>
+          <div><form><input type=text value="6"></form></div>
+        </div>
+        <div>
+          <span>Child particles</span>
+          <div><form><input type=text value="1.000"></form></div>
+        </div>
+        <div>
+          <span>Texture limit</span>
+          <select>
+            <option>No limit</option>
+          </select>
+        </div>
+        <div>
+          <span>AO bounces</span>
+          <div><form><input type=text value="0"></form></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <span class=mini>Render</span>
+      <div class=col>
+        <div>
+          <span>Maximum subdivisions</span>
+          <div><form><input type=text value="6"></form></div>
+        </div>
+        <div>
+          <span>Child particles</span>
+          <div><form><input type=text value="1.000"></form></div>
+        </div>
+        <div>
+          <span>Texture limit</span>
+          <select>
+            <option>No limit</option>
+          </select>
+        </div>
+        <div>
+          <span>AO bounces</span>
+          <div><form><input type=text value="0"></form></div>
+        </div>
+      </div>
+    </div>
+
+    <div class=grey>
+      <span class=mini>Culling</span>
+      <div class=col>
+        <div>
+          <span><input type=checkbox> Camera culling</span>
+          <div><form><input type=text value="0.10"></form></div>
+        </div>
+        <div>
+          <span><input type=checkbox> Distance culling</span>
+          <div><form><input type=text value="0.10"></form></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <span class=mini><input type=checkbox> Grease pencil</span>
+      <div class=col>
+        <div>
+          <span><input type=checkbox> Playback only</span>
+        </div>
+        <div>
+          <span><input type=checkbox> Fill</span>
+        </div>
+        <div>
+          <span><input type=checkbox> Modifiers</span>
+        </div>
+        <div>
+          <span><input type=checkbox> Shader effects</span>
+        </div>
+        <div>
+          <span><input type=checkbox> Layer tinting</span>
+        </div>
+        <div>
+          <span><input type=checkbox> Antialiasing</span>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class=grey>
+      <span class=mini><input type=checkbox> <b>Motion blur</b></span>
+      <div class=col>
+        <div>
+          <span>Position</span>
+          <select>
+            <option>Center on frame</option>
+          </select>
+        </div>
+        <div>
+          <span>Shutter</span>
+          <div><form><input type=text value="0.50"></form></div>
+        </div>
+        <div>
+          <span>Rolling shutter</span>
+          <select>
+            <option>None</option>
+          </select>
+        </div>
+        <div>
+          <span>Rolling shutter duration</span>
+          <div><form><input type=text value="0"></form></div>
+        </div>
+        <div>
+          <span>Shutter curve</span>
+          <img src=shutter-curves.png>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      if (window.location.hash) {
+              var elt = document.getElementById(
+                      window.location.hash.substring(1)
+                    );
+              elt.scrollIntoView(true);
+            }
+    </script>
+  </body>
+</html>

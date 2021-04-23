@@ -100,11 +100,11 @@ body {
                 // n/a
             }
 
-            TokenKind::Box | TokenKind::VBox => {
+            TokenKind::Wide | TokenKind::Tall => {
                 html.push_str("div {\n");
             }
 
-            TokenKind::Text | TokenKind::ImplicitText | TokenKind::Inline => {
+            TokenKind::Text | TokenKind::Inline => {
                 html.push_str("span {\n");
             }
 
@@ -161,7 +161,7 @@ fn page_item_to_html(item: &PageItem, child_of_inline: bool) -> String {
         }
 
         ItemPayload::Children { children, .. } => {
-            let is_vertical = item.builtin.kind() == TokenKind::VBox;
+            let is_vertical = item.builtin.kind() == TokenKind::Tall;
             let is_inline = item.builtin.kind() == TokenKind::Inline;
             let tag = if is_inline { "span" } else { "div" };
 

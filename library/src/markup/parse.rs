@@ -118,10 +118,9 @@ fn parse_item<'a>(
         TokenKind::Blob => parse_blob(scanner, page_styles)?,
         TokenKind::Link => parse_link(scanner, page_styles)?,
         TokenKind::Anchor => parse_anchor(scanner)?,
-        TokenKind::Text => parse_text(scanner, page_styles)?,
-        TokenKind::VBox => parse_vbox(scanner, page_styles)?,
-        TokenKind::Box => parse_box(scanner, page_styles)?,
-        TokenKind::Inline => parse_inline(scanner, page_styles)?,
+        TokenKind::Tall => parse_child(scanner, page_styles, TokenKind::Tall)?,
+        TokenKind::Wide => parse_child(scanner, page_styles, TokenKind::Wide)?,
+        TokenKind::Inline => parse_child(scanner, page_styles, TokenKind::Inline)?,
         _ => parse_implicit_text(scanner, page_styles)?,
     };
 
@@ -184,70 +183,12 @@ fn parse_anchor<'a>(scanner: &mut Scanner<'a>) -> Result<PageItem<'a>, FroggiErr
     })
 }
 
-fn parse_text<'a>(
+fn parse_child<'a>(
     scanner: &mut Scanner<'a>,
     page_styles: &PageStyles<'a>,
+    kind: TokenKind,
 ) -> Result<PageItem<'a>, FroggiError> {
-    let builtin = consume(scanner, TokenKind::Text)?;
-    let styles = parse_inline_styles(scanner, page_styles)?;
-    let text = collect_text(scanner)?;
-
-    Ok(PageItem {
-        builtin,
-        styles,
-        payload: ItemPayload::Text { text },
-    })
-}
-
-fn parse_vbox<'a>(
-    scanner: &mut Scanner<'a>,
-    page_styles: &PageStyles<'a>,
-) -> Result<PageItem<'a>, FroggiError> {
-    let builtin = consume(scanner, TokenKind::VBox)?;
-    let styles = parse_inline_styles(scanner, page_styles)?;
-    let mut children = Vec::new();
-
-    while scanner.peek_token()?.kind() != TokenKind::RightParen {
-        children.push(parse_item(scanner, page_styles)?);
-    }
-
-    Ok(PageItem {
-        builtin,
-        styles,
-        payload: ItemPayload::Children {
-            children,
-            line: builtin.line(),
-        },
-    })
-}
-
-fn parse_box<'a>(
-    scanner: &mut Scanner<'a>,
-    page_styles: &PageStyles<'a>,
-) -> Result<PageItem<'a>, FroggiError> {
-    let builtin = consume(scanner, TokenKind::Box)?;
-    let styles = parse_inline_styles(scanner, page_styles)?;
-    let mut children = Vec::new();
-
-    while scanner.peek_token()?.kind() != TokenKind::RightParen {
-        children.push(parse_item(scanner, page_styles)?);
-    }
-
-    Ok(PageItem {
-        builtin,
-        styles,
-        payload: ItemPayload::Children {
-            children,
-            line: builtin.line(),
-        },
-    })
-}
-
-fn parse_inline<'a>(
-    scanner: &mut Scanner<'a>,
-    page_styles: &PageStyles<'a>,
-) -> Result<PageItem<'a>, FroggiError> {
-    let builtin = consume(scanner, TokenKind::Inline)?;
+    let builtin = consume(scanner, kind)?;
     let styles = parse_inline_styles(scanner, page_styles)?;
     let mut children = Vec::new();
 
@@ -269,7 +210,7 @@ fn parse_implicit_text<'a>(
     scanner: &mut Scanner<'a>,
     page_styles: &PageStyles<'a>,
 ) -> Result<PageItem<'a>, FroggiError> {
-    let implicit = Token::new(TokenKind::ImplicitText, scanner.peek_token()?.line(), "");
+    let implicit = Token::new(TokenKind::Text, scanner.peek_token()?.line(), "");
     let styles = parse_inline_styles(scanner, page_styles)?;
     let text = collect_text(scanner)?;
 
@@ -473,11 +414,7 @@ fn collect_text<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<Token<'a>>, FroggiE
 fn consume_selector<'a>(scanner: &mut Scanner<'a>) -> Result<Token<'a>, FroggiError> {
     let token = scanner.next_token()?;
     match token.kind() {
-        TokenKind::Identifier
-        | TokenKind::Link
-        | TokenKind::Box
-        | TokenKind::VBox
-        | TokenKind::Text => Ok(token),
+        TokenKind::Identifier | TokenKind::Link | TokenKind::Wide | TokenKind::Tall => Ok(token),
         _ => Err(FroggiError::parse(
             ParseError::UnexpectedToken {
                 expected: TokenKind::Identifier,
@@ -604,7 +541,7 @@ mod test {
 
     #[test]
     fn well_formed_page_item() {
-        let item = r#"{(user-style (fg "333333")) (inline-style (bg "222222"))}(box {user-style inline-style (fg "111111")} ("children") ({mono} "style"))"#;
+        let item = r#"{(user-style (fg "333333")) (inline-style (bg "222222"))}(wide {user-style inline-style (fg "111111")} ("children") ({mono} "style"))"#;
         parse(item).unwrap();
     }
 
@@ -650,7 +587,7 @@ mod test {
         let style = parse_page_styles(&mut scanner).unwrap();
         let mut styles = HashMap::new();
         styles.insert(
-            Token::new(TokenKind::Text, 1, "text"),
+            Token::new(TokenKind::Identifier, 1, "text"),
             vec![InlineStyle::Serif {
                 token: Token::new(TokenKind::Serif, 1, "serif"),
             }],

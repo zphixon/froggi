@@ -27,10 +27,9 @@ pub enum TokenKind {
     Link,
     Anchor,
     Inline,
-    Box,
-    VBox,
+    Wide,
+    Tall,
     Text,
-    ImplicitText,
 
     Mono,
     Serif,
@@ -193,9 +192,8 @@ impl<'a> Scanner<'a> {
         }
 
         match self.lexeme()? {
-            "box" => Ok(TokenKind::Box),
-            "vbox" => Ok(TokenKind::VBox),
-            "text" => Ok(TokenKind::Text),
+            "wide" => Ok(TokenKind::Wide),
+            "tall" => Ok(TokenKind::Tall),
             "inline" => Ok(TokenKind::Inline),
             "mono" => Ok(TokenKind::Mono),
             "serif" => Ok(TokenKind::Serif),
@@ -313,7 +311,7 @@ mod test {
                 Token::new(TokenKind::Blob, 1, "&"),
                 Token::new(TokenKind::Anchor, 1, "#"),
                 Token::new(TokenKind::Blob, 1, "&"),
-                Token::new(TokenKind::Text, 1, "text"),
+                Token::new(TokenKind::Identifier, 1, "text"),
                 Token::new(TokenKind::String, 1, "\'hello\'"),
                 Token::new(TokenKind::Link, 1, "^"),
                 Token::new(TokenKind::Identifier, 1, "h"),
