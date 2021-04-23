@@ -1,12 +1,9 @@
-use druid::widget::{Align, Flex, Label, TextBox};
-use druid::{AppLauncher, Data, Env, Lens, LocalizedString, Widget, WidgetExt, WindowDesc};
-
 use image::io::Reader;
 use image::GenericImageView;
 
 use froggi::request::RequestKind;
-use std::fs::File;
-use std::io::{Cursor, Write};
+
+use std::io::Cursor;
 
 fn main() {
     let local = std::env::args().collect::<String>().contains("-l");
@@ -26,14 +23,6 @@ fn main() {
     match result.parse() {
         Ok(page) => {
             println!("page ok: {:#?}", page);
-
-            let main_window = WindowDesc::new(|| froggi::layout::PageWidget)
-                .title("Hello, froggi")
-                .window_size((400.0, 400.0));
-
-            AppLauncher::with_window(main_window)
-                .launch(froggi::layout::OwnedPage::from(page))
-                .unwrap();
         }
 
         Err(errors) => {

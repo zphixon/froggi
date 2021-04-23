@@ -1,8 +1,6 @@
 use crate::markup::scan::TokenKind;
 use crate::markup::{ExpressionPayload, InlineStyle, PageExpressionAst, PageStyles};
 
-// TODO yank all this out
-
 use std::collections::HashSet;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
@@ -98,109 +96,6 @@ fn inline_styles_to_style(styles: &[InlineStyle], page_styles: &PageStyles, styl
             }
         }
     }
-}
-
-// available width: 700px
-// find out how many child box items there are, evenly distribute dependent on fill
-// return the height that the content took up and draw the next item there
-
-// in order to actually draw anything, we'll need to figure out bounding boxes for items.
-// we'll do that here and then stick everything into DrawItems.
-
-pub fn draw_item(
-    item: &PageExpressionAst,
-    page_styles: &PageStyles,
-    start_point: (usize, usize),
-    max_width: usize,
-) -> usize {
-    use super::DrawItem;
-    println!("{:?} {:?} --- {:?}", start_point, max_width, item.builtin,);
-    let mut style = Style::new();
-    inline_styles_to_style(&item.styles, page_styles, &mut style);
-
-    let dy = match &item.payload {
-        ExpressionPayload::Children { children, .. } => match item.builtin.kind() {
-            TokenKind::Wide => {
-                let mut total_units = 0.0;
-                let mut draw_items = Vec::new();
-                for child in children {
-                    let mut child_style = Style::new();
-                    inline_styles_to_style(&child.styles, page_styles, &mut child_style);
-                    total_units += child_style.fill.unwrap_or(0.0);
-                    draw_items.push(DrawItem {
-                        item: child,
-                        style: child_style,
-                    });
-                }
-
-                println!("total units: {}", total_units);
-                let width_per_unit = max_width / total_units as usize;
-
-                let mut current_x = 0;
-                let mut largest_dy = 0;
-                for child in draw_items {
-                    let child_max_width = width_per_unit * child.style.fill.unwrap_or(0.0) as usize;
-                    let dy = draw_item(
-                        child.item,
-                        page_styles,
-                        (start_point.0 + current_x, start_point.1),
-                        child_max_width,
-                    );
-
-                    println!(
-                        "fill {:?} takes up {} px, should draw this item at relative x={} --- {:?}",
-                        child.style.fill, child_max_width, current_x, child.item.builtin,
-                    );
-
-                    if dy > largest_dy {
-                        largest_dy = dy;
-                    }
-
-                    current_x += child_max_width;
-                }
-
-                largest_dy
-            }
-
-            TokenKind::Inline => {
-                // idk
-                println!("inline");
-                0
-            }
-
-            TokenKind::Tall => {
-                // idk
-                println!("vbox");
-                1
-            }
-
-            _ => unreachable!("non-child-bearing item has children"),
-        },
-
-        ExpressionPayload::Text { .. } => {
-            // wrap text
-            println!("text");
-            1
-        }
-
-        ExpressionPayload::Link { .. } => {
-            println!("link");
-            1
-        }
-
-        ExpressionPayload::Blob { .. } => {
-            println!("blob");
-            1
-        }
-
-        ExpressionPayload::Anchor { .. } => {
-            println!("anchor");
-            1
-        }
-    };
-
-    println!("dy: {}", dy);
-    dy
 }
 
 #[cfg(test)]
