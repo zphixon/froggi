@@ -1,3 +1,5 @@
+//! Functions to parse a page into a raw AST. No-copy.
+
 use crate::{AddMsg, FroggiError, ParseError};
 
 use super::scan::{Scanner, Token, TokenKind};

@@ -1,66 +1,106 @@
+//! Page types that are easier to deal with than the raw AST.
+#![allow(dead_code)]
+
 use crate::markup::{InlineStyle, PageStyles};
 
 use std::collections::HashMap;
 
+/// An owned document. More useful than Page for drawing to the screen.
 pub struct Document {
     styles: HashMap<String, Style>,
     expressions: Vec<DocumentExpression>,
 }
 
+/// An owned document expression.
 pub struct DocumentExpression {
     style: Style,
     direction: Direction,
     contents: DocumentExpressionContents,
 }
 
+/// Contents of a document expression. Stored independently of its layout.
 pub enum DocumentExpressionContents {
-    /// Text
+    /// Plain text
     Text {
+        /// The text of the expression
         text: String,
     },
+    /// A link to another page or anchor on the same page
     Link {
+        /// The display text of the link
         text: String,
+        /// The URL target of the link
         url: String,
     },
+    /// A reference to a page item by name
     Blob {
+        /// Name of the item
         name: String,
+        /// Alt text of the item, not optional
         alt: String,
     },
+    /// An anchor point for expression insertion or link targeting
     Anchor {
+        /// Name of the anchor
         name: String,
     },
+    /// The expression has one or more sub-expressions
     Children {
+        /// Children of the expression
         children: Vec<DocumentExpression>,
     },
 }
 
+/// Direction for screen layout.
 pub enum Direction {
+    /// Items are laid out horizontally
     Horizontal,
+    /// Items are laid out vertically
     Vertical,
+    /// Items are laid out inline
+    Inline,
 }
 
+/// Type of font.
+///
+/// Created separately from page parsing.
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub enum FontType {
+    /// Monospace font
     Mono,
+    /// Serif font
     Serif,
+    /// Sans-serif font
     Sans,
 }
 
+/// Style of a font.
 #[derive(Debug, PartialEq, Clone, Copy, Default)]
 pub struct FontStyle {
+    /// Bold-face font
     pub bold: bool,
+    /// Italic font
     pub italic: bool,
+    /// Font is underlined
     pub underline: bool,
+    /// Font is strikethrough
     pub strike: bool,
 }
 
+/// The style of an expression.
 #[derive(Debug, PartialEq, Copy, Clone)]
 pub struct Style {
+    /// The type of font
     pub font_type: FontType,
+    /// The style of that font
     pub font_style: FontStyle,
+    /// Background color
     pub background: (u8, u8, u8),
+    /// Text color
     pub foreground: (u8, u8, u8),
+    /// Horizontal or vertical width taken up
     pub fill: Option<f32>,
+    /// Font size
     pub size: usize,
 }
 

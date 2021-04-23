@@ -1,19 +1,24 @@
+//! Types for dealing with a froggi protocol response.
+
 use crate::{protocol::*, FroggiError, Uuid};
 
 use std::convert::TryInto;
 use std::io::Read;
 
+// TODO proc macro
 crate::u8enum! { ResponseKind {
     Page = 0,
     PageNoItems = 1,
 } }
 
+// TODO proc macro
 crate::u8enum! { ItemKind {
     Png = 0,
     Jpg = 1,
     Gif = 2,
 } }
 
+/// An extra item that may appear at the end of a page.
 pub struct Item {
     name: String,
     kind: ItemKind,
@@ -27,18 +32,22 @@ impl std::fmt::Debug for Item {
 }
 
 impl Item {
+    /// Create a new item
     pub fn new(name: String, kind: ItemKind, data: Vec<u8>) -> Item {
         Item { name, kind, data }
     }
 
+    /// Get the name of the item
     pub fn name(&self) -> &str {
         &self.name
     }
 
+    /// Get the kind of the item
     pub fn kind(&self) -> ItemKind {
         self.kind
     }
 
+    /// Get the data of the item
     pub fn data(&self) -> &[u8] {
         &self.data
     }
@@ -79,6 +88,7 @@ impl Response {
         }
     }
 
+    /// Parse the response into a page. Zero-copy.
     pub fn parse(&self) -> Result<crate::markup::Page<'_>, Vec<FroggiError>> {
         crate::markup::parse::parse(&self.page)
     }
@@ -157,26 +167,32 @@ impl Response {
         })
     }
 
+    /// Get the version of the response
     pub fn version(&self) -> u8 {
         self.version
     }
 
+    /// Get the kind of the response
     pub fn kind(&self) -> ResponseKind {
         self.kind
     }
 
+    /// Get the client ID provided by the server
     pub fn id(&self) -> Uuid {
         self.id
     }
 
+    /// Get the page of the response, un-parsed
     pub fn page(&self) -> &str {
         &self.page
     }
 
+    /// Get the extra items of a page
     pub fn items(&self) -> &[Item] {
         &self.items
     }
 
+    /// Convert the page into bytes
     pub fn into_bytes(self) -> Vec<u8> {
         self.into()
     }
@@ -248,7 +264,8 @@ impl Into<Vec<u8>> for Response {
 }
 
 #[rustfmt::skip]
-pub const DATA_REAL: &[u8] = &[
+#[allow(dead_code)]
+const DATA_REAL: &[u8] = &[
     0,                                                                                      // version
     0,                                                                                      // response kind
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,                                         // client ID

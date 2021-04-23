@@ -1,3 +1,7 @@
+//! Froggi protocol library
+//!
+//! Add `features = ['markup']` to get markup AST and parsing, and for more layout-oriented types.
+
 use std::error::Error;
 use std::fmt;
 use std::io::{self, Write};
@@ -16,6 +20,7 @@ pub mod protocol;
 pub mod request;
 pub mod response;
 
+/// Froggi version.
 pub const FROGGI_VERSION: u8 = 0;
 
 /// Send a froggi request to a server and return its response.
@@ -85,8 +90,16 @@ pub fn deserialize_four_bytes(bytes: &[u8]) -> usize {
 /// FML document scan error.
 #[derive(Debug)]
 pub enum ScanError {
-    UnknownEscapeCode { code: char },
-    UnterminatedString { start_line: usize },
+    /// Escape code in a string is unknown
+    UnknownEscapeCode {
+        /// The unknown escape code character
+        code: char,
+    },
+    /// A string is unterminated
+    UnterminatedString {
+        /// The line the string starts on
+        start_line: usize,
+    },
 }
 
 impl fmt::Display for ScanError {
@@ -103,15 +116,45 @@ impl fmt::Display for ScanError {
 use crate::request::RequestKind;
 use markup::scan::TokenKind;
 
+/// FML document parse error.
 #[derive(Debug)]
 pub enum ParseError {
-    UnexpectedToken { expected: TokenKind, got: String },
+    /// An unexpected token was encountered
+    UnexpectedToken {
+        /// The token that was expected
+        expected: TokenKind,
+        /// The token that was received
+        got: String,
+    },
+    /// A parenthesis is missing somewhere
     UnbalancedParentheses,
-    ExpectedStyle { got: String },
-    ExpectedExpression { got: String },
-    UnknownStyle { style: String },
-    RecursiveStyle { style: String },
-    IncorrectNumberFormat { num: String, wanted: String },
+    /// A non-style token was encountered
+    ExpectedStyle {
+        /// The token that was encountered
+        got: String,
+    },
+    /// An expression was expected in the document root
+    ExpectedExpression {
+        /// We got this instead
+        got: String,
+    },
+    /// The style was unrecognized, either not built-in, undefined, or misspelled
+    UnknownStyle {
+        /// The style that was found
+        style: String,
+    },
+    /// We don't allow recursive style definitions currently, this may change
+    RecursiveStyle {
+        /// The style that was recursive
+        style: String,
+    },
+    /// The number was formatted incorrectly
+    IncorrectNumberFormat {
+        /// Fake number
+        num: String,
+        /// Real number
+        wanted: String,
+    },
 }
 
 #[rustfmt::skip]
@@ -139,11 +182,32 @@ impl fmt::Display for ParseError {
 /// Errors that are possible in the froggi protocol.
 #[derive(Debug)]
 pub enum ErrorKind {
-    EncodingError { error: str::Utf8Error },
+    /// The string was not UTF-8
+    EncodingError {
+        /// Stdlib Utf8Error that caused this
+        error: str::Utf8Error,
+    },
+    /// The request was formatted incorrectly
     RequestFormatError,
-    IOError { error: io::Error },
-    ScanError { error: ScanError, line: usize },
-    ParseError { error: ParseError, line: usize },
+    /// Encountered a problem in reading or writing
+    IOError {
+        /// The error that occurred
+        error: io::Error,
+    },
+    /// Couldn't scan the document
+    ScanError {
+        /// The scan error
+        error: ScanError,
+        /// Where it happened
+        line: usize,
+    },
+    /// Couldn't parse the document
+    ParseError {
+        /// The parse error
+        error: ParseError,
+        /// Where it happened
+        line: usize,
+    },
 }
 
 #[rustfmt::skip]
@@ -164,6 +228,7 @@ impl fmt::Display for ErrorKind {
     }
 }
 
+/// A froggi protocol library error.
 #[derive(Debug)]
 pub struct FroggiError {
     error: ErrorKind,
@@ -171,14 +236,17 @@ pub struct FroggiError {
 }
 
 impl FroggiError {
+    /// Create a new error
     pub fn new(error: ErrorKind) -> FroggiError {
         FroggiError { error, msg: None }
     }
 
+    /// Get the kind of error
     pub fn kind(&self) -> &ErrorKind {
         &self.error
     }
 
+    /// Create a new scan error
     pub fn scan(error: ScanError, line: usize) -> FroggiError {
         FroggiError {
             error: ErrorKind::ScanError { error, line },
@@ -186,6 +254,7 @@ impl FroggiError {
         }
     }
 
+    /// Create a new IO error
     pub fn io(error: io::Error) -> FroggiError {
         FroggiError {
             error: ErrorKind::IOError { error },
@@ -193,6 +262,7 @@ impl FroggiError {
         }
     }
 
+    /// Create a new parse error
     pub fn parse(error: ParseError, line: usize) -> FroggiError {
         FroggiError {
             error: ErrorKind::ParseError { error, line },
@@ -290,6 +360,7 @@ impl From<io::Error> for FroggiError {
     }
 }
 
+/// Create a u8-based enum with From and Into impls.
 #[macro_export]
 macro_rules! u8enum {
     ($name:ident { $($variant:ident = $value:expr),* $(,)? }) => {

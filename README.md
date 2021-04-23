@@ -27,6 +27,9 @@ of date on every commit.
 * possibly unify Page and Document types
   * parse would directly produce a Document rather than having to go through the
     intermediate Page syntax tree
+* fix this inconsistent wording between page and document
+  * also item is a terrible name
+* switch to snafu for error types
 * write *alllllll* the docs
   * [ ] protocol spec - the absolute minimum is there, we still need the fluffy
     bits that explain what each part of a request/response is and what

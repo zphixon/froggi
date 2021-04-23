@@ -1,11 +1,25 @@
+//! Types for dealing with a froggi protocol request.
+
 use crate::{protocol::*, serialize_to_bytes, AddMsg, ErrorKind, FroggiError, Uuid};
 
 use std::convert::TryInto;
 use std::io::Read;
 
+// TODO proc macro
+// /// Kinds of requests.
+// ///
+// /// PageOnly - Plain old page. Don't send me any items or additional page expressions.
+// /// I won't be talking to you again.
+// /// PageItems - Page with items, but no interactions. Don't send me any additional page
+// /// expressions. I won't be talking to you again.
+// /// Page - Give me everything. I'll be in touch again for those extra page
+// /// expressions.
+// /// Put - Here's some data. I'm eagerly awaiting your response.
 crate::u8enum! { RequestKind {
-    Page = 0,
-    PageNoItems = 1,
+    PageOnly = 0,
+    PageItems = 1,
+    Page = 2,
+    Put = 15,
 } }
 
 /// Represents a froggi request to a server.
@@ -92,18 +106,27 @@ impl Request {
         })
     }
 
+    /// Get the version of this request
     pub fn version(&self) -> u8 {
         self.version
     }
 
+    /// Get the client ID supplied by the client
     pub fn id(&self) -> Uuid {
         self.id
     }
 
+    /// Get the client ID supplied by the client
+    pub fn kind(&self) -> RequestKind {
+        self.kind
+    }
+
+    /// Get the request string
     pub fn request(&self) -> &str {
         &self.request
     }
 
+    /// Convert the request into bytes
     pub fn into_bytes(self) -> Vec<u8> {
         self.into()
     }
@@ -156,7 +179,7 @@ mod test {
 
     #[test]
     fn to_bytes() {
-        let request = Request::new("index.fml", RequestKind::Page).unwrap();
+        let request = Request::new("index.fml", RequestKind::PageOnly).unwrap();
         let data_test = request.into_bytes();
 
         assert_eq!(data_test.len(), REQUEST_BYTES.len());

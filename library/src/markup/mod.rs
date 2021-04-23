@@ -1,3 +1,8 @@
+//! No-copy types to build a page.
+//!
+//! Not as nice to work with as `Document`, you probably want that instead if you're building a
+//! GUI client.
+
 pub mod document;
 pub mod parse;
 pub mod scan;
@@ -6,59 +11,139 @@ use scan::{Token, TokenKind};
 
 use std::collections::HashMap;
 
+/// A no-copy page.
 #[derive(Debug, PartialEq)]
 pub struct Page<'a> {
+    /// Page-level styles
     pub styles: PageStyles<'a>,
+    /// Expressions in the page
     pub expressions: Vec<PageExpression<'a>>,
 }
 
+/// Map from token to list of styles.
 pub type PageStyles<'a> = HashMap<Token<'a>, Vec<InlineStyle<'a>>>;
 
+/// An expression in the page.
 #[derive(Debug, PartialEq)]
 pub struct PageExpression<'a> {
+    /// The builtin expression type
     pub builtin: Token<'a>,
+    /// The inline styles of the expression
     pub styles: Vec<InlineStyle<'a>>,
+    /// The actual content of the expression
     pub payload: ExpressionPayload<'a>,
 }
 
+/// Content of a page expression.
 #[derive(Debug, PartialEq)]
 pub enum ExpressionPayload<'a> {
+    /// Text
     Text {
+        /// The text, as a list of tokens
         text: Vec<Token<'a>>,
     },
+    /// Nested expressions
     Children {
+        /// Children of the expression
         children: Vec<PageExpression<'a>>,
+        /// The line number it starts on
         line: usize,
     },
+    /// A link to another page, or part of the same page
     Link {
+        /// The URL of the link
         link: Token<'a>,
+        /// The display text
         text: Vec<Token<'a>>,
     },
+    /// A reference by name to a page item
     Blob {
+        /// The name of the item
         name: Token<'a>,
+        /// The alt text
         alt: Vec<Token<'a>>,
     },
+    /// A page anchor
     Anchor {
+        /// The name of the anchor
         anchor: Token<'a>,
     },
 }
 
+/// A style.
 #[derive(Debug, PartialEq)]
 pub enum InlineStyle<'a> {
-    Mono { token: Token<'a> },
-    Serif { token: Token<'a> },
-    Sans { token: Token<'a> },
-    Bold { token: Token<'a> },
-    Italic { token: Token<'a> },
-    Underline { token: Token<'a> },
-    Strike { token: Token<'a> },
-    Fg { token: Token<'a>, arg: (u8, u8, u8) },
-    Bg { token: Token<'a>, arg: (u8, u8, u8) },
-    Fill { token: Token<'a>, arg: f32 },
-    Size { token: Token<'a>, arg: usize },
-    UserDefined { token: Token<'a> },
+    /// Monospace font
+    Mono {
+        /// The token
+        token: Token<'a>,
+    },
+    /// Serif font
+    Serif {
+        /// The token
+        token: Token<'a>,
+    },
+    /// Sans-serif font
+    Sans {
+        /// The token
+        token: Token<'a>,
+    },
+    /// Bold font
+    Bold {
+        /// The token
+        token: Token<'a>,
+    },
+    /// Italic font
+    Italic {
+        /// The token
+        token: Token<'a>,
+    },
+    /// Underlined text
+    Underline {
+        /// The token
+        token: Token<'a>,
+    },
+    /// Strike through text
+    Strike {
+        /// The token
+        token: Token<'a>,
+    },
+    /// Text color
+    Fg {
+        /// The token
+        token: Token<'a>,
+        /// The color
+        arg: (u8, u8, u8),
+    },
+    /// Background color
+    Bg {
+        /// The token
+        token: Token<'a>,
+        /// The color
+        arg: (u8, u8, u8),
+    },
+    /// Horizontal or vertical fill
+    Fill {
+        /// The token
+        token: Token<'a>,
+        /// The fill amount
+        arg: f32,
+    },
+    /// Text size
+    Size {
+        /// The token
+        token: Token<'a>,
+        /// The size of the text
+        arg: usize,
+    },
+    /// A user-defined style
+    UserDefined {
+        /// The token
+        token: Token<'a>,
+    },
 }
 
+/// Convert a page into HTML
 pub fn to_html(page: &Page) -> String {
     let mut html = String::from(
         r#"

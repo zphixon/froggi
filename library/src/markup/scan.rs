@@ -1,3 +1,5 @@
+//! Scan a byte sequence into a froggi markup page. Zero-copy.
+
 use crate::{FroggiError, ScanError};
 
 fn is_control_character(c: u8) -> bool {
@@ -15,39 +17,68 @@ fn is_control_character(c: u8) -> bool {
         || c.is_ascii_whitespace()
 }
 
+/// Kinds of token.
 #[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
 pub enum TokenKind {
+    /// String, in single or double quotes
     String,
+    /// Left paren
     LeftParen,
+    /// Right paren
     RightParen,
+    /// Left brace
     LeftBrace,
+    /// Right brace
     RightBrace,
 
+    /// & item reference
     Blob,
+    /// ^ link
     Link,
+    /// \# anchor
     Anchor,
+    /// inline - inline layout type
     Inline,
+    /// wide - horizontal layout type
     Wide,
+    /// tall - vertical layout type
     Tall,
+    /// Not a token produced at scan-time, but parse-time. Used when there is no layout type
+    /// specified.
     Text,
 
+    /// Monospace font
     Mono,
+    /// Serif font
     Serif,
+    /// Sans-serif font
     Sans,
+    /// Bold font
     Bold,
+    /// Italic font
     Italic,
+    /// Underlined text
     Underline,
+    /// Strike-through text
     Strike,
 
+    /// Foreground text color, takes an argument string in hexadecimal
     Fg,
+    /// Background color, takes an argument string in hexadecimal
     Bg,
+    /// Fill, takes a floating-point argument string
     Fill,
+    /// Text size, takes an integer argument string
     Size,
 
+    /// A user-defined style
     Identifier,
+
+    /// The end of the page
     End,
 }
 
+/// A token.
 #[derive(Copy, Clone, Debug)]
 pub struct Token<'a> {
     kind: TokenKind,
@@ -75,18 +106,22 @@ impl Token<'_> {
         Token { kind, line, lexeme }
     }
 
+    /// Get the kind of the token
     pub fn kind(&self) -> TokenKind {
         self.kind
     }
 
+    /// Get the line number of the token
     pub fn line(&self) -> usize {
         self.line
     }
 
+    /// Clone the lexeme of the token
     pub fn clone_lexeme(&self) -> String {
         self.lexeme().into()
     }
 
+    /// Get the lexeme of the token
     pub fn lexeme(&self) -> &str {
         match self.kind {
             TokenKind::String => &self.lexeme[1..self.lexeme.len() - 1],
@@ -95,6 +130,7 @@ impl Token<'_> {
     }
 }
 
+/// Struct used to scan a froggi markup page.
 #[derive(Debug)]
 pub struct Scanner<'a> {
     start: usize,
@@ -106,6 +142,7 @@ pub struct Scanner<'a> {
 }
 
 impl<'a> Scanner<'a> {
+    /// Construct a new scanner
     pub fn new(s: &str) -> Scanner<'_> {
         Scanner {
             start: 0,
@@ -117,10 +154,12 @@ impl<'a> Scanner<'a> {
         }
     }
 
+    /// True if the scanner is not currently inside a page expression
     pub fn at_top_level(&self) -> bool {
         self.paren_level == 0
     }
 
+    /// Peek a token in the token stream
     pub fn peek_token(&mut self) -> Result<Token<'a>, FroggiError> {
         if self.token.is_none() {
             self.next()?;
@@ -129,6 +168,7 @@ impl<'a> Scanner<'a> {
         Ok(self.token.unwrap())
     }
 
+    /// Get the next token in the stream
     pub fn next_token(&mut self) -> Result<Token<'a>, FroggiError> {
         if self.token.is_none() {
             self.next()?;
