@@ -1,0 +1,13 @@
+froggi = pageStyle? pageExpression*
+
+pageStyle = '{' ( '(' IDENTIFIER styleList ')' )* '}'
+
+pageExpression =
+    | '(' IDENTIFIER? inlineStyle? (text | pageExpression)+ ')'
+    | '(' '^' text inlineStyle? text ')'
+    | '(' '&' text inlineStyle? text ')'
+    | '(' '#' text ')'
+
+inlineStyle = '{' styleList '}'
+
+styleList = IDENTIFIER+

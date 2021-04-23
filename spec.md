@@ -2,7 +2,7 @@
 
 *version 0.0*
 
-### Motivation
+## Motivation
 
 The web is easily one of the best things that we as a species have done, and
 despite its overwhelming complexity, it continues to be a place of wonder. But
@@ -43,9 +43,13 @@ with request kind 0x2.
 
 Request kinds:
 
-* 0x0 = page
-* 0x1 = page with no items
-* 0x2 = additional
+* 0 - Plain old page. Don't send me any items or additional page expressions.
+  I won't be talking to you again.
+* 1 - Page with items, but no interactions. Don't send me any additional page
+  expressions. I won't be talking to you again.
+* 2 - Give me everything. I'll be in touch again for those extra page
+  expressions.
+* 16 - Here's some data. I'm eagerly awaiting your response.
 
 ## Server
 
@@ -68,74 +72,54 @@ Response format: (offsets and lengths are in bytes)
 
 Response kinds:
 
-* 0x0 = page
-* 0x1 = page with no items
-* 0x2 = embed
+* 0 - Plain old page. I won't be sending any items or additional page
+  expressions, so don't ask.
+* 1 - Page with items. I won't be sending any additional page expressions.
+* 2 - Additional page expressions. Feel free to do what you will with these.
 
 Item kinds:
 
-* 0x0 = png
-* 0x1 = jpg
-* 0x2 = gif
+* 0 - PNG image. The one and only.
+* 1 - JPG image. Our small friend.
+* 2 - GIF image. The life of the party.
 
 ## Markup
 
 ### Page
 
 A page in froggi markup includes optional page style, and an optional list of
-items. Every page is as if it was in an implicit `:vbox` item.
+expressions. The syntax of a page in froggi markup is essentially s-expressions.
+They have an optional token after the left parenthesis, and then an expression,
+possibly consisting of multiple sub-expressions, before the corresponding right
+parenthesis.
 
-### Items
+### Page styles
 
-Items in a froggi markup page consist of four parts, three of which are
-optional:
+A page style is a curly-braced list of parenthesized lists. The first token in
+each list is the name of the style being defined, or the expression type the
+style will apply to.
 
-* (optional) the builtin name
-* (optional) the user-defined style
-* (optional) inline styles
-* text or children
+### Page expressions
 
-The syntax of an item looks like:
+A page expression consists of three parts:
 
-`(text {user-style sans (bg "303030")} "Hello world in sans-serif!")`
+* Expression type (optional, default is tall)
+* Inline style (optional, in curly braces)
+* Text xor children
 
-The item has a built-in name, `text`, which is implied for all items that do not
-specify one. The item has a user-defined style `user-style`, which is specified
-in the top-level page style item. The item has inline styling
-`{sans (bg "303030")}`, with a style that takes an argument `(bg "303030")`, and
-a style that does not `sans`. The item has text.
+#### Layout expression types
 
-### Page style
+* `tall` - Child expressions will be laid out vertically, one after the other.
+* `wide` - Child expressions will be laid out horizontally.
+* `inline` - Child expressions will be laid out inline.
 
-A style item in the page-level style includes a built-in name or a user-defined
-style name, followed by all styles that will be applied to items with that
-user-defined style name or built-in item name.
+Page expressions with these types all follow the same syntax. See grammar.ebnf
+for details.
 
-```
-{(text italic)
- (user-style (fg "fff8dc"))}
-```
+#### Other expression types
 
-## Built-in item names
-
-* `text`
-* `box`
-* `vbox`
-
-## Built-in style names
-
-* Font styles with no args:
-  * `serif`
-  * `sans`
-  * `mono`
-  * `italic`
-  * `underline`
-  * `bold`
-  * `strike`
-* Font styles with args:
-  * `(fg "color")`
-  * `(size "1em")`
-* Other styles with args:
-  * `(bg "color")`
-  * `(fill "ratio")`
-
+* `#` - Page anchor. A named, non-visual reference point for more specific
+  links or page expression insertion.
+* `&` - Item reference. Insert the item by name at this spot in the page.
+* `^` - Link. Provide a method of accessing the page, anchor, or file referred
+  to by name or URL.
