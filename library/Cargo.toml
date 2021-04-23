@@ -7,10 +7,10 @@ edition = '2018'
 [features]
 default = ['markup']
 markup = []
+ui = [] # each backend have its own feature? or just let clients do whatever?
 
 [dependencies]
-float_eq = '0.3.1'
-hex = '0.4.2'
+hex = '0.4.3'
 uuid = {version = '0.8.2', features = ['v4']}
 
 [[bin]]
