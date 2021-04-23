@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8">
+    <style>
+div {
+    display: flex;
+}
+div > * {
+    flex-basis: 0;
+    flex-grow: 1;
+    padding: 3px 3px 7px 3px;
+}
+body {
+    max-width: 850px;
+    margin: 0 auto;
+    float: none;
+}
+    </style>
+  </head>
+  <body>
+<span style="font-weight: bold; font-size: 32px;">Page title</span><br> <!-- text 1 -->
+<span>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span><br> <!-- text 3 -->
+<span style="font-weight: bold;">No gray or orange boxes should be visible below.</span><br> <!-- text 6 -->
+<div style="background-color: #f5f5f5;"> <!-- wide 8 -->
+<span style="background-color: #dae8fc;">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature</span><br> <!-- text 9 -->
+<span style="background-color: #d5e8d4;">from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in</span><br> <!-- text 11 -->
+<div style="flex-direction: column;background-color: #ffe6cc;"> <!-- tall 13 -->
+<span style="background-color: #fff2cc;">Virginia, looked up one of the more obscure Latin</span><br> <!-- text 14 -->
+<br><div style="background-color: #f8cecc;"><a href="http://www.lipsum.com/">from http://www.lipsum.com/</a></div>
+<br></div><br>
+</div>
+<span>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness.</span><br> <!-- text 17 -->
+  <script>
+    if (window.location.hash) {
+      var elt = document.getElementById(
+        window.location.hash.substring(1)
+      );
+      elt.scrollIntoView(true);
+    }
+  </script>
+  </body>
+</html>
