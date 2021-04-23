@@ -37,12 +37,67 @@ impl Document {
     }
 }
 
+impl ToString for Document {
+    fn to_string(&self) -> String {
+        let mut string = String::new();
+        let mut urls = Vec::new();
+
+        for expression in self.expressions.iter() {
+            document_expression_to_string(expression, &mut string, &mut urls);
+            string.push('\n');
+        }
+
+        for (number, url) in urls.iter().enumerate() {
+            string.push_str(&format!("[{}]: {}", number + 1, url));
+            string.push('\n');
+        }
+
+        string
+    }
+}
+
 /// An owned document expression.
 #[derive(Debug, PartialEq)]
 pub struct DocumentExpression {
     style: Style,
     direction: Direction,
     contents: DocumentExpressionContents,
+}
+
+fn document_expression_to_string(
+    expression: &DocumentExpression,
+    string: &mut String,
+    urls: &mut Vec<String>,
+) {
+    match &expression.contents {
+        DocumentExpressionContents::Text { text } => string.push_str(text),
+
+        DocumentExpressionContents::Link { text, url } => {
+            urls.push(url.clone());
+            string.push_str(&format!(
+                "{} [{}]",
+                if text.is_empty() { url } else { text },
+                urls.len()
+            ));
+        }
+
+        DocumentExpressionContents::Blob { name, alt } => {
+            string.push_str(&format!("&{} (alt text: {})", name, alt))
+        }
+
+        DocumentExpressionContents::Anchor { .. } => {}
+
+        DocumentExpressionContents::Children { children } => {
+            for (i, child) in children.iter().enumerate() {
+                document_expression_to_string(child, string, urls);
+                if expression.direction == Direction::Inline {
+                    string.push(' ');
+                } else {
+                    string.push('\n');
+                }
+            }
+        }
+    }
 }
 
 impl DocumentExpression {
