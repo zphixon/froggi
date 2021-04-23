@@ -1,15 +1,15 @@
 froggi = pageStyle? pageExpression*
 
-pageStyle = '{' ( '(' IDENTIFIER styleList ')' )* '}'
+pageStyle = "{" { "(" IDENTIFIER styleList ")" } "}"
 
 pageExpression =
-    | '(' IDENTIFIER? inlineStyle? (text | pageExpression)+ ')'
-    | '(' '^' text inlineStyle? text ')'
-    | '(' '&' text inlineStyle? text ')'
-    | '(' '#' text ')'
+    | "(" [IDENTIFIER] [inlineStyle] ((text {text}) | (pageExpression {pageExpression})) ")"
+    | "(" "^" text [inlineStyle] [text] ")"
+    | "(" "&" text [inlineStyle] (text {text}) ")"
+    | "(" "#" text ")"
 
-inlineStyle = '{' styleList '}'
+inlineStyle = "{" styleList "}"
 
-styleList = IDENTIFIER+
+styleList = { IDENTIFIER | style }
 
-text = ('\'' | '"') ANYTHING ('\'' | '"')
+text = ("\"" | "'") ANYTHING ("\"" | "'")
