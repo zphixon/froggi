@@ -320,7 +320,8 @@ mod test {
 (img "magenta.png")"#,
         );
 
-        let response = Response::new(ResponseKind::Page, page, vec![white, magenta]);
+        let response =
+            Response::new_with_id(ResponseKind::Page, Uuid::nil(), page, vec![white, magenta]);
         let data_test: Vec<u8> = response.into();
 
         println!("{:?}", data_test);
