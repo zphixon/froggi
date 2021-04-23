@@ -1,4 +1,4 @@
-froggi = pageStyle? pageExpression*
+froggi = [pageStyle] {pageExpression}
 
 pageStyle = "{" { "(" IDENTIFIER styleList ")" } "}"
 
