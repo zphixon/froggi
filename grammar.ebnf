@@ -11,3 +11,5 @@ pageExpression =
 inlineStyle = '{' styleList '}'
 
 styleList = IDENTIFIER+
+
+text = ('\'' | '"') ANYTHING ('\'' | '"')
