@@ -1,24 +1,73 @@
 //! Page types that are easier to deal with than the raw AST.
-#![allow(dead_code)]
 
-use crate::markup::{InlineStyle, PageStyles};
+use crate::markup::{ExpressionPayload, InlineStyle, Page, PageExpression, PageStyles};
 
 use std::collections::HashMap;
 
 /// An owned document. More useful than Page for drawing to the screen.
+#[derive(Debug, PartialEq)]
 pub struct Document {
     styles: HashMap<String, Style>,
     expressions: Vec<DocumentExpression>,
 }
 
+impl Document {
+    pub fn from_page(page: &Page) -> Document {
+        let mut document = Document {
+            styles: HashMap::new(),
+            expressions: Vec::new(),
+        };
+
+        for (name, styles) in page.styles.iter() {
+            let mut style = Style::new();
+            inline_styles_to_style(&styles, &HashMap::with_capacity(0), &mut style);
+            document.styles.insert(name.clone_lexeme(), style);
+        }
+
+        for expression in page.expressions.iter() {
+            document
+                .expressions
+                .push(DocumentExpression::from_page_expression(
+                    expression,
+                    &page.styles,
+                ));
+        }
+
+        document
+    }
+}
+
 /// An owned document expression.
+#[derive(Debug, PartialEq)]
 pub struct DocumentExpression {
     style: Style,
     direction: Direction,
     contents: DocumentExpressionContents,
 }
 
+impl DocumentExpression {
+    fn from_page_expression(
+        page_expression: &PageExpression,
+        page_styles: &PageStyles,
+    ) -> DocumentExpression {
+        let mut style = Style::new();
+        inline_styles_to_style(&page_expression.styles, page_styles, &mut style);
+        let direction = page_expression.builtin.direction();
+        let contents = DocumentExpressionContents::from_expression_payload(
+            &page_expression.payload,
+            page_styles,
+        );
+
+        DocumentExpression {
+            style,
+            direction,
+            contents,
+        }
+    }
+}
+
 /// Contents of a document expression. Stored independently of its layout.
+#[derive(Debug, PartialEq)]
 pub enum DocumentExpressionContents {
     /// Plain text
     Text {
@@ -51,7 +100,47 @@ pub enum DocumentExpressionContents {
     },
 }
 
+impl DocumentExpressionContents {
+    fn from_expression_payload(
+        payload: &ExpressionPayload,
+        page_styles: &PageStyles,
+    ) -> DocumentExpressionContents {
+        match payload {
+            ExpressionPayload::Text { text } => DocumentExpressionContents::Text {
+                text: text.iter().fold(String::new(), |mut string, token| {
+                    string.push_str(token.lexeme());
+                    string
+                }),
+            },
+            ExpressionPayload::Children { children, .. } => DocumentExpressionContents::Children {
+                children: children
+                    .iter()
+                    .map(|child| DocumentExpression::from_page_expression(child, page_styles))
+                    .collect(),
+            },
+            ExpressionPayload::Link { link, text } => DocumentExpressionContents::Link {
+                text: text.iter().fold(String::new(), |mut string, token| {
+                    string.push_str(token.lexeme());
+                    string
+                }),
+                url: link.clone_lexeme(),
+            },
+            ExpressionPayload::Blob { name, alt } => DocumentExpressionContents::Blob {
+                name: name.clone_lexeme(),
+                alt: alt.iter().fold(String::new(), |mut string, token| {
+                    string.push_str(token.lexeme());
+                    string
+                }),
+            },
+            ExpressionPayload::Anchor { anchor } => DocumentExpressionContents::Anchor {
+                name: anchor.clone_lexeme(),
+            },
+        }
+    }
+}
+
 /// Direction for screen layout.
+#[derive(Debug, PartialEq)]
 pub enum Direction {
     /// Items are laid out horizontally
     Horizontal,
@@ -248,5 +337,126 @@ mod test {
                 size: 12,
             }
         );
+    }
+
+    #[test]
+    fn new_test_markup() {
+        let train_doc = Document::from_page(
+            &crate::markup::parse::parse(include_str!("../../../server/pages/new_test_markup.fml"))
+                .unwrap(),
+        );
+
+        // im never doing this again
+        let test_doc = Document {
+            styles: HashMap::new(),
+            expressions: vec![
+                DocumentExpression {
+                    style: Style {
+                        font_style: FontStyle {
+                            bold: true,
+                            ..Default::default()
+                        },
+                        size: 32,
+                        ..Style::new()
+                    },
+                    direction: Direction::Vertical,
+                    contents: DocumentExpressionContents::Text {
+                        text: String::from("Page title"),
+                    },
+                },
+                DocumentExpression {
+                    style: Style::new(),
+                    direction: Direction::Vertical,
+                    contents: DocumentExpressionContents::Text {
+                        text: String::from("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."),
+                    },
+                },
+                DocumentExpression {
+                    style: Style {
+                        font_style: FontStyle {
+                            bold: true,
+                            ..Default::default()
+                        },
+                        ..Style::new()
+                    },
+                    direction: Direction::Vertical,
+                    contents: DocumentExpressionContents::Text {
+                        text: String::from("No gray or orange boxes should be visible below.")
+                    },
+                },
+                DocumentExpression {
+                    style: Style {
+                        background: (245, 245, 245),
+                        ..Style::new()
+                    },
+                    direction: Direction::Horizontal,
+                    contents: DocumentExpressionContents::Children {
+                        children: vec![
+                            DocumentExpression {
+                                style: Style {
+                                    background: (218, 232, 252),
+                                    ..Style::new()
+                                },
+                                direction: Direction::Vertical,
+                                contents: DocumentExpressionContents::Text {
+                                    text: String::from("Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature"),
+                                },
+                            },
+                            DocumentExpression {
+                                style: Style {
+                                    background: (213, 232, 212),
+                                    ..Style::new()
+                                },
+                                direction: Direction::Vertical,
+                                contents: DocumentExpressionContents::Text {
+                                    text: String::from("from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in"),
+                                },
+                            },
+                            DocumentExpression {
+                                style: Style {
+                                    background: (255, 230, 204),
+                                    ..Style::new()
+                                },
+                                direction: Direction::Vertical,
+                                contents: DocumentExpressionContents::Children {
+                                    children: vec![
+                                        DocumentExpression {
+                                            style: Style {
+                                                background: (255, 242, 204),
+                                                ..Style::new()
+                                            },
+                                            direction: Direction::Vertical,
+                                            contents: DocumentExpressionContents::Text {
+                                                text: String::from("Virginia, looked up one of the more obscure Latin")
+                                            },
+                                        },
+                                        DocumentExpression {
+                                            style: Style {
+                                                background: (248, 206, 204),
+                                                ..Style::new()
+                                            },
+                                            direction: Direction::Vertical,
+                                            contents: DocumentExpressionContents::Link {
+                                                text: String::from("from http://www.lipsum.com/"),
+                                                url: String::from("http://www.lipsum.com/"),
+                                            },
+                                        },
+                                    ],
+                                },
+                            },
+                        ],
+                    },
+                },
+                DocumentExpression {
+                    style: Style::new(),
+                    direction: Direction::Vertical,
+                    contents: DocumentExpressionContents::Text {
+                        text: String::from("But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness."),
+                    },
+                },
+            ],
+        };
+
+        assert_eq!(train_doc, test_doc);
     }
 }

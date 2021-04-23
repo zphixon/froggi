@@ -423,16 +423,17 @@ fn collect_text<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<Token<'a>>, FroggiE
 
 fn consume_selector<'a>(scanner: &mut Scanner<'a>) -> Result<Token<'a>, FroggiError> {
     let token = scanner.next_token()?;
-    match token.kind() {
-        TokenKind::Identifier | TokenKind::Link | TokenKind::Wide | TokenKind::Tall | TokenKind::Text => Ok(token),
-        _ => Err(FroggiError::parse(
+    if token.may_be_styled() {
+        Ok(token)
+    } else {
+        Err(FroggiError::parse(
             ParseError::UnexpectedToken {
                 expected: TokenKind::Identifier,
                 got: token.clone_lexeme(),
             },
             token.line(),
         ))
-        .msg_str("selectors must be either built-in expression types or links, or user-defined selectors"),
+        .msg_str("selectors must be either built-in expression types or links, or user-defined selectors")
     }
 }
 

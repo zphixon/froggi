@@ -1,5 +1,6 @@
 //! Scan a byte sequence into a froggi markup page. Zero-copy.
 
+use crate::markup::document::Direction;
 use crate::{FroggiError, ScanError};
 
 fn is_control_character(c: u8) -> bool {
@@ -125,6 +126,25 @@ impl Token<'_> {
         match self.kind {
             TokenKind::String => &self.lexeme[1..self.lexeme.len() - 1],
             _ => self.lexeme,
+        }
+    }
+
+    pub fn may_be_styled(&self) -> bool {
+        matches!(
+            self.kind,
+            TokenKind::Identifier
+                | TokenKind::Link
+                | TokenKind::Wide
+                | TokenKind::Tall
+                | TokenKind::Text
+        )
+    }
+
+    pub fn direction(&self) -> Direction {
+        match self.kind {
+            TokenKind::Wide => Direction::Horizontal,
+            TokenKind::Inline => Direction::Inline,
+            _ => Direction::Vertical,
         }
     }
 }
