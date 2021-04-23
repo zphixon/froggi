@@ -1,7 +1,30 @@
-use crate::markup::scan::TokenKind;
-use crate::markup::{ExpressionPayload, InlineStyle, PageExpression, PageStyles};
+use crate::markup::{InlineStyle, PageStyles};
 
-use std::collections::HashSet;
+use std::collections::HashMap;
+
+pub struct Document {
+    styles: HashMap<String, Style>,
+    expressions: Vec<DocumentExpression>,
+}
+
+pub struct DocumentExpression {
+    style: Style,
+    direction: Direction,
+    contents: DocumentExpressionContents,
+}
+
+pub enum DocumentExpressionContents {
+    Text { text: String },
+    Link { text: String, url: String },
+    Blob { name: String },
+    Anchor { name: String },
+    Children { children: Vec<DocumentExpression> },
+}
+
+pub enum Direction {
+    Horizontal,
+    Vertical,
+}
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub enum FontType {

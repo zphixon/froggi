@@ -1,4 +1,4 @@
-pub mod page;
+pub mod document;
 pub mod parse;
 pub mod scan;
 

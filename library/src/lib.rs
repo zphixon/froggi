@@ -6,10 +6,8 @@ use std::str;
 
 pub use uuid::Uuid;
 
-#[cfg(feature = "layout")]
-pub mod layout;
-#[cfg(feature = "layout")]
-pub extern crate druid;
+#[cfg(feature = "ui")]
+pub mod ui;
 
 #[cfg(feature = "markup")]
 pub mod markup;
