@@ -14,11 +14,24 @@ pub struct DocumentExpression {
 }
 
 pub enum DocumentExpressionContents {
-    Text { text: String },
-    Link { text: String, url: String },
-    Blob { name: String },
-    Anchor { name: String },
-    Children { children: Vec<DocumentExpression> },
+    /// Text
+    Text {
+        text: String,
+    },
+    Link {
+        text: String,
+        url: String,
+    },
+    Blob {
+        name: String,
+        alt: String,
+    },
+    Anchor {
+        name: String,
+    },
+    Children {
+        children: Vec<DocumentExpression>,
+    },
 }
 
 pub enum Direction {
