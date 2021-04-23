@@ -9,6 +9,7 @@ crate::u8enum! { RequestKind {
 } }
 
 /// Represents a froggi request to a server.
+#[derive(Debug)]
 pub struct Request {
     version: u8,
     kind: RequestKind,
@@ -34,7 +35,7 @@ impl Request {
         }
     }
 
-    /// Create a new request with client id.
+    /// Create a new request with a client ID.
     pub fn new_with_id(
         request: impl ToString,
         id: Uuid,

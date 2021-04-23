@@ -55,13 +55,13 @@ pub struct Response {
 }
 
 impl Response {
-    /// Create a new response with no client ID.
+    /// Create a new response with a random ID.
     pub fn new(kind: ResponseKind, page: String, items: Vec<Item>) -> Self {
         assert!(items.len() <= u8::MAX as usize);
         Self {
             version: crate::FROGGI_VERSION,
             kind,
-            id: Uuid::nil(),
+            id: Uuid::new_v4(),
             page,
             items,
         }
