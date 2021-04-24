@@ -10,6 +10,7 @@ use std::io::Read;
 crate::u8enum! { ResponseKind {
     Page = 0,
     PageNoItems = 1,
+    Error = 14,
     Unknown = 15,
 } }
 

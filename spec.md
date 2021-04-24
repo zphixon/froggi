@@ -83,7 +83,7 @@ Item kinds:
 * 0 - PNG image. The one and only.
 * 1 - JPG image. Our small friend.
 * 2 - GIF image. The life of the party.
-* 15 - Unknown.
+* 15 - Error.
 
 ## Markup
 
