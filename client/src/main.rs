@@ -32,12 +32,14 @@ fn main() {
         }
     }
 
-    let reader = Reader::new(Cursor::new(result.items()[0].data()))
-        .with_guessed_format()
-        .expect("cursor never fails");
-    let format = reader.format();
-    match reader.decode() {
-        Ok(image) => println!("got image: {:?} {:?}", format, image.dimensions()),
-        Err(error) => println!("couldn't decode: {}", error),
+    if result.items().len() > 0 {
+        let reader = Reader::new(Cursor::new(result.items()[0].data()))
+            .with_guessed_format()
+            .expect("cursor never fails");
+        let format = reader.format();
+        match reader.decode() {
+            Ok(image) => println!("got image: {:?} {:?}", format, image.dimensions()),
+            Err(error) => println!("couldn't decode: {}", error),
+        }
     }
 }

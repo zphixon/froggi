@@ -1,6 +1,7 @@
 use froggi::request::Request;
-use froggi::response::{Item, ItemKind, Response, ResponseKind};
+use froggi::response::{Response, ResponseKind};
 
+use std::collections::HashMap;
 use std::io::Write;
 use std::net::{TcpListener, TcpStream};
 
@@ -9,32 +10,49 @@ fn handle_client(mut stream: TcpStream) {
 
     println!("request: {:?}", request);
 
-    // todo: verify markup is correct
-    // todo: some sort of page and page data cache
-    let page = String::from(include_str!("../pages/test_markup.fml"));
-    let header_img_data = include_bytes!("../pages/red_toy_small.png");
-    let mut header_img = Vec::new();
-    header_img.extend_from_slice(header_img_data);
-
-    let response = Response::new(
-        ResponseKind::Page,
-        page,
-        vec![Item::new(
-            String::from("red_toy_small.png"),
-            ItemKind::Png,
-            header_img,
-        )],
-    )
-    .unwrap();
-
-    println!("client: {}", response.id());
-
-    stream.write_all(&response.into_bytes()).unwrap();
+    unsafe {
+        match PAGES.as_ref().unwrap().get(request.request()) {
+            Some(page) => stream.write_all(&page.bytes()).unwrap(),
+            None => stream
+                .write_all(&NOT_FOUND.as_ref().unwrap().bytes())
+                .unwrap(),
+        }
+    }
 }
 
+static mut NOT_FOUND: Option<Response> = None;
+static mut PAGES: Option<HashMap<String, Response>> = None;
+
 fn main() {
+    let mut pages = HashMap::new();
+
+    println!("reading pages");
+    for item in std::fs::read_dir("pages").unwrap() {
+        let item = item.unwrap();
+        if item.metadata().unwrap().is_file()
+            && item.file_name().to_str().unwrap().ends_with(".fml")
+        {
+            println!("{}", item.file_name().to_str().unwrap());
+            pages.insert(
+                item.file_name().into_string().unwrap(),
+                froggi::response_from_file(item.path()).unwrap(),
+            );
+        }
+    }
+
+    unsafe {
+        PAGES = Some(pages);
+        NOT_FOUND = Some(
+            Response::new(ResponseKind::Error, String::from("('not found')"), vec![]).unwrap(),
+        );
+    }
+
     let listener = TcpListener::bind("0.0.0.0:11121").unwrap();
-    println!("listening at {}", listener.local_addr().unwrap());
+    println!(
+        "listening at {}. run this binary from froggi-server dir!",
+        listener.local_addr().unwrap()
+    );
+
     for stream in listener.incoming() {
         match stream {
             Ok(stream) => {

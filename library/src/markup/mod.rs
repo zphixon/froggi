@@ -20,6 +20,16 @@ pub struct Page<'a> {
     pub expressions: Vec<PageExpression<'a>>,
 }
 
+impl Page<'_> {
+    pub fn item_names(&self) -> Vec<String> {
+        let mut names = Vec::new();
+        for expression in &self.expressions {
+            expression.item_names(&mut names);
+        }
+        names
+    }
+}
+
 /// Map from token to list of styles.
 pub type PageStyles<'a> = HashMap<Token<'a>, Vec<InlineStyle<'a>>>;
 
@@ -32,6 +42,20 @@ pub struct PageExpression<'a> {
     pub styles: Vec<InlineStyle<'a>>,
     /// The actual content of the expression
     pub payload: ExpressionPayload<'a>,
+}
+
+impl PageExpression<'_> {
+    fn item_names(&self, names: &mut Vec<String>) {
+        match &self.payload {
+            ExpressionPayload::Blob { name, .. } => names.push(name.clone_lexeme()),
+            ExpressionPayload::Children { children, .. } => {
+                for child in children.iter() {
+                    child.item_names(names)
+                }
+            }
+            _ => {}
+        }
+    }
 }
 
 /// Content of a page expression.
