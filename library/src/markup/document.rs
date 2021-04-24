@@ -88,7 +88,7 @@ fn document_expression_to_string(
         DocumentExpressionContents::Anchor { .. } => {}
 
         DocumentExpressionContents::Children { children } => {
-            for (i, child) in children.iter().enumerate() {
+            for child in children.iter() {
                 document_expression_to_string(child, string, urls);
                 if expression.direction == Direction::Inline {
                     string.push(' ');
