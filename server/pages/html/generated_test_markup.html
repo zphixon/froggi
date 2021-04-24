@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8">
+    <style>
+div {
+    display: flex;
+}
+div > * {
+    flex-basis: 0;
+    flex-grow: 1;
+    padding: 3px 3px 7px 3px;
+}
+body {
+    max-width: 850px;
+    margin: 0 auto;
+    float: none;
+}
+span {
+    font-family: serif;
+    color: #303030;
+}
+.quote-box {
+    background-color: #fff8dc;
+}
+.quote-text {
+    font-family: sans-serif;
+    color: #606060;
+}
+.footnote {
+    color: #757575;
+    font-family: sans-serif;
+    font-style: italic;
+}
+    </style>
+  </head>
+  <body>
+<div> <!-- box 10 -->
+<span style="font-size: 26px; font-weight: bold;">Lorem ipsum example</span><br> <!-- text 10 -->
+<img src="red_toy_small.png" alt="alt text is optional">
+</div>
+<div id="anchor" style="display:hidden;"></div>
+<span> <!-- inline 17 -->
+<span style="font-weight: bold;">inline</span> <!-- text 18 -->
+<span style="text-decoration: line-through;">items</span> <!-- text 19 -->
+<span>can have some</span> <!-- text 20 -->
+<span style="color: #1aff02;">styling</span> <!-- text 21 -->
+<span style="font-family: sans-serif; text-decoration: underline;">in one line</span> <!-- text 22 -->
+</span><br>
+<span style="font-family: monospace; text-decoration: underline;">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span><br> <!-- text 26 -->
+<div class="quote-box"> <!-- box 31 -->
+<span class="quote-text" style="flex-basis: 50%; flex-grow: 0;">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature</span><br> <!-- text 32 -->
+<span class="quote-text">from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in</span><br> <!-- text 34 -->
+<div style="flex-direction: column;"> <!-- vbox 37 -->
+<span class="quote-text">Virginia, looked up one of the more obscure Latin</span><br> <!-- text 38 -->
+<br><div class="footnote" style="flex-basis: 20%; flex-grow: 0;"><a href="frgi://www.lipsum.com/">from frgi://www.lipsum.com/</a></div>
+<br></div><br>
+</div>
+<div><a href="https://github.com/zphixon/froggi">github repository</a></div>
+<div><a href="https://zphixon.com/lemon">https://zphixon.com/lemon</a></div>
+  <script>
+    if (window.location.hash) {
+      var elt = document.getElementById(
+        window.location.hash.substring(1)
+      );
+      elt.scrollIntoView(true);
+    }
+  </script>
+  </body>
+</html>
