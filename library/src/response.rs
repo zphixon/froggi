@@ -252,13 +252,7 @@ impl Response {
     }
 
     /// Convert the page into bytes
-    pub fn into_bytes(self) -> Vec<u8> {
-        self.into()
-    }
-}
-
-impl Into<Vec<u8>> for Response {
-    fn into(self) -> Vec<u8> {
+    pub fn bytes(&self) -> Vec<u8> {
         let mut data = Vec::new();
 
         // first byte: version number
@@ -322,6 +316,12 @@ impl Into<Vec<u8>> for Response {
         data[TOTAL_RESPONSE_LENGTH_OFFSET + 3] = total_len[3];
 
         data
+    }
+}
+
+impl Into<Vec<u8>> for Response {
+    fn into(self) -> Vec<u8> {
+        self.bytes()
     }
 }
 
