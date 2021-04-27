@@ -2,7 +2,6 @@
 //!
 //! Add `features = ['markup']` to get markup AST and parsing, and for more layout-oriented types.
 
-use std::error::Error;
 use std::fmt;
 use std::io::{self, Write};
 use std::net::{TcpStream, ToSocketAddrs};
@@ -19,6 +18,9 @@ pub mod markup;
 pub mod protocol;
 pub mod request;
 pub mod response;
+
+use markup::scan::TokenKind;
+use request::RequestKind;
 
 /// Froggi version.
 pub const FROGGI_VERSION: u8 = 0;
@@ -175,9 +177,6 @@ impl fmt::Display for ScanError {
         }
     }
 }
-
-use crate::request::RequestKind;
-use markup::scan::TokenKind;
 
 /// FML document parse error.
 #[derive(Debug)]
@@ -373,8 +372,8 @@ impl AddMsg for FroggiError {
     }
 }
 
-impl Error for FroggiError {
-    fn source(&self) -> Option<&(dyn Error + 'static)> {
+impl std::error::Error for FroggiError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         match &self.error {
             ErrorKind::ArrayLengthError { .. } => None,
             ErrorKind::BitWidthError { .. } => None,
