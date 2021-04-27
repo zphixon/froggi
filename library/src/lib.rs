@@ -152,166 +152,6 @@ pub fn deserialize_four_bytes(bytes: &[u8]) -> Result<usize, FroggiError> {
         | (bytes[0] as usize))
 }
 
-/// FML document scan error.
-#[derive(Debug)]
-pub enum ScanError {
-    /// Escape code in a string is unknown
-    UnknownEscapeCode {
-        /// The unknown escape code character
-        code: char,
-    },
-    /// A string is unterminated
-    UnterminatedString {
-        /// The line the string starts on
-        start_line: usize,
-    },
-}
-
-impl fmt::Display for ScanError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            ScanError::UnknownEscapeCode { code } => write!(f, "unknown escape code: {}", code),
-            ScanError::UnterminatedString { start_line } => {
-                write!(f, "unterminated string starting on line {}", start_line)
-            }
-        }
-    }
-}
-
-/// FML document parse error.
-#[derive(Debug)]
-pub enum ParseError {
-    /// An unexpected token was encountered
-    UnexpectedToken {
-        /// The token that was expected
-        expected: TokenKind,
-        /// The token that was received
-        got: String,
-    },
-    /// A parenthesis is missing somewhere
-    UnbalancedParentheses,
-    /// A non-style token was encountered
-    ExpectedStyle {
-        /// The token that was encountered
-        got: String,
-    },
-    /// An expression was expected in the document root
-    ExpectedExpression {
-        /// We got this instead
-        got: String,
-    },
-    /// The style was unrecognized, either not built-in, undefined, or misspelled
-    UnknownStyle {
-        /// The style that was found
-        style: String,
-    },
-    /// We don't allow recursive style definitions currently, this may change
-    RecursiveStyle {
-        /// The style that was recursive
-        style: String,
-    },
-    /// The number was formatted incorrectly
-    IncorrectNumberFormat {
-        /// Fake number
-        num: String,
-        /// Real number
-        wanted: String,
-    },
-}
-
-#[rustfmt::skip]
-impl fmt::Display for ParseError {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            ParseError::UnexpectedToken { expected, got }
-                => write!(f, "unexpected token: expected {:?}, got {}", expected, got),
-            ParseError::UnbalancedParentheses
-                => write!(f, "unbalanced parentheses"),
-            ParseError::ExpectedStyle { got }
-                => write!(f, "expected style, got {:?}", got),
-            ParseError::ExpectedExpression { got }
-                => write!(f, "expected page expression or page style, got {:?}", got),
-            ParseError::UnknownStyle { style }
-                => write!(f, "unknown style {:?}", style),
-            ParseError::RecursiveStyle { style }
-                => write!(f, "unknown style {:?}", style),
-            ParseError::IncorrectNumberFormat { num, wanted }
-                => write!(f, "incorrect number format: wanted {}, {:?}", wanted, num),
-        }
-    }
-}
-
-/// Errors that are possible in the froggi protocol.
-#[derive(Debug)]
-pub enum ErrorKind {
-    /// The array was too small or large
-    ArrayLengthError {
-        /// Size we wanted
-        wanted: usize,
-        /// Size we got
-        got: usize,
-    },
-    /// The integer wasn't able to fit in the specified bit width
-    BitWidthError {
-        /// Number of bits we wanted
-        wanted: usize,
-        /// The value we got instead
-        got: usize,
-    },
-    /// The string was not UTF-8
-    EncodingError {
-        /// Stdlib Utf8Error that caused this
-        error: str::Utf8Error,
-    },
-    /// The request was formatted incorrectly
-    RequestFormatError,
-    /// The response was formatted incorrectly
-    ResponseFormatError,
-    /// Encountered a problem in reading or writing
-    IOError {
-        /// The error that occurred
-        error: io::Error,
-    },
-    /// Couldn't scan the document
-    ScanError {
-        /// The scan error
-        error: ScanError,
-        /// Where it happened
-        line: usize,
-    },
-    /// Couldn't parse the document
-    ParseError {
-        /// The parse error
-        error: ParseError,
-        /// Where it happened
-        line: usize,
-    },
-}
-
-#[rustfmt::skip]
-impl fmt::Display for ErrorKind {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            ErrorKind::ArrayLengthError { wanted, got }
-                => write!(f, "array length - wanted {} elements, got {}", wanted, got),
-            ErrorKind::BitWidthError { wanted, got }
-                => write!(f, "bit width error - value {} cannot fit in {} bits", got, wanted),
-            ErrorKind::EncodingError { error }
-                => write!(f, "encoding error - {}", error),
-            ErrorKind::RequestFormatError
-                => write!(f, "request format error - {:?}", self),
-            ErrorKind::ResponseFormatError
-                => write!(f, "response format error - {:?}", self),
-            ErrorKind::IOError { error }
-                => write!(f, "io error - {}", error),
-            ErrorKind::ScanError { error, line }
-                => write!(f, "scan error on line {} - {}", line, error),
-            ErrorKind::ParseError { error, line }
-                => write!(f, "parse error on line {} - {}", line, error),
-        }
-    }
-}
-
 /// A froggi protocol library error.
 #[derive(Debug)]
 pub struct FroggiError {
@@ -397,6 +237,166 @@ impl fmt::Display for FroggiError {
             self.msg.clone().unwrap_or(String::new()),
             if self.msg.is_some() { ")" } else { "" },
         )
+    }
+}
+
+/// Errors that are possible in the froggi protocol.
+#[derive(Debug)]
+pub enum ErrorKind {
+    /// The array was too small or large
+    ArrayLengthError {
+        /// Size we wanted
+        wanted: usize,
+        /// Size we got
+        got: usize,
+    },
+    /// The integer wasn't able to fit in the specified bit width
+    BitWidthError {
+        /// Number of bits we wanted
+        wanted: usize,
+        /// The value we got instead
+        got: usize,
+    },
+    /// The string was not UTF-8
+    EncodingError {
+        /// Stdlib Utf8Error that caused this
+        error: str::Utf8Error,
+    },
+    /// The request was formatted incorrectly
+    RequestFormatError,
+    /// The response was formatted incorrectly
+    ResponseFormatError,
+    /// Encountered a problem in reading or writing
+    IOError {
+        /// The error that occurred
+        error: io::Error,
+    },
+    /// Couldn't scan the document
+    ScanError {
+        /// The scan error
+        error: ScanError,
+        /// Where it happened
+        line: usize,
+    },
+    /// Couldn't parse the document
+    ParseError {
+        /// The parse error
+        error: ParseError,
+        /// Where it happened
+        line: usize,
+    },
+}
+
+#[rustfmt::skip]
+impl fmt::Display for ErrorKind {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            ErrorKind::ArrayLengthError { wanted, got }
+                => write!(f, "array length - wanted {} elements, got {}", wanted, got),
+            ErrorKind::BitWidthError { wanted, got }
+                => write!(f, "bit width error - value {} cannot fit in {} bits", got, wanted),
+            ErrorKind::EncodingError { error }
+                => write!(f, "encoding error - {}", error),
+            ErrorKind::RequestFormatError
+                => write!(f, "request format error - {:?}", self),
+            ErrorKind::ResponseFormatError
+                => write!(f, "response format error - {:?}", self),
+            ErrorKind::IOError { error }
+                => write!(f, "io error - {}", error),
+            ErrorKind::ScanError { error, line }
+                => write!(f, "scan error on line {} - {}", line, error),
+            ErrorKind::ParseError { error, line }
+                => write!(f, "parse error on line {} - {}", line, error),
+        }
+    }
+}
+
+/// FML document scan error.
+#[derive(Debug)]
+pub enum ScanError {
+    /// Escape code in a string is unknown
+    UnknownEscapeCode {
+        /// The unknown escape code character
+        code: char,
+    },
+    /// A string is unterminated
+    UnterminatedString {
+        /// The line the string starts on
+        start_line: usize,
+    },
+}
+
+impl fmt::Display for ScanError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            ScanError::UnknownEscapeCode { code } => write!(f, "unknown escape code: {}", code),
+            ScanError::UnterminatedString { start_line } => {
+                write!(f, "unterminated string starting on line {}", start_line)
+            }
+        }
+    }
+}
+
+/// FML document parse error.
+#[derive(Debug)]
+pub enum ParseError {
+    /// An unexpected token was encountered
+    UnexpectedToken {
+        /// The token that was expected
+        expected: TokenKind,
+        /// The token that was received
+        got: String,
+    },
+    /// A parenthesis is missing somewhere
+    UnbalancedParentheses,
+    /// A non-style token was encountered
+    ExpectedStyle {
+        /// The token that was encountered
+        got: String,
+    },
+    /// An expression was expected in the document root
+    ExpectedExpression {
+        /// We got this instead
+        got: String,
+    },
+    /// The style was unrecognized, either not built-in, undefined, or misspelled
+    UnknownStyle {
+        /// The style that was found
+        style: String,
+    },
+    /// We don't allow recursive style definitions currently, this may change
+    RecursiveStyle {
+        /// The style that was recursive
+        style: String,
+    },
+    /// The number was formatted incorrectly
+    IncorrectNumberFormat {
+        /// Fake number
+        num: String,
+        /// Real number
+        wanted: String,
+    },
+}
+
+#[rustfmt::skip]
+impl fmt::Display for ParseError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            ParseError::UnexpectedToken { expected, got }
+            => write!(f, "unexpected token: expected {:?}, got {}", expected, got),
+            ParseError::UnbalancedParentheses
+            => write!(f, "unbalanced parentheses"),
+            ParseError::ExpectedStyle { got }
+            => write!(f, "expected style, got {:?}", got),
+            ParseError::ExpectedExpression { got }
+            => write!(f, "expected page expression or page style, got {:?}", got),
+            ParseError::UnknownStyle { style }
+            => write!(f, "unknown style {:?}", style),
+            ParseError::RecursiveStyle { style }
+            => write!(f, "unknown style {:?}", style),
+            ParseError::IncorrectNumberFormat { num, wanted }
+            => write!(f, "incorrect number format: wanted {}, {:?}", wanted, num),
+        }
     }
 }
 
