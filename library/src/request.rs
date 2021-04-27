@@ -1,6 +1,9 @@
 //! Types for dealing with a froggi protocol request.
 
-use crate::{protocol::*, serialize_to_bytes, AddMsg, ErrorKind, FroggiError, Uuid};
+use crate::{protocol::*, serialize_to_bytes, Result, Uuid};
+use crate::{Encoding, FromEncoding, RequestFormat, IO};
+
+use snafu::ResultExt;
 
 use std::convert::TryInto;
 use std::io::Read;
@@ -34,12 +37,13 @@ pub struct Request {
 
 impl Request {
     /// Create a new request with no client ID.
-    pub fn new(request: impl ToString, kind: RequestKind) -> Result<Self, FroggiError> {
+    pub fn new(request: impl ToString, kind: RequestKind) -> Result<Self> {
         let request = request.to_string();
         let version = crate::FROGGI_VERSION;
 
         if request.len() > u16::MAX as usize {
-            Err(FroggiError::new(ErrorKind::RequestFormatError).msg_str("The path is too large."))
+            RequestFormat.fail()
+            //Err(FroggiError::new(ErrorKind::RequestFormatError).msg_str("The path is too large."))
         } else {
             Ok(Request {
                 version,
@@ -51,16 +55,13 @@ impl Request {
     }
 
     /// Create a new request with a client ID.
-    pub fn new_with_id(
-        request: impl ToString,
-        id: Uuid,
-        kind: RequestKind,
-    ) -> Result<Self, FroggiError> {
+    pub fn new_with_id(request: impl ToString, id: Uuid, kind: RequestKind) -> Result<Self> {
         let request = request.to_string();
         let version = crate::FROGGI_VERSION;
 
         if request.len() > u16::MAX as usize {
-            Err(FroggiError::new(ErrorKind::RequestFormatError).msg_str("The path is too large."))
+            RequestFormat.fail()
+            //Err(FroggiError::new(ErrorKind::RequestFormatError).msg_str("The path is too large."))
         } else {
             Ok(Request {
                 version,
@@ -72,10 +73,10 @@ impl Request {
     }
 
     /// Read a request from a source of bytes.
-    pub fn from_bytes(bytes: &mut impl Read) -> Result<Self, FroggiError> {
+    pub fn from_bytes(bytes: &mut impl Read) -> Result<Self> {
         // request header, twenty bytes
         let mut header = [0u8; REQUEST_OFFSET];
-        bytes.read_exact(&mut header)?;
+        bytes.read_exact(&mut header).context(IO)?;
 
         // first byte is version
         let version = header[FROGGI_VERSION_OFFSET];
@@ -95,9 +96,9 @@ impl Request {
 
         // remaining bytes are the request itself
         let mut request_buf = vec![0; request_length];
-        bytes.read_exact(&mut request_buf)?;
+        bytes.read_exact(&mut request_buf).context(IO)?;
 
-        let request = String::from_utf8(request_buf)?;
+        let request = String::from_utf8(request_buf).context(FromEncoding)?;
 
         Ok(Request {
             version,

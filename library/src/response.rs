@@ -1,8 +1,10 @@
 //! Types for dealing with a froggi protocol response.
 
-use crate::{protocol::*, AddMsg, ErrorKind, FroggiError, Uuid};
+use crate::{protocol::*, Error, Result, Uuid};
+use crate::{FromEncoding, ResponseFormat, IO};
 
-use crate::ErrorKind::ResponseFormatError;
+use snafu::ResultExt;
+
 use std::convert::TryInto;
 use std::io::Read;
 
@@ -67,29 +69,33 @@ pub struct Response {
     items: Vec<Item>,
 }
 
-fn check_page_and_items(page: &str, items: &[Item]) -> Result<(), FroggiError> {
+fn check_page_and_items(page: &str, items: &[Item]) -> Result<()> {
     if items.len() > u8::MAX as usize {
-        return Err(
-            FroggiError::new(ErrorKind::ResponseFormatError).msg_str("There are too many items.")
-        );
+        ResponseFormat.fail()?
+        //return Err(
+        //FroggiError::new(ErrorKind::ResponseFormatError).msg_str("There are too many items.")
+        //);
     }
 
     for item in items.iter() {
         if item.data.len() > u32::MAX as usize {
-            return Err(FroggiError::new(ErrorKind::ResponseFormatError)
-                .msg(format!("The item {} is too long.", item.name)));
+            ResponseFormat.fail()?
+            //return Err(FroggiError::new(ErrorKind::ResponseFormatError)
+            //    .msg(format!("The item {} is too long.", item.name)));
         }
 
         if item.name.len() > u8::MAX as usize {
-            return Err(FroggiError::new(ErrorKind::ResponseFormatError)
-                .msg(format!("The item name {} is too long.", item.name)));
+            ResponseFormat.fail()?
+            //return Err(FroggiError::new(ErrorKind::ResponseFormatError)
+            //    .msg(format!("The item name {} is too long.", item.name)));
         }
     }
 
     if page.len() > u32::MAX as usize {
-        return Err(
-            FroggiError::new(ErrorKind::ResponseFormatError).msg_str("The page is too long.")
-        );
+        ResponseFormat.fail()?
+        //return Err(
+        //    FroggiError::new(ErrorKind::ResponseFormatError).msg_str("The page is too long.")
+        //);
     }
 
     if FROGGI_HEADER_LEN
@@ -107,9 +113,11 @@ fn check_page_and_items(page: &str, items: &[Item]) -> Result<(), FroggiError> {
         + page.len()
         > (u32::MAX as usize)
     {
-        return Err(
-            FroggiError::new(ResponseFormatError).msg_str("The page and items are too large.")
-        );
+        ResponseFormat.fail()?
+        //return Err(
+
+        //FroggiError::new(ResponseFormatError).msg_str("The page and items are too large.")
+        //);
     }
 
     Ok(())
@@ -117,7 +125,7 @@ fn check_page_and_items(page: &str, items: &[Item]) -> Result<(), FroggiError> {
 
 impl Response {
     /// Create a new response with a random ID.
-    pub fn new(kind: ResponseKind, page: String, items: Vec<Item>) -> Result<Self, FroggiError> {
+    pub fn new(kind: ResponseKind, page: String, items: Vec<Item>) -> Result<Self> {
         check_page_and_items(&page, &items)?;
 
         Ok(Self {
@@ -135,7 +143,7 @@ impl Response {
         id: Uuid,
         page: String,
         items: Vec<Item>,
-    ) -> Result<Self, FroggiError> {
+    ) -> Result<Self> {
         check_page_and_items(&page, &items)?;
 
         Ok(Self {
@@ -148,15 +156,15 @@ impl Response {
     }
 
     /// Parse the response into a page. Zero-copy.
-    pub fn parse(&self) -> Result<crate::markup::Page<'_>, Vec<FroggiError>> {
+    pub fn parse(&self) -> Result<crate::markup::Page<'_>, Vec<Error>> {
         crate::markup::parse::parse(&self.page)
     }
 
     /// Read a response from a source of bytes.
-    pub fn from_bytes(bytes: &mut impl Read) -> Result<Self, FroggiError> {
+    pub fn from_bytes(bytes: &mut impl Read) -> Result<Self> {
         // response header, 26 bytes long
         let mut header = [0u8; PAGE_OFFSET];
-        bytes.read_exact(&mut header)?;
+        bytes.read_exact(&mut header).context(IO)?;
 
         // version and kind are first two bytes
         let version = header[FROGGI_VERSION_OFFSET];
@@ -179,12 +187,12 @@ impl Response {
 
         // read page
         let mut page_buf = vec![0; page_len];
-        bytes.read_exact(&mut page_buf)?;
-        let page = String::from_utf8(page_buf)?;
+        bytes.read_exact(&mut page_buf).context(IO)?;
+        let page = String::from_utf8(page_buf).context(FromEncoding)?;
 
         // number of items, one byte
         let mut num_items = [0u8; NUM_ITEMS_LEN];
-        bytes.read_exact(&mut num_items)?;
+        bytes.read_exact(&mut num_items).context(IO)?;
         let num_items = num_items[0] as usize;
 
         // read items
@@ -192,27 +200,27 @@ impl Response {
         for _ in 0..num_items {
             // item kind, 1 byte
             let mut item_kind = [0u8; ITEM_KIND_LEN];
-            bytes.read_exact(&mut item_kind)?;
+            bytes.read_exact(&mut item_kind).context(IO)?;
             let kind = item_kind[0].into();
 
             // length of the item's name, 1 byte
             let mut item_name_len = [0u8; ITEM_NAME_LENGTH_LEN];
-            bytes.read_exact(&mut item_name_len)?;
+            bytes.read_exact(&mut item_name_len).context(IO)?;
             let item_name_len = item_name_len[0] as usize;
 
             // item name
             let mut name_buf = vec![0; item_name_len];
-            bytes.read_exact(&mut name_buf)?;
-            let name = String::from_utf8(name_buf)?;
+            bytes.read_exact(&mut name_buf).context(IO)?;
+            let name = String::from_utf8(name_buf).context(FromEncoding)?;
 
             // item length, 4 bytes
             let mut item_len = [0u8; ITEM_LENGTH_LEN];
-            bytes.read_exact(&mut item_len)?;
+            bytes.read_exact(&mut item_len).context(IO)?;
             let item_len = crate::deserialize_four_bytes(&item_len)?;
 
             // item
             let mut data = vec![0; item_len];
-            bytes.read_exact(&mut data)?;
+            bytes.read_exact(&mut data).context(IO)?;
 
             items.push(Item { name, kind, data });
         }
