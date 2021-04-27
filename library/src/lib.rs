@@ -50,47 +50,6 @@ pub fn send_request_with_id(
     Ok(response::Response::from_bytes(&mut stream)?)
 }
 
-#[cfg(feature = "markup")]
-pub fn response_from_file(
-    path: impl AsRef<std::path::Path>,
-) -> Result<response::Response, Vec<FroggiError>> {
-    // TODO this is kind of garbage
-
-    let path = path.as_ref();
-    let data = std::fs::read_to_string(&path)
-        .map_err(|error| FroggiError::new(ErrorKind::IOError { error }))
-        .msg(format!("could not read '{}'", path.display()))?;
-
-    let page = markup::parse::parse(&data)?;
-
-    let item_names = page.item_names();
-
-    let mut item_data = Vec::new();
-    for name in item_names.iter() {
-        item_data.push(
-            std::fs::read(path.parent().unwrap().join(name)).map_err(|error| {
-                FroggiError::new(ErrorKind::IOError { error })
-                    .msg(format!("could not read item '{}'", name))
-            })?,
-        );
-    }
-
-    let items = item_names
-        .into_iter()
-        .zip(item_data.into_iter())
-        .map(|(name, data)| {
-            // TODO item kind
-            response::Item::new(name, response::ItemKind::Png, data)
-        })
-        .collect();
-
-    Ok(response::Response::new(
-        response::ResponseKind::Page,
-        data,
-        items,
-    )?)
-}
-
 /// Serialize a usize into a little-endian pair of bytes.
 pub fn serialize_to_bytes(bytes: usize) -> Result<(u8, u8), FroggiError> {
     if bytes > u16::MAX as usize {
