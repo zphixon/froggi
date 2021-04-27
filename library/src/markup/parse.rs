@@ -1,20 +1,14 @@
 //! Functions to parse a page into a raw AST. No-copy.
 
-use crate::{Error, Result};
-use crate::{
-    ExpectedExpression, ExpectedStyle, IncorrectFloatFormat, IncorrectHexFormat,
-    IncorrectIntFormat, IncorrectNumberFormat, RecursiveStyle, UnexpectedToken, UnknownStyle,
-};
+use crate::{AddMsg, FroggiError, ParseError};
 
 use super::scan::{Scanner, Token, TokenKind};
 use super::{ExpressionPayload, InlineStyle, Page, PageExpression, PageStyles};
 
-use snafu::ResultExt;
-
 use std::collections::HashMap;
 
 /// Parse some data into a Page.
-pub fn parse(data: &str) -> Result<Page<'_>, Vec<Error>> {
+pub fn parse(data: &str) -> Result<Page<'_>, Vec<FroggiError>> {
     let mut errors = Vec::new();
     let mut expressions = Vec::new();
     let mut page_styles = HashMap::new();
@@ -35,12 +29,11 @@ pub fn parse(data: &str) -> Result<Page<'_>, Vec<Error>> {
 
             TokenKind::LeftBrace if !first_expression => {
                 errors.push(
-                    Error::ExpectedExpression { line: scanner.peek_token()?.line(), got: "{".into() }
-                    //FroggiError::parse(
-                    //    ParseError::ExpectedExpression { got: "{".into() },
-                    //    scanner.peek_token()?.line(),
-                    //)
-                    //.msg_str("page style expression must be the first expression in the page"),
+                    FroggiError::parse(
+                        ParseError::ExpectedExpression { got: "{".into() },
+                        scanner.peek_token()?.line(),
+                    )
+                    .msg_str("page style expression must be the first expression in the page"),
                 );
                 while scanner.peek_token()?.kind() != TokenKind::RightBrace {
                     scanner.next_token()?;
@@ -61,17 +54,12 @@ pub fn parse(data: &str) -> Result<Page<'_>, Vec<Error>> {
             }
 
             _ => {
-                errors.push(
-                    Error::ExpectedExpression {
-                        line: scanner.peek_token()?.line(),
+                errors.push(FroggiError::parse(
+                    ParseError::ExpectedExpression {
                         got: scanner.peek_token()?.clone_lexeme(),
-                    }, /*FroggiError::parse(
-                           ParseError::ExpectedExpression {
-                               got: scanner.peek_token()?.clone_lexeme(),
-                           },
-                           scanner.peek_token()?.line(),
-                       )*/
-                );
+                    },
+                    scanner.peek_token()?.line(),
+                ));
                 scanner.next_token()?;
                 while !scanner.at_top_level() {
                     scanner.next_token()?;
@@ -91,7 +79,7 @@ pub fn parse(data: &str) -> Result<Page<'_>, Vec<Error>> {
 }
 
 // consume top-level page style
-fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<PageStyles<'a>> {
+fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<PageStyles<'a>, FroggiError> {
     // parse outer list of rules
     let left_brace = consume(scanner, TokenKind::LeftBrace)?;
 
@@ -100,8 +88,8 @@ fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<PageStyles<'a>> {
 
     while scanner.peek_token()?.kind() != TokenKind::RightBrace {
         // parse one single rule
-        consume(scanner, TokenKind::LeftParen)?;
-        //.msg_str("expected style rules inside page style expression")?;
+        consume(scanner, TokenKind::LeftParen)
+            .msg_str("expected style rules inside page style expression")?;
 
         // name of the rule
         let selector = consume_selector(scanner)?;
@@ -114,14 +102,13 @@ fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<PageStyles<'a>> {
         )?;
 
         page_styles.insert(selector, styles);
-        consume(scanner, TokenKind::RightParen)?; //.msg_str("end of the style rule")?;
+        consume(scanner, TokenKind::RightParen).msg_str("end of the style rule")?;
     }
 
-    consume(scanner, TokenKind::RightBrace)?;
-    //    .msg(format!(
-    //    "unbalanced braces starting on line {}",
-    //    left_brace.line()
-    //))?;
+    consume(scanner, TokenKind::RightBrace).msg(format!(
+        "unbalanced braces starting on line {}",
+        left_brace.line()
+    ))?;
 
     Ok(page_styles)
 }
@@ -130,7 +117,7 @@ fn parse_page_styles<'a>(scanner: &mut Scanner<'a>) -> Result<PageStyles<'a>> {
 fn parse_expression<'a>(
     scanner: &mut Scanner<'a>,
     page_styles: &PageStyles<'a>,
-) -> Result<PageExpression<'a>> {
+) -> Result<PageExpression<'a>, FroggiError> {
     let left_paren = consume(scanner, TokenKind::LeftParen)?;
 
     let result = match scanner.peek_token()?.kind() {
@@ -147,11 +134,10 @@ fn parse_expression<'a>(
         _ => parse_implicit_text(scanner, page_styles)?,
     };
 
-    consume(scanner, TokenKind::RightParen)?;
-    //.msg(format!(
-    //    "unbalanced parens starting on line {}",
-    //    left_paren.line()
-    //))?;
+    consume(scanner, TokenKind::RightParen).msg(format!(
+        "unbalanced parens starting on line {}",
+        left_paren.line()
+    ))?;
 
     Ok(result)
 }
@@ -159,7 +145,7 @@ fn parse_expression<'a>(
 fn parse_blob<'a>(
     scanner: &mut Scanner<'a>,
     page_styles: &PageStyles<'a>,
-) -> Result<PageExpression<'a>> {
+) -> Result<PageExpression<'a>, FroggiError> {
     let builtin = consume(scanner, TokenKind::Blob)?;
     let name = consume(scanner, TokenKind::String)?;
 
@@ -179,7 +165,7 @@ fn parse_blob<'a>(
 fn parse_link<'a>(
     scanner: &mut Scanner<'a>,
     page_styles: &PageStyles<'a>,
-) -> Result<PageExpression<'a>> {
+) -> Result<PageExpression<'a>, FroggiError> {
     let builtin = consume(scanner, TokenKind::Link)?;
     let link = consume(scanner, TokenKind::String)?;
 
@@ -196,7 +182,7 @@ fn parse_link<'a>(
     })
 }
 
-fn parse_anchor<'a>(scanner: &mut Scanner<'a>) -> Result<PageExpression<'a>> {
+fn parse_anchor<'a>(scanner: &mut Scanner<'a>) -> Result<PageExpression<'a>, FroggiError> {
     let builtin = consume(scanner, TokenKind::Anchor)?;
     let anchor = consume(scanner, TokenKind::String)?;
     let payload = ExpressionPayload::Anchor { anchor };
@@ -211,7 +197,7 @@ fn parse_child<'a>(
     scanner: &mut Scanner<'a>,
     page_styles: &PageStyles<'a>,
     kind: TokenKind,
-) -> Result<PageExpression<'a>> {
+) -> Result<PageExpression<'a>, FroggiError> {
     let builtin = consume(scanner, kind)?;
     let styles = parse_inline_styles(scanner, page_styles)?;
     let mut children = Vec::new();
@@ -233,7 +219,7 @@ fn parse_child<'a>(
 fn parse_implicit_text<'a>(
     scanner: &mut Scanner<'a>,
     page_styles: &PageStyles<'a>,
-) -> Result<PageExpression<'a>> {
+) -> Result<PageExpression<'a>, FroggiError> {
     let implicit = Token::new(TokenKind::Text, scanner.peek_token()?.line(), "");
     let styles = parse_inline_styles(scanner, page_styles)?;
     let text = collect_text(scanner)?;
@@ -248,12 +234,12 @@ fn parse_implicit_text<'a>(
 fn parse_inline_styles<'a>(
     scanner: &mut Scanner<'a>,
     page_styles: &PageStyles<'a>,
-) -> Result<Vec<InlineStyle<'a>>> {
+) -> Result<Vec<InlineStyle<'a>>, FroggiError> {
     let in_page_style_expression = false;
     if scanner.peek_token()?.kind() == TokenKind::LeftBrace {
         consume(scanner, TokenKind::LeftBrace)?;
         let inline_styles = parse_style_list(scanner, page_styles, in_page_style_expression)?;
-        consume(scanner, TokenKind::RightBrace)?; //.msg_str("expected the end of the inline style")?;
+        consume(scanner, TokenKind::RightBrace).msg_str("expected the end of the inline style")?;
         Ok(inline_styles)
     } else {
         Ok(Vec::new())
@@ -264,7 +250,7 @@ fn parse_style_list<'a>(
     scanner: &mut Scanner<'a>,
     page_styles: &PageStyles<'a>,
     in_page_style_expression: bool,
-) -> Result<Vec<InlineStyle<'a>>> {
+) -> Result<Vec<InlineStyle<'a>>, FroggiError> {
     let mut styles = Vec::new();
 
     // this could be called from either inline style parsing or page style parsing
@@ -278,32 +264,22 @@ fn parse_style_list<'a>(
                     if page_styles.contains_key(&token) {
                         styles.push(InlineStyle::UserDefined { token });
                     } else {
-                        UnknownStyle {
-                            line: token.line(),
-                            style: token.clone_lexeme(),
-                        }
-                        .fail()?
-                        //return Err(FroggiError::parse(
-                        //    ParseError::UnknownStyle {
-                        //        style: token.clone_lexeme(),
-                        //    },
-                        //    token.line(),
-                        //));
+                        return Err(FroggiError::parse(
+                            ParseError::UnknownStyle {
+                                style: token.clone_lexeme(),
+                            },
+                            token.line(),
+                        ));
                     }
                 } else {
                     // if we're in the page style expression, we've already consumed the selector
-                    RecursiveStyle {
-                        line: token.line(),
-                        style: token.clone_lexeme(),
-                    }
-                    .fail()?
-                    //return Err(FroggiError::parse(
-                    //    ParseError::RecursiveStyle {
-                    //        style: token.clone_lexeme(),
-                    //    },
-                    //    token.line(),
-                    //))
-                    //.msg_str("styles may not reference user-defined styles.");
+                    return Err(FroggiError::parse(
+                        ParseError::RecursiveStyle {
+                            style: token.clone_lexeme(),
+                        },
+                        token.line(),
+                    ))
+                    .msg_str("styles may not reference user-defined styles.");
                 }
             }
 
@@ -337,11 +313,10 @@ fn parse_style_list<'a>(
 
             TokenKind::LeftParen => {
                 let token = scanner.next_token()?;
-                let arg = consume(scanner, TokenKind::String)?;
-                //    .msg(format!(
-                //    "expected an argument for the style {}",
-                //    token.lexeme()
-                //))?;
+                let arg = consume(scanner, TokenKind::String).msg(format!(
+                    "expected an argument for the style {}",
+                    token.lexeme()
+                ))?;
 
                 match token.kind() {
                     TokenKind::Fg => {
@@ -355,56 +330,41 @@ fn parse_style_list<'a>(
                     }
 
                     TokenKind::Fill => {
-                        //let arg = arg.lexeme().parse::<f32>().map_err(|_| {
-                        //    FroggiError::parse(
-                        //        ParseError::IncorrectNumberFormat {
-                        //            num: arg.clone_lexeme(),
-                        //            wanted: String::from("1 or more"),
-                        //        },
-                        //        arg.line(),
-                        //    )
-                        //})?;
-                        let arg = arg.lexeme().parse::<f32>().context(IncorrectFloatFormat {
-                            line: arg.line(),
-                            num: arg.clone_lexeme(),
-                            wanted: String::from("1 or more digits"),
+                        let arg = arg.lexeme().parse::<f32>().map_err(|_| {
+                            FroggiError::parse(
+                                ParseError::IncorrectNumberFormat {
+                                    num: arg.clone_lexeme(),
+                                    wanted: String::from("1 or more"),
+                                },
+                                arg.line(),
+                            )
                         })?;
 
                         styles.push(InlineStyle::Fill { token, arg });
                     }
 
                     TokenKind::Size => {
-                        //let arg = arg.lexeme().parse::<usize>().map_err(|_| {
-                        //    FroggiError::parse(
-                        //        ParseError::IncorrectNumberFormat {
-                        //            num: arg.clone_lexeme(),
-                        //            wanted: String::from("valid size"),
-                        //        },
-                        //        arg.line(),
-                        //    )
-                        //})?;
-                        let arg = arg.lexeme().parse::<usize>().context(IncorrectIntFormat {
-                            line: arg.line(),
-                            num: arg.clone_lexeme(),
-                            wanted: String::from("1 or more digits"),
+                        let arg = arg.lexeme().parse::<usize>().map_err(|_| {
+                            FroggiError::parse(
+                                ParseError::IncorrectNumberFormat {
+                                    num: arg.clone_lexeme(),
+                                    wanted: String::from("valid size"),
+                                },
+                                arg.line(),
+                            )
                         })?;
 
                         styles.push(InlineStyle::Size { token, arg });
                     }
 
                     _ => {
-                        ExpectedStyle {
-                            line: token.line(),
-                            got: token.clone_lexeme(),
-                        }
-                        .fail()?
-                        //return Err(FroggiError::parse(
-                        //    ParseError::ExpectedStyle {
-                        //        got: token.clone_lexeme(),
-                        //    },
-                        //    token.line(),
-                        //))
-                        //.msg(format!("{} does not take an argument", token.lexeme()))
+                        return Err(FroggiError::parse(
+                            ParseError::ExpectedStyle {
+                                got: token.clone_lexeme(),
+                            },
+                            token.line(),
+                        ))
+                        .msg(format!("{} does not take an argument", token.lexeme()))
                     }
                 }
 
@@ -412,18 +372,13 @@ fn parse_style_list<'a>(
             }
 
             _ => {
-                ExpectedStyle {
-                    line: token.line(),
-                    got: token.clone_lexeme(),
-                }
-                .fail()?
-                //return Err(FroggiError::parse(
-                //    ParseError::ExpectedStyle {
-                //        got: token.clone_lexeme(),
-                //    },
-                //    token.line(),
-                //))
-                //.msg_str("expected a style rule in the list of inline style rules")
+                return Err(FroggiError::parse(
+                    ParseError::ExpectedStyle {
+                        got: token.clone_lexeme(),
+                    },
+                    token.line(),
+                ))
+                .msg_str("expected a style rule in the list of inline style rules")
             }
         }
     }
@@ -431,43 +386,32 @@ fn parse_style_list<'a>(
     Ok(styles)
 }
 
-fn parse_hex_color(arg: Token) -> Result<(u8, u8, u8)> {
+fn parse_hex_color(arg: Token) -> Result<(u8, u8, u8), FroggiError> {
     // TODO: support hsv/rgb/3-digit hex values?
-    //let bytes = hex::decode(arg.lexeme()).map_err(|_| {
-    //    FroggiError::parse(
-    //        ParseError::IncorrectNumberFormat {
-    //            num: arg.clone_lexeme(),
-    //            wanted: String::from("valid hex number"),
-    //        },
-    //        arg.line(),
-    //    )
-    //})?;
-    let bytes = hex::decode(arg.lexeme()).context(IncorrectHexFormat {
-        line: arg.line(),
-        num: arg.clone_lexeme(),
-        wanted: String::from("6 valid hexadecimal digits"),
+    let bytes = hex::decode(arg.lexeme()).map_err(|_| {
+        FroggiError::parse(
+            ParseError::IncorrectNumberFormat {
+                num: arg.clone_lexeme(),
+                wanted: String::from("valid hex number"),
+            },
+            arg.line(),
+        )
     })?;
 
     if bytes.len() != 3 {
-        //return Err(FroggiError::parse(
-        //    ParseError::IncorrectNumberFormat {
-        //        num: arg.clone_lexeme(),
-        //        wanted: String::from("6-digit hex number"),
-        //    },
-        //    arg.line(),
-        //));
-        IncorrectNumberFormat {
-            line: arg.line(),
-            num: arg.clone_lexeme(),
-            wanted: String::from("6 valid hexadecimal digits"),
-        }
-        .fail()?
+        return Err(FroggiError::parse(
+            ParseError::IncorrectNumberFormat {
+                num: arg.clone_lexeme(),
+                wanted: String::from("6-digit hex number"),
+            },
+            arg.line(),
+        ));
     }
 
     Ok((bytes[0], bytes[1], bytes[2]))
 }
 
-fn collect_text<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<Token<'a>>> {
+fn collect_text<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<Token<'a>>, FroggiError> {
     let mut text = Vec::new();
 
     while scanner.peek_token()?.kind() != TokenKind::RightParen {
@@ -477,47 +421,35 @@ fn collect_text<'a>(scanner: &mut Scanner<'a>) -> Result<Vec<Token<'a>>> {
     Ok(text)
 }
 
-fn consume_selector<'a>(scanner: &mut Scanner<'a>) -> Result<Token<'a>> {
+fn consume_selector<'a>(scanner: &mut Scanner<'a>) -> Result<Token<'a>, FroggiError> {
     let token = scanner.next_token()?;
     if token.may_be_styled() {
         Ok(token)
     } else {
-        UnexpectedToken {
-            line: token.line(),
-            expected: TokenKind::Identifier,
-            got: token.clone_lexeme(),
-        }
-        .fail()
-        //Err(FroggiError::parse(
-        //    ParseError::UnexpectedToken {
-        //        expected: TokenKind::Identifier,
-        //        got: token.clone_lexeme(),
-        //    },
-        //    token.line(),
-        //))
-        //.msg_str("selectors must be either built-in expression types or links, or user-defined selectors")
+        Err(FroggiError::parse(
+            ParseError::UnexpectedToken {
+                expected: TokenKind::Identifier,
+                got: token.clone_lexeme(),
+            },
+            token.line(),
+        ))
+        .msg_str("selectors must be either built-in expression types or links, or user-defined selectors")
     }
 }
 
-fn consume<'a>(scanner: &mut Scanner<'a>, kind: TokenKind) -> Result<Token<'a>> {
+fn consume<'a>(scanner: &mut Scanner<'a>, kind: TokenKind) -> Result<Token<'a>, FroggiError> {
     let token = scanner.next_token()?;
 
     if token.kind() == kind {
         Ok(token)
     } else {
-        UnexpectedToken {
-            line: token.line(),
-            expected: kind,
-            got: token.clone_lexeme(),
-        }
-        .fail()
-        //Err(FroggiError::parse(
-        //    ParseError::UnexpectedToken {
-        //        expected: kind,
-        //        got: token.clone_lexeme(),
-        //    },
-        //    token.line(),
-        //))
+        Err(FroggiError::parse(
+            ParseError::UnexpectedToken {
+                expected: kind,
+                got: token.clone_lexeme(),
+            },
+            token.line(),
+        ))
     }
 }
 

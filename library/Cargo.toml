@@ -12,7 +12,6 @@ ui = [] # each backend have its own feature? or just let clients do whatever?
 [dependencies]
 hex = '0.4.3'
 uuid = {version = '0.8.2', features = ['v4']}
-snafu = {version = '0.6.10', default-features = false, features = ['std']}
 
 [[bin]]
 name = 'verify_markup'

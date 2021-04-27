@@ -1,10 +1,7 @@
 //! Scan a byte sequence into a froggi markup page. Zero-copy.
 
 use crate::markup::document::Direction;
-use crate::Result;
-use crate::{Encoding, UnbalancedParentheses, UnknownEscapeCode, UnterminatedString};
-
-use snafu::ResultExt;
+use crate::{FroggiError, ScanError};
 
 fn is_control_character(c: u8) -> bool {
     c == b'{'
@@ -79,42 +76,6 @@ pub enum TokenKind {
 
     /// The end of the page
     End,
-}
-
-impl std::fmt::Display for TokenKind {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(
-            f,
-            "{}",
-            match self {
-                TokenKind::String => "string",
-                TokenKind::LeftParen => "(",
-                TokenKind::RightParen => ")",
-                TokenKind::LeftBrace => "{",
-                TokenKind::RightBrace => "}",
-                TokenKind::Blob => "&",
-                TokenKind::Link => "^",
-                TokenKind::Anchor => "#",
-                TokenKind::Inline => "inline",
-                TokenKind::Wide => "wide",
-                TokenKind::Tall => "tall",
-                TokenKind::Text => "text",
-                TokenKind::Mono => "mono",
-                TokenKind::Serif => "serif",
-                TokenKind::Sans => "sans",
-                TokenKind::Bold => "bold",
-                TokenKind::Italic => "italic",
-                TokenKind::Underline => "underline",
-                TokenKind::Strike => "strike",
-                TokenKind::Fg => "fg",
-                TokenKind::Bg => "bg",
-                TokenKind::Fill => "fill",
-                TokenKind::Size => "size",
-                TokenKind::Identifier => "identifier",
-                TokenKind::End => "EOF",
-            }
-        )
-    }
 }
 
 /// A token.
@@ -218,7 +179,7 @@ impl<'a> Scanner<'a> {
     }
 
     /// Peek a token in the token stream
-    pub fn peek_token(&mut self) -> Result<Token<'a>> {
+    pub fn peek_token(&mut self) -> Result<Token<'a>, FroggiError> {
         if self.token.is_none() {
             self.next()?;
         }
@@ -227,7 +188,7 @@ impl<'a> Scanner<'a> {
     }
 
     /// Get the next token in the stream
-    pub fn next_token(&mut self) -> Result<Token<'a>> {
+    pub fn next_token(&mut self) -> Result<Token<'a>, FroggiError> {
         if self.token.is_none() {
             self.next()?;
         }
@@ -235,7 +196,7 @@ impl<'a> Scanner<'a> {
         Ok(self.token.take().unwrap())
     }
 
-    fn next(&mut self) -> Result<Token<'a>> {
+    fn next(&mut self) -> Result<Token<'a>, FroggiError> {
         let token = if self.at_end() {
             Token::new(TokenKind::End, self.line, "")
         } else {
@@ -262,11 +223,10 @@ impl<'a> Scanner<'a> {
                             self.paren_level -= 1;
                             Ok(TokenKind::RightParen)
                         } else {
-                            UnbalancedParentheses { line: self.line }.fail()
-                            //Err(FroggiError::parse(
-                            //    crate::ParseError::UnbalancedParentheses,
-                            //    self.line,
-                            //))
+                            Err(FroggiError::parse(
+                                crate::ParseError::UnbalancedParentheses,
+                                self.line,
+                            ))
                         }
                     }
 
@@ -285,7 +245,7 @@ impl<'a> Scanner<'a> {
         Ok(token)
     }
 
-    fn identifier(&mut self) -> Result<TokenKind> {
+    fn identifier(&mut self) -> Result<TokenKind, FroggiError> {
         while !is_control_character(self.peek()) {
             self.advance();
         }
@@ -310,7 +270,7 @@ impl<'a> Scanner<'a> {
         }
     }
 
-    fn text(&mut self) -> Result<TokenKind> {
+    fn text(&mut self) -> Result<TokenKind, FroggiError> {
         let start_line = self.line;
 
         while !self.at_end() && (self.peek() != b'\'' && self.peek() != b'"') {
@@ -320,18 +280,16 @@ impl<'a> Scanner<'a> {
             if self.peek() == b'\\' {
                 self.advance();
                 if self.peek() != b'\'' || self.peek() != b'"' {
-
-                    //return self.error(ScanError::UnknownEscapeCode {
-                    //    code: self.peek() as char,
-                    //});
+                    return self.error(ScanError::UnknownEscapeCode {
+                        code: self.peek() as char,
+                    });
                 }
             }
             self.advance();
         }
 
         if self.at_end() {
-            UnterminatedString { line: start_line }.fail()
-            //self.error(ScanError::UnterminatedString { start_line })
+            self.error(ScanError::UnterminatedString { start_line })
         } else {
             self.advance();
             Ok(TokenKind::String)
@@ -371,8 +329,12 @@ impl<'a> Scanner<'a> {
         }
     }
 
-    fn lexeme(&self) -> Result<&'a str> {
-        Ok(std::str::from_utf8(&self.source[self.start..self.current]).context(Encoding)?)
+    fn lexeme(&self) -> Result<&'a str, FroggiError> {
+        Ok(std::str::from_utf8(&self.source[self.start..self.current])?)
+    }
+
+    fn error(&self, error: ScanError) -> Result<TokenKind, FroggiError> {
+        Err(FroggiError::scan(error, self.line))
     }
 }
 

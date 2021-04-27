@@ -4,10 +4,8 @@
 
 use std::fmt;
 use std::io::{self, Write};
-use std::net::{SocketAddr, TcpStream, ToSocketAddrs};
+use std::net::{TcpStream, ToSocketAddrs};
 use std::str;
-
-use snafu::{ResultExt, Snafu};
 
 pub use uuid::Uuid;
 
@@ -24,8 +22,6 @@ pub mod response;
 use markup::scan::TokenKind;
 use request::RequestKind;
 
-pub type Result<T, E = Error> = std::result::Result<T, E>;
-
 /// Froggi version.
 pub const FROGGI_VERSION: u8 = 0;
 
@@ -34,11 +30,9 @@ pub fn send_request(
     to: impl ToSocketAddrs,
     request: &str,
     kind: RequestKind,
-) -> Result<response::Response> {
-    let mut stream = TcpStream::connect(to).context(TcpConnection)?;
-    stream
-        .write_all(&request::Request::new_with_id(request, Uuid::nil(), kind)?.into_bytes())
-        .context(IO)?;
+) -> Result<response::Response, FroggiError> {
+    let mut stream = TcpStream::connect(to)?;
+    stream.write_all(&request::Request::new_with_id(request, Uuid::nil(), kind)?.into_bytes())?;
 
     Ok(response::Response::from_bytes(&mut stream)?)
 }
@@ -49,11 +43,9 @@ pub fn send_request_with_id(
     request: &str,
     id: Uuid,
     kind: RequestKind,
-) -> Result<response::Response> {
-    let mut stream = TcpStream::connect(to).context(TcpConnection)?;
-    stream
-        .write_all(&request::Request::new_with_id(request, id, kind)?.into_bytes())
-        .context(IO)?;
+) -> Result<response::Response, FroggiError> {
+    let mut stream = TcpStream::connect(to)?;
+    stream.write_all(&request::Request::new_with_id(request, id, kind)?.into_bytes())?;
 
     Ok(response::Response::from_bytes(&mut stream)?)
 }
@@ -61,13 +53,13 @@ pub fn send_request_with_id(
 #[cfg(feature = "markup")]
 pub fn response_from_file(
     path: impl AsRef<std::path::Path>,
-) -> Result<response::Response, Vec<Error>> {
+) -> Result<response::Response, Vec<FroggiError>> {
     // TODO this is kind of garbage
 
     let path = path.as_ref();
-    let data = std::fs::read_to_string(&path).unwrap(); //.context(ReadFile { filename: path.to_path_buf() })?;
-                                                        //.map_err(|error| FroggiError::new(ErrorKind::IOError { error }))
-                                                        //.msg(format!("could not read '{}'", path.display()))?;
+    let data = std::fs::read_to_string(&path)
+        .map_err(|error| FroggiError::new(ErrorKind::IOError { error }))
+        .msg(format!("could not read '{}'", path.display()))?;
 
     let page = markup::parse::parse(&data)?;
 
@@ -76,11 +68,10 @@ pub fn response_from_file(
     let mut item_data = Vec::new();
     for name in item_names.iter() {
         item_data.push(
-            std::fs::read(path.parent().unwrap().join(name)).unwrap()
-            //.map_err(|error| {
-            //    FroggiError::new(ErrorKind::IOError { error })
-            //        .msg(format!("could not read item '{}'", name))
-            //})?,
+            std::fs::read(path.parent().unwrap().join(name)).map_err(|error| {
+                FroggiError::new(ErrorKind::IOError { error })
+                    .msg(format!("could not read item '{}'", name))
+            })?,
         );
     }
 
@@ -101,16 +92,12 @@ pub fn response_from_file(
 }
 
 /// Serialize a usize into a little-endian pair of bytes.
-pub fn serialize_to_bytes(bytes: usize) -> Result<(u8, u8)> {
+pub fn serialize_to_bytes(bytes: usize) -> Result<(u8, u8), FroggiError> {
     if bytes > u16::MAX as usize {
-        Err(Error::BitWidth {
+        return Err(FroggiError::new(ErrorKind::BitWidthError {
             wanted: 16,
             got: bytes,
-        })?
-        //return Err(FroggiError::new(ErrorKind::BitWidthError {
-        //    wanted: 16,
-        //    got: bytes,
-        //}));
+        }));
     }
 
     let high = (bytes >> 8) as u8;
@@ -120,16 +107,12 @@ pub fn serialize_to_bytes(bytes: usize) -> Result<(u8, u8)> {
 }
 
 /// Serialize a usize into a little-endian quartet of bytes.
-pub fn serialize_to_four_bytes(bytes: usize) -> Result<[u8; 4]> {
+pub fn serialize_to_four_bytes(bytes: usize) -> Result<[u8; 4], FroggiError> {
     if bytes > u32::MAX as usize {
-        Err(Error::BitWidth {
+        return Err(FroggiError::new(ErrorKind::BitWidthError {
             wanted: 32,
-            got: bytes as usize,
-        })?
-        //return Err(FroggiError::new(ErrorKind::BitWidthError {
-        //    wanted: 32,
-        //    got: bytes,
-        //}));
+            got: bytes,
+        }));
     }
 
     let a: u8 = ((bytes & 0xff_00_00_00) >> 24) as u8;
@@ -141,12 +124,12 @@ pub fn serialize_to_four_bytes(bytes: usize) -> Result<[u8; 4]> {
 }
 
 /// Deserialize a pair of bytes into a usize.
-pub fn deserialize_bytes(bytes: &[u8]) -> Result<usize> {
+pub fn deserialize_bytes(bytes: &[u8]) -> Result<usize, FroggiError> {
     if bytes.len() != 2 {
-        Err(Error::ArrayLength {
+        return Err(FroggiError::new(ErrorKind::ArrayLengthError {
             wanted: 2,
             got: bytes.len(),
-        })?
+        }));
     }
 
     let low = bytes[0];
@@ -155,12 +138,12 @@ pub fn deserialize_bytes(bytes: &[u8]) -> Result<usize> {
 }
 
 /// Deserialize a quartet of bytes into a usize.
-pub fn deserialize_four_bytes(bytes: &[u8]) -> Result<usize> {
+pub fn deserialize_four_bytes(bytes: &[u8]) -> Result<usize, FroggiError> {
     if bytes.len() != 4 {
-        Err(Error::ArrayLength {
+        return Err(FroggiError::new(ErrorKind::ArrayLengthError {
             wanted: 4,
             got: bytes.len(),
-        })?
+        }));
     }
 
     Ok(((bytes[3] as usize) << 24)
@@ -169,110 +152,6 @@ pub fn deserialize_four_bytes(bytes: &[u8]) -> Result<usize> {
         | (bytes[0] as usize))
 }
 
-#[derive(Debug, Snafu)]
-pub enum Error {
-    #[snafu(display("line {} - unknown escape code {}", line, code))]
-    UnknownEscapeCode { line: usize, code: char },
-    #[snafu(display("unterminated string starting on line {}", line))]
-    UnterminatedString { line: usize },
-    #[snafu(display(
-        "line {} - unexpected token: got '{}', expected {}",
-        line,
-        expected,
-        got
-    ))]
-    UnexpectedToken {
-        line: usize,
-        expected: crate::markup::scan::TokenKind,
-        got: String,
-    },
-    #[snafu(display("line {} - unbalanced parentheses", line))]
-    UnbalancedParentheses { line: usize },
-    #[snafu(display("line {} - expected style (fg, bold, etc) got '{}'", line, got))]
-    ExpectedStyle { line: usize, got: String },
-    #[snafu(display("line {} - expected expression, got '{}'", line, got))]
-    ExpectedExpression { line: usize, got: String },
-    #[snafu(display("line {} - unknown style '{}'", line, style))]
-    UnknownStyle { line: usize, style: String },
-    #[snafu(display("line {} - recursive style '{}', currently not allowed", line, style))]
-    RecursiveStyle { line: usize, style: String },
-    #[snafu(display(
-        "line {} - incorrect number format, wanted {}, got '{}'",
-        line,
-        wanted,
-        num
-    ))]
-    IncorrectFloatFormat {
-        source: std::num::ParseFloatError,
-        line: usize,
-        num: String,
-        wanted: String,
-    },
-    #[snafu(display(
-        "line {} - incorrect number format, wanted {}, got '{}'",
-        line,
-        wanted,
-        num
-    ))]
-    IncorrectHexFormat {
-        source: hex::FromHexError,
-        line: usize,
-        num: String,
-        wanted: String,
-    },
-    #[snafu(display(
-        "line {} - incorrect number format, wanted {}, got '{}'",
-        line,
-        wanted,
-        num
-    ))]
-    IncorrectIntFormat {
-        source: std::num::ParseIntError,
-        line: usize,
-        num: String,
-        wanted: String,
-    },
-    #[snafu(display(
-        "line {} - incorrect number format, wanted {}, got '{}'",
-        line,
-        wanted,
-        num
-    ))]
-    IncorrectNumberFormat {
-        line: usize,
-        num: String,
-        wanted: String,
-    },
-    #[snafu(display("array length incorrect - wanted {}, got {}", wanted, got))]
-    ArrayLength { wanted: usize, got: usize },
-    #[snafu(display("bit width incorrect - wanted {}, got {}", wanted, got))]
-    BitWidth { wanted: usize, got: usize },
-    #[snafu(display("utf8 error - {}", source))]
-    Encoding { source: std::str::Utf8Error },
-    #[snafu(display("utf8 error - {}", source))]
-    FromEncoding { source: std::string::FromUtf8Error },
-    #[snafu(display("request was formatted incorrectly"))]
-    RequestFormat,
-    #[snafu(display("response was formatted incorrectly"))]
-    ResponseFormat,
-    #[snafu(display("io error - {}", source))]
-    IO { source: std::io::Error },
-    #[snafu(display("could not read file '{}' - {}", filename.display(), source))]
-    ReadFile {
-        source: std::io::Error,
-        filename: std::path::PathBuf,
-    },
-    #[snafu(display("could not connect to server - {}", source))]
-    TcpConnection { source: std::io::Error },
-}
-
-impl From<Error> for Vec<Error> {
-    fn from(error: Error) -> Vec<Error> {
-        vec![error]
-    }
-}
-
-/*
 /// FML document scan error.
 #[derive(Debug)]
 pub enum ScanError {
@@ -567,7 +446,6 @@ impl From<io::Error> for FroggiError {
         FroggiError::io(error)
     }
 }
- */
 
 /// Create a u8-based enum with From and Into impls.
 #[macro_export]
