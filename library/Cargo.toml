@@ -14,11 +14,11 @@ hex = '0.4.3'
 uuid = {version = '0.8.2', features = ['v4']}
 
 [[bin]]
-name = 'verify_markup'
+name = 'verify-markup'
 test = false
-path = 'verify_markup.rs'
+path = 'verify-markup.rs'
 
 [[bin]]
-name = 'to_html'
+name = 'to-html'
 test = false
-path = 'to_html.rs'
+path = 'to-html.rs'
