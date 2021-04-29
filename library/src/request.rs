@@ -128,13 +128,7 @@ impl Request {
     }
 
     /// Convert the request into bytes
-    pub fn into_bytes(self) -> Vec<u8> {
-        self.into()
-    }
-}
-
-impl Into<Vec<u8>> for Request {
-    fn into(self) -> Vec<u8> {
+    pub fn bytes(&self) -> Vec<u8> {
         // first byte is version
         let mut data = Vec::new();
         data.push(self.version);
@@ -155,6 +149,12 @@ impl Into<Vec<u8>> for Request {
         data.extend(self.request.bytes());
 
         data
+    }
+}
+
+impl Into<Vec<u8>> for Request {
+    fn into(self) -> Vec<u8> {
+        self.bytes()
     }
 }
 
@@ -182,7 +182,7 @@ mod test {
     #[test]
     fn to_bytes() {
         let request = Request::new("index.fml", RequestKind::PageOnly).unwrap();
-        let data_test = request.into_bytes();
+        let data_test = request.bytes();
 
         assert_eq!(data_test.len(), REQUEST_BYTES.len());
 
