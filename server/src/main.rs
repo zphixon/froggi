@@ -1,12 +1,11 @@
+use anyhow::{Context, Result};
 use froggi::request::Request;
 use froggi::response::{Response, ResponseKind};
+use froggi::{markup, response};
 
-use froggi::{markup, response, ErrorKind, FroggiError};
 use std::collections::HashMap;
 use std::io::Write;
 use std::net::{TcpListener, TcpStream};
-
-use anyhow::{Context, Result};
 use std::sync::{Arc, Mutex};
 
 fn handle_client(mut stream: TcpStream, page_store: Arc<Mutex<PageStore>>) {
@@ -117,7 +116,7 @@ fn response_from_file(path: impl AsRef<std::path::Path>) -> Result<response::Res
         .zip(item_data.into_iter())
         .map(|(name, data)| {
             // TODO item kind
-            response::Item::new(name, response::ItemKind::Png, data)
+            response::Item::new(name, response::ItemKind::Image, data)
         })
         .collect();
 

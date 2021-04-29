@@ -80,9 +80,7 @@ Response kinds:
 
 Item kinds:
 
-* 0 - PNG image. The one and only.
-* 1 - JPG image. Our small friend.
-* 2 - GIF image. The life of the party.
+* 0 - Image. Up to the recipient to determine format.
 * 15 - Error.
 
 ## Markup

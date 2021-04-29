@@ -16,9 +16,7 @@ crate::u8enum! { ResponseKind {
 
 // TODO proc macro
 crate::u8enum! { ItemKind {
-    Png = 0,
-    Jpg = 1,
-    Gif = 2,
+    Image = 0,
     Unknown = 15,
 } }
 
