@@ -6,23 +6,19 @@ use froggi::{markup, response};
 use std::collections::HashMap;
 use std::io::Write;
 use std::net::{TcpListener, TcpStream};
-use std::sync::{Arc, Mutex};
 
-fn handle_client(mut stream: TcpStream, page_store: Arc<Mutex<PageStore>>) {
+fn handle_client(mut stream: TcpStream, page_store: &PageStore) {
     let request = Request::from_bytes(&mut stream).unwrap();
 
     println!("request: {:?}", request);
 
-    let mut page_store = page_store.lock().unwrap();
     match page_store.page(request.request()) {
         Some(page) => stream.write_all(page).unwrap(),
-        None => stream.write_all(&page_store.not_found).unwrap(),
+        None => stream.write_all(page_store.not_found()).unwrap(),
     }
 }
 
-// TODO convert to hash<string, vec<u8>> fully cause this is stupid
 struct PageStore {
-    pages: HashMap<String, Response>,
     page_cache: HashMap<String, Vec<u8>>,
     not_found: Vec<u8>,
 }
@@ -30,7 +26,6 @@ struct PageStore {
 impl PageStore {
     fn new() -> PageStore {
         PageStore {
-            pages: HashMap::new(),
             page_cache: HashMap::new(),
             not_found: ResponseBuilder::default()
                 .page(String::from("('not found')"))
@@ -42,17 +37,15 @@ impl PageStore {
     }
 
     fn add_page(&mut self, name: String, response: Response) {
-        self.pages.insert(name, response);
+        self.page_cache.insert(name, response.bytes());
     }
 
-    fn page(&mut self, request: &str) -> Option<&[u8]> {
-        if self.page_cache.contains_key(request) {
-            Some(self.page_cache.get(request).unwrap())
-        } else {
-            let page = self.pages.get(request)?;
-            self.page_cache.insert(request.to_owned(), page.bytes());
-            Some(&self.page_cache[request])
-        }
+    fn page(&self, request: &str) -> Option<&Vec<u8>> {
+        self.page_cache.get(request)
+    }
+
+    fn not_found(&self) -> &[u8] {
+        &self.not_found
     }
 }
 
@@ -79,14 +72,16 @@ fn main() {
         listener.local_addr().unwrap()
     );
 
-    let page_store = Arc::new(Mutex::new(pages));
-
     for stream in listener.incoming() {
         match stream {
             Ok(stream) => {
                 println!("new client");
-                let page_store = Arc::clone(&page_store);
-                std::thread::spawn(move || handle_client(stream, page_store));
+                crossbeam::scope(|s| {
+                    s.spawn(|_| {
+                        handle_client(stream, &pages);
+                    });
+                })
+                .unwrap();
             }
             Err(e) => {
                 println!("error {}", e);

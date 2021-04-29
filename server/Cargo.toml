@@ -9,3 +9,4 @@ edition = "2018"
 [dependencies]
 froggi = { path = "../library" }
 anyhow = '*'
+crossbeam = '0.8.0'
