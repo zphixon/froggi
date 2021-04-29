@@ -9,6 +9,7 @@ edition = "2018"
 [dependencies]
 froggi = { path = "../library" }
 image = "0.23.14"
+fontdue = '0.5.0'
 
 [[bin]]
 name = 'simple-client'
