@@ -1,6 +1,6 @@
 use anyhow::{Context, Result};
 use froggi::request::Request;
-use froggi::response::{Response, ResponseKind};
+use froggi::response::{Response, ResponseBuilder, ResponseKind};
 use froggi::{markup, response};
 
 use std::collections::HashMap;
@@ -32,7 +32,10 @@ impl PageStore {
         PageStore {
             pages: HashMap::new(),
             page_cache: HashMap::new(),
-            not_found: Response::new(ResponseKind::Error, String::from("('not found')"), vec![])
+            not_found: ResponseBuilder::default()
+                .page(String::from("('not found')"))
+                .kind(ResponseKind::Error)
+                .build()
                 .unwrap()
                 .bytes(),
         }
@@ -120,9 +123,9 @@ fn response_from_file(path: impl AsRef<std::path::Path>) -> Result<response::Res
         })
         .collect();
 
-    Ok(response::Response::new(
-        response::ResponseKind::Page,
-        data,
-        items,
-    )?)
+    ResponseBuilder::default()
+        .page(data)
+        .items(items)
+        .build()
+        .map_err(|e| anyhow::anyhow!(e))
 }

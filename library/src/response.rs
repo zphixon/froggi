@@ -114,37 +114,6 @@ fn check_page_and_items(page: &str, items: &[Item]) -> Result<(), FroggiError> {
 }
 
 impl Response {
-    /// Create a new response with a random ID.
-    pub fn new(kind: ResponseKind, page: String, items: Vec<Item>) -> Result<Self, FroggiError> {
-        check_page_and_items(&page, &items)?;
-
-        Ok(Self {
-            version: crate::FROGGI_VERSION,
-            kind,
-            id: Uuid::new_v4(),
-            page,
-            items,
-        })
-    }
-
-    /// Create a new response with a client ID.
-    pub fn new_with_id(
-        kind: ResponseKind,
-        id: Uuid,
-        page: String,
-        items: Vec<Item>,
-    ) -> Result<Self, FroggiError> {
-        check_page_and_items(&page, &items)?;
-
-        Ok(Self {
-            version: crate::FROGGI_VERSION,
-            kind,
-            id,
-            page,
-            items,
-        })
-    }
-
     /// Parse the response into a page. Zero-copy.
     #[cfg(feature = "markup")]
     pub fn parse(&self) -> Result<crate::markup::Page<'_>, Vec<FroggiError>> {
@@ -324,6 +293,88 @@ impl Into<Vec<u8>> for Response {
     }
 }
 
+pub struct ResponseBuilder {
+    version: u8,
+    kind: Option<ResponseKind>,
+    id: Option<Uuid>,
+    page: Option<String>,
+    items: Vec<Item>,
+}
+
+impl Default for ResponseBuilder {
+    fn default() -> Self {
+        Self {
+            version: crate::FROGGI_VERSION,
+            kind: None,
+            id: None,
+            page: None,
+            items: Vec::new(),
+        }
+    }
+}
+
+impl ResponseBuilder {
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    pub fn build(self) -> Result<Response, FroggiError> {
+        let version = self.version;
+        let kind = self.kind.unwrap_or(ResponseKind::PageNoItems);
+        let id = self.id.unwrap_or(Uuid::new_v4());
+        let page = self.page.unwrap_or(String::new());
+        let items = self.items;
+        check_page_and_items(&page, &items)?;
+
+        Ok(Response {
+            version,
+            kind,
+            id,
+            page,
+            items,
+        })
+    }
+
+    pub fn version(self, version: u8) -> Self {
+        Self { version, ..self }
+    }
+
+    pub fn kind(self, kind: ResponseKind) -> Self {
+        Self {
+            kind: Some(kind),
+            ..self
+        }
+    }
+
+    pub fn id(self, id: Uuid) -> Self {
+        Self {
+            id: Some(id),
+            ..self
+        }
+    }
+
+    pub fn page(self, page: String) -> Self {
+        Self {
+            page: Some(page),
+            ..self
+        }
+    }
+
+    pub fn item(mut self, item: Item) -> Self {
+        self.items.push(item);
+        self.kind = Some(ResponseKind::Page);
+        self
+    }
+
+    pub fn items(self, items: Vec<Item>) -> Self {
+        Self {
+            kind: Some(ResponseKind::Page),
+            items,
+            ..self
+        }
+    }
+}
+
 #[rustfmt::skip]
 #[allow(dead_code)]
 const DATA_REAL: &[u8] = &[
@@ -382,13 +433,13 @@ mod test {
     fn to_bytes() {
         let white = Item::new(
             "white.png".into(),
-            ItemKind::Png,
+            ItemKind::Image,
             include_bytes!("../1px_white.png").to_vec(),
         );
 
         let magenta = Item::new(
             "magenta.png".into(),
-            ItemKind::Png,
+            ItemKind::Image,
             include_bytes!("../1px_magenta.png").to_vec(),
         );
 
@@ -398,9 +449,12 @@ mod test {
 (img "magenta.png")"#,
         );
 
-        let response =
-            Response::new_with_id(ResponseKind::Page, Uuid::nil(), page, vec![white, magenta])
-                .unwrap();
+        let response = ResponseBuilder::default()
+            .id(Uuid::nil())
+            .page(page)
+            .items(vec![white, magenta])
+            .build()
+            .unwrap();
         let data_test: Vec<u8> = response.into();
 
         println!("{:?}", data_test);
