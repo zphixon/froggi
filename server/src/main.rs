@@ -17,6 +17,7 @@ fn handle_client(mut stream: TcpStream, page_store: &PageStore) {
     }
 }
 
+// TODO we're accidentally caching the ID
 struct PageStore {
     page_cache: HashMap<String, Vec<u8>>,
     not_found: Vec<u8>,
