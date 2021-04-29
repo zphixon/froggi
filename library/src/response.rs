@@ -146,6 +146,7 @@ impl Response {
     }
 
     /// Parse the response into a page. Zero-copy.
+    #[cfg(feature = "markup")]
     pub fn parse(&self) -> Result<crate::markup::Page<'_>, Vec<FroggiError>> {
         crate::markup::parse::parse(&self.page)
     }
