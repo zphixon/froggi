@@ -16,9 +16,9 @@ uuid = {version = '0.8.2', features = ['v4']}
 [[bin]]
 name = 'verify_markup'
 test = false
-path = 'bin/verify_markup.rs'
+path = 'verify_markup.rs'
 
 [[bin]]
 name = 'to_html'
 test = false
-path = 'bin/to_html.rs'
+path = 'to_html.rs'
