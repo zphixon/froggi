@@ -47,8 +47,9 @@ impl ToString for Document {
             string.push('\n');
         }
 
+        string.push('\n');
         for (number, url) in urls.iter().enumerate() {
-            string.push_str(&format!("[{}]: {}", number + 1, url));
+            string.push_str(&format!("{}: {}", number + 1, url));
             string.push('\n');
         }
 
