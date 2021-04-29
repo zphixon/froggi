@@ -1,7 +1,6 @@
 use anyhow::{Context, Result};
 use froggi::request::Request;
-use froggi::response::{Response, ResponseBuilder, ResponseKind};
-use froggi::{markup, response};
+use froggi::response::{Item, ItemKind, Response, ResponseBuilder, ResponseKind};
 
 use std::collections::HashMap;
 use std::io::Write;
@@ -90,14 +89,14 @@ fn main() {
     }
 }
 
-fn response_from_file(path: impl AsRef<std::path::Path>) -> Result<response::Response> {
+fn response_from_file(path: impl AsRef<std::path::Path>) -> Result<Response> {
     // TODO this is kind of garbage
 
     let path = path.as_ref();
     let data =
         std::fs::read_to_string(&path).context(format!("could not read '{}'", path.display()))?;
 
-    let page = markup::parse::parse(&data).map_err(|mut errs| errs.pop().unwrap())?;
+    let page = froggi::markup::parse::parse(&data).map_err(|mut errs| errs.pop().unwrap())?;
 
     let item_names = page.item_names();
 
@@ -112,10 +111,7 @@ fn response_from_file(path: impl AsRef<std::path::Path>) -> Result<response::Res
     let items = item_names
         .into_iter()
         .zip(item_data.into_iter())
-        .map(|(name, data)| {
-            // TODO item kind
-            response::Item::new(name, response::ItemKind::Image, data)
-        })
+        .map(|(name, data)| Item::new(name, ItemKind::Image, data))
         .collect();
 
     ResponseBuilder::default()
