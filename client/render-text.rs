@@ -93,8 +93,17 @@ fn main() {
 
                     // value is white minus coverage (darker where more coverage)
                     let value = 255 - coverage.clamp(&0, &255);
-                    // TODO mix alpha
-                    image.put_pixel(x, y, Rgba([value, value, value, 255]));
+                    let pixel = image.get_pixel(x, y).clone();
+                    image.put_pixel(
+                        x,
+                        y,
+                        Rgba([
+                            (pixel.0[0] as i32 - (255 - value) as i32).clamp(0, 255) as u8,
+                            (pixel.0[1] as i32 - (255 - value) as i32).clamp(0, 255) as u8,
+                            (pixel.0[2] as i32 - (255 - value) as i32).clamp(0, 255) as u8,
+                            255,
+                        ]),
+                    );
                 }
             }
         }
