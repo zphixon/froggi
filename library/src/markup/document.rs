@@ -35,6 +35,14 @@ impl Document {
 
         document
     }
+
+    pub fn styles(&self) -> &HashMap<String, Style> {
+        &self.styles
+    }
+
+    pub fn expressions(&self) -> &[DocumentExpression] {
+        &self.expressions
+    }
 }
 
 impl ToString for Document {
@@ -119,6 +127,18 @@ impl DocumentExpression {
             direction,
             contents,
         }
+    }
+
+    pub fn style(&self) -> Style {
+        self.style
+    }
+
+    pub fn direction(&self) -> &Direction {
+        &self.direction
+    }
+
+    pub fn contents(&self) -> &DocumentExpressionContents {
+        &self.contents
     }
 }
 
