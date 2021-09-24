@@ -130,7 +130,7 @@ impl Request {
     /// Convert the request into bytes
     pub fn bytes(&self) -> Vec<u8> {
         // first byte is version
-        let mut data = Vec::new();
+        let mut data = Vec::from(FROGGI_MAGIC);
         data.push(self.version);
 
         // second byte is request kind
@@ -164,6 +164,7 @@ mod test {
 
     #[rustfmt::skip]
     const REQUEST_BYTES: &[u8] = &[
+        0xf0, 0x9f, 0x90, 0xb8,                                     // froggi magic 🐸
         0x00,                                                       // version
         0x00,                                                       // kind
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  // UUID

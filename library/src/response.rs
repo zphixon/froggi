@@ -221,7 +221,7 @@ impl Response {
 
     /// Convert the page into bytes
     pub fn bytes(&self) -> Vec<u8> {
-        let mut data = Vec::new();
+        let mut data = Vec::from(FROGGI_MAGIC);
 
         // first byte: version number
         data.push(self.version);
@@ -378,10 +378,11 @@ impl ResponseBuilder {
 #[rustfmt::skip]
 #[allow(dead_code)]
 const DATA_REAL: &[u8] = &[
+    0xf0, 0x9f, 0x90, 0xb8,                                     // froggi magic 🐸
     0,                                                                                      // version
     0,                                                                                      // response kind
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,                                         // client ID
-    101, 1, 0, 0,                                                                           // total length
+    105, 1, 0, 0,                                                                           // total length
     60, 0, 0, 0,                                                                            // page length
     40, 105, 109, 103, 32, 34, 119, 104, 105, 116, 101, 46, 112, 110, 103, 34, 41, 10, 40,  // page
     116, 120, 116, 32, 34, 102, 117, 103, 104, 101, 100, 100, 97, 98, 111, 117, 100, 105,
