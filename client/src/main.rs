@@ -5,8 +5,6 @@ use froggi::request::RequestKind;
 
 use std::io::Cursor;
 
-use image::ImageEncoder;
-
 fn main() {
     let local = std::env::args().collect::<String>().contains("-l");
     //let server = include_str!("../server_address").trim();

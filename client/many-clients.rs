@@ -27,6 +27,7 @@ fn main() {
                     .lock()
                     .write(format!("{} err {}\n", i, e).as_bytes())
             })
+            .unwrap()
             .unwrap();
         }));
     }
