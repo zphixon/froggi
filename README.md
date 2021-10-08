@@ -46,19 +46,15 @@ of date on every commit.
 
 ### styling algorithm
 
-1. width calculation this is incorrect
+1. width calculation: calculate how many pixels we have horizontally from the
+   viewport size and screen DPI. then distribute this width evenly, or by
+   ratio according to markup styles. text cannot make a box wider, only taller.
 
-* ~~calculate how many pixels we have horizontally from viewport size and screen
-  DPI.~~
-* ~~calculate the required width of our content~~
-  * ~~shape each text item (harfbuzz). the longest word of a text item is the
-    required width~~
-  * ~~the width of an image after any scaling~~
-* ~~distribute the maximum of required and available pixels among horizontal
-  items:~~
-  * ~~equally, or by ratio~~
-
-2. height calculation...
+2. height calculation: text is broken into words (unicode_segmentation), shaped
+   (harfbuzz-rs), rasterized (??), and stored for drawing later. each bit of
+   text can be shaped independently since style changes can't cross box
+   boundaries. add up word widths until it overflows the box width, then add
+   the line height to the box height. keep going until we run out of text.
 
 ![Diagram](https://github.com/zphixon/froggi/blob/main/notes/display.svg)
 
@@ -71,7 +67,17 @@ of date on every commit.
   * same document jumps the view
   * other document opens that document
   * specify exactly where something links to
-* input?
+
+## unanswered questions
+* input
   * single and multi-line text
-  * file?, button?, radio?, checkbox?, validation?
+  * file, button, radio, checkbox
+  * client-side validation
+* what to do if a word is too long for a box
+  * hyphenization
+  * truncation
+* does fill make sense on a tall?
+* responsiveness
+  * squish boxes
+  * make all non-inline boxes vertical
 
